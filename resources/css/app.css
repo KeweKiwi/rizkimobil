@@ -1,0 +1,25 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../views/partials/**/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+@source '../**/*.js';
+@source '../../app/**/*.php';
+
+@theme {
+  /* BODY */
+  --font-body: 'Exo 2', ui-sans-serif, system-ui, sans-serif;
+
+  /* HEADINGS */
+  --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* optional: default sans */
+  --font-sans: var(--font-body);
+}
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+  }
+}
