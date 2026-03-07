@@ -47,6 +47,17 @@ return [
             'report' => false,
         ],
 
+        // Stores files directly inside public/ so asset() URLs work without a symlink.
+        // Used for car images so they are consistent with seeded/existing images.
+        'public_root' => [
+            'driver' => 'local',
+            'root' => public_path(),
+            'url' => '/',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

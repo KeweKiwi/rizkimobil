@@ -21,112 +21,143 @@ class CarsTable
     {
         return $table
             ->columns([
-                ImageColumn::make('main_image')
-                    ->label('Image')
-                    ->defaultImageUrl(url('/images/placeholder-car.jpg'))
-                    ->circular()
-                    ->size(60),
-                
+                ImageColumn::make('image')
+                    ->label('')
+                    ->getStateUsing(fn ($record) => $record->main_image)
+                    ->height(52)
+                    ->width(80)
+                    ->extraImgAttributes(['class' => 'rounded object-cover']),
+
                 TextColumn::make('make')
+                    ->label('Brand')
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
-                
+
                 TextColumn::make('model')
                     ->searchable()
                     ->sortable()
-                    ->description(fn ($record) => $record->variant),
-                
-                TextColumn::make('year')
-                    ->sortable()
-                    ->alignCenter(),
-                
+                    ->description(fn ($record) => trim($record->variant . ' · ' . $record->year, ' · ')),
+
                 TextColumn::make('price')
-                    ->money('IDR', locale: 'id')
+                    ->label('Price')
+                    ->formatStateUsing(fn ($state) => 'Rp ' . number_format($state, 0, ',', '.'))
                     ->sortable()
                     ->weight('bold')
-                    ->color('success'),
-                
+                    ->color('warning'),
+
                 TextColumn::make('mileage_km')
                     ->label('Mileage')
-                    ->numeric()
+                    ->formatStateUsing(fn ($state) => number_format($state, 0, ',', '.') . ' km')
                     ->sortable()
-                    ->suffix(' km')
                     ->alignEnd(),
-                
+
                 TextColumn::make('transmission')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'automatic' => 'success',
-                        'manual' => 'info',
-                        default => 'gray',
+                        'manual'    => 'info',
+                        default     => 'gray',
                     }),
-                
+
+                TextColumn::make('fuel_type')
+                    ->label('Fuel')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'bensin'   => 'gray',
+                        'diesel'   => 'warning',
+                        'electric' => 'success',
+                        'hybrid'   => 'info',
+                        default    => 'gray',
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('location.name')
-                    ->label('Location')
+                    ->label('Branch')
                     ->sortable()
                     ->toggleable(),
-                
+
                 IconColumn::make('featured')
+                    ->label('★')
                     ->boolean()
-                    ->trueIcon('heroicon-o-star')
+                    ->trueIcon('heroicon-s-star')
                     ->falseIcon('heroicon-o-star')
                     ->trueColor('warning')
                     ->falseColor('gray')
                     ->alignCenter(),
-                
-                IconColumn::make('sold')
+
+                TextColumn::make('sold')
                     ->label('Status')
-                    ->boolean()
-                    ->trueIcon('heroicon-o-check-circle')
-                    ->falseIcon('heroicon-o-clock')
-                    ->trueColor('success')
-                    ->falseColor('warning')
-                    ->alignCenter(),
-                
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => $state ? 'Sold' : 'Available')
+                    ->color(fn ($state) => $state ? 'danger' : 'success'),
+
+                TextColumn::make('stnk_valid_until')
+                    ->label('STNK')
+                    ->date('d M Y')
+                    ->color(fn ($record) => $record->stnk_valid_until?->isPast() ? 'danger' : 'gray')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('created_at')
                     ->label('Listed')
-                    ->date()
+                    ->date('d M Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('make')
+                    ->label('Brand')
                     ->options([
-                        'Toyota' => 'Toyota',
-                        'Honda' => 'Honda',
-                        'Daihatsu' => 'Daihatsu',
-                        'Suzuki' => 'Suzuki',
-                        'Mitsubishi' => 'Mitsubishi',
-                        'Nissan' => 'Nissan',
+                        'Toyota'        => 'Toyota',
+                        'Honda'         => 'Honda',
+                        'Daihatsu'      => 'Daihatsu',
+                        'Suzuki'        => 'Suzuki',
+                        'Mitsubishi'    => 'Mitsubishi',
+                        'Nissan'        => 'Nissan',
+                        'BMW'           => 'BMW',
+                        'Mercedes-Benz' => 'Mercedes-Benz',
+                        'Hyundai'       => 'Hyundai',
+                        'Kia'           => 'Kia',
                     ])
                     ->multiple(),
-                
+
                 SelectFilter::make('transmission')
                     ->options([
-                        'manual' => 'Manual',
                         'automatic' => 'Automatic',
+                        'manual'    => 'Manual',
                     ]),
-                
+
                 SelectFilter::make('fuel_type')
+                    ->label('Fuel Type')
                     ->options([
-                        'bensin' => 'Bensin',
-                        'diesel' => 'Diesel',
+                        'bensin'   => 'Bensin',
+                        'diesel'   => 'Diesel',
                         'electric' => 'Electric',
-                        'hybrid' => 'Hybrid',
+                        'hybrid'   => 'Hybrid',
                     ]),
-                
+
+                SelectFilter::make('body_type')
+                    ->label('Body Type')
+                    ->options([
+                        'suv'       => 'SUV',
+                        'mpv'       => 'MPV',
+                        'sedan'     => 'Sedan',
+                        'hatchback' => 'Hatchback',
+                        'pickup'    => 'Pickup',
+                        'van'       => 'Van',
+                    ]),
+
                 TernaryFilter::make('featured')
-                    ->label('Featured Only')
-                    ->placeholder('All cars')
-                    ->trueLabel('Featured')
+                    ->placeholder('All listings')
+                    ->trueLabel('Featured only')
                     ->falseLabel('Not featured'),
-                
+
                 TernaryFilter::make('sold')
-                    ->placeholder('All cars')
+                    ->placeholder('All listings')
                     ->trueLabel('Sold')
                     ->falseLabel('Available'),
-                
+
                 TrashedFilter::make(),
             ])
             ->recordActions([

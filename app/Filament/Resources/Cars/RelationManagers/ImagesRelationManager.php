@@ -2,49 +2,59 @@
 
 namespace App\Filament\Resources\Cars\RelationManagers;
 
-use Filament\Forms;
+use App\Models\CarImage;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
-use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class ImagesRelationManager extends RelationManager
 {
     protected static string $relationship = 'images';
 
-    protected static ?string $title = 'Car Images';
+    protected static ?string $title = 'Car Images (max 13)';
 
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                Forms\Components\FileUpload::make('image_path')
+                FileUpload::make('image_path')
                     ->label('Image')
                     ->image()
+                    ->disk('public_root')
                     ->directory('images/cars')
                     ->visibility('public')
-                    ->disk('public')
                     ->required()
                     ->imageEditor()
-                    ->imageEditorAspectRatios([
-                        '16:9',
-                        '4:3',
-                        null,
-                    ])
-                    ->maxSize(5120)
-                    ->helperText('Max 5MB. Recommended: 1200x800px'),
-                
-                Forms\Components\Toggle::make('is_primary')
+                    ->imageEditorAspectRatios(['16:9', '4:3', null])
+                    ->maxSize(5120) // 5 MB
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->helperText('Max 5 MB · JPEG / PNG / WebP · Recommended 1200×800 px')
+                    ->columnSpanFull(),
+
+                Toggle::make('is_primary')
                     ->label('Set as Primary Image')
-                    ->default(false)
-                    ->helperText('Primary image is shown in listings'),
-                
-                Forms\Components\TextInput::make('sort_order')
-                    ->label('Sort Order')
+                    ->helperText('Shown as thumbnail in listings and the hero on the detail page')
+                    ->default(false),
+
+                TextInput::make('sort_order')
+                    ->label('Display Order')
                     ->numeric()
                     ->default(0)
                     ->minValue(0)
-                    ->helperText('Lower numbers appear first'),
+                    ->helperText('Lower number = shown first'),
             ]);
     }
 
@@ -52,47 +62,68 @@ class ImagesRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('image_path')
+            ->reorderable('sort_order')
+            ->defaultSort('sort_order', 'asc')
             ->columns([
-                Tables\Columns\ImageColumn::make('image_path')
-                    ->label('Image')
-                    ->size(100)
-                    ->square(),
-                
-                Tables\Columns\IconColumn::make('is_primary')
+                ImageColumn::make('image_path')
+                    ->label('Preview')
+                    ->disk('public_root')
+                    ->height(72)
+                    ->width(108)
+                    ->extraImgAttributes(['class' => 'rounded object-cover']),
+
+                IconColumn::make('is_primary')
                     ->label('Primary')
                     ->boolean()
-                    ->trueIcon('heroicon-o-star')
+                    ->trueIcon('heroicon-s-star')
                     ->falseIcon('heroicon-o-star')
                     ->trueColor('warning')
                     ->falseColor('gray'),
-                
-                Tables\Columns\TextColumn::make('sort_order')
+
+                TextColumn::make('sort_order')
                     ->label('Order')
                     ->sortable(),
-                
-                Tables\Columns\TextColumn::make('created_at')
+
+                TextColumn::make('created_at')
                     ->label('Uploaded')
-                    ->dateTime()
+                    ->dateTime('d M Y, H:i')
                     ->sortable()
                     ->toggleable(),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_primary')
-                    ->label('Primary Images Only'),
+                TernaryFilter::make('is_primary')
+                    ->label('Primary Image Only'),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                CreateAction::make()
+                    ->label('Add Image')
+                    ->before(function (RelationManager $livewire) {
+                        $count = $livewire->getOwnerRecord()->images()->count();
+                        if ($count >= 13) {
+                            Notification::make()
+                                ->title('Image limit reached')
+                                ->body('A car can have a maximum of 13 images. Please delete one before adding more.')
+                                ->danger()
+                                ->send();
+                            $this->halt();
+                        }
+                    })
+                    ->after(function (CarImage $record) {
+                        // If this is the first image, auto-set as primary
+                        $car = $record->car;
+                        if ($car->images()->count() === 1) {
+                            $record->update(['is_primary' => true]);
+                        }
+                    }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
-            ])
-            ->defaultSort('sort_order', 'asc')
-            ->reorderable('sort_order');
+            ]);
     }
 }

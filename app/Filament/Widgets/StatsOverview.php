@@ -6,50 +6,53 @@ use App\Models\Car;
 use App\Models\Contact;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
-use Illuminate\Support\Facades\DB;
 
 class StatsOverview extends StatsOverviewWidget
 {
+    protected static ?int $sort = 1;
+
     protected function getStats(): array
     {
-        // Calculate total sales (sold cars value)
-        $totalSales = Car::where('sold', true)->sum('price');
-        $soldCarsCount = Car::where('sold', true)->count();
-        
-        // Available cars
-        $availableCars = Car::where('sold', false)->count();
-        
-        // Featured cars
-        $featuredCars = Car::where('featured', true)->where('sold', false)->count();
-        
-        // Recent contacts (last 30 days)
-        $recentContacts = Contact::where('created_at', '>=', now()->subDays(30))->count();
-        
-        // Total inventory value
-        $totalInventoryValue = Car::where('sold', false)->sum('price');
+        $availableCount = Car::where('sold', false)->count();
+        $inventoryValue = Car::where('sold', false)->sum('price');
+
+        $leadsThisWeek = Contact::where('created_at', '>=', now()->subDays(7))->count();
+        $leadsTotal    = Contact::count();
+
+        // STNK expiring within 30 days (including already expired)
+        $stnkExpiring = Car::where('sold', false)
+            ->whereNotNull('stnk_valid_until')
+            ->where('stnk_valid_until', '<=', now()->addDays(30))
+            ->count();
+
+        $featuredCount = Car::where('featured', true)->where('sold', false)->count();
+
+        // 7-day lead trend
+        $leadTrend = collect(range(6, 0))->map(
+            fn ($d) => Contact::whereDate('created_at', now()->subDays($d)->toDateString())->count()
+        )->values()->toArray();
 
         return [
-            Stat::make('Total Sales', 'Rp ' . number_format($totalSales, 0, ',', '.'))
-                ->description($soldCarsCount . ' cars sold')
-                ->descriptionIcon('heroicon-m-currency-dollar')
-                ->color('success')
-                ->chart([7, 5, 10, 8, 12, 15, $soldCarsCount]),
-            
-            Stat::make('Available Cars', $availableCars)
-                ->description('Ready for sale')
+            Stat::make('Available Stock', $availableCount)
+                ->description('Rp ' . number_format($inventoryValue, 0, ',', '.') . ' total value')
                 ->descriptionIcon('heroicon-m-truck')
-                ->color('info')
-                ->chart([20, 25, 22, 24, 23, 25, $availableCars]),
-            
-            Stat::make('Inventory Value', 'Rp ' . number_format($totalInventoryValue, 0, ',', '.'))
-                ->description('Total available stock value')
-                ->descriptionIcon('heroicon-m-banknotes')
+                ->color('info'),
+
+            Stat::make('Leads This Week', $leadsThisWeek)
+                ->description($leadsTotal . ' total inquiries all time')
+                ->descriptionIcon('heroicon-m-chat-bubble-left-ellipsis')
+                ->color('success')
+                ->chart($leadTrend),
+
+            Stat::make('STNK Expiring Soon', $stnkExpiring)
+                ->description('Cars expiring within 30 days')
+                ->descriptionIcon('heroicon-m-exclamation-triangle')
+                ->color($stnkExpiring > 0 ? 'danger' : 'success'),
+
+            Stat::make('Featured on Homepage', $featuredCount)
+                ->description('Highlighted in hero & featured section')
+                ->descriptionIcon('heroicon-m-star')
                 ->color('warning'),
-            
-            Stat::make('Recent Inquiries', $recentContacts)
-                ->description('Last 30 days')
-                ->descriptionIcon('heroicon-m-envelope')
-                ->color('primary'),
         ];
     }
 }

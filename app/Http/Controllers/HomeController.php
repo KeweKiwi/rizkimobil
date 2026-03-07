@@ -13,6 +13,7 @@ class HomeController extends Controller
         // Get featured cars that are not sold
         $featuredCars = Car::where('featured', true)
             ->where('sold', false)
+            ->with('primaryImage')
             ->take(4)
             ->get();
 

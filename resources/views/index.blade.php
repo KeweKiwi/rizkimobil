@@ -216,7 +216,6 @@
                             'transmission' => 'Automatic',
                             'bodyType' => 'Sedan',
                             'images' => ['https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800&h=600&fit=crop'],
-                            'certified' => true,
                             'featured' => true
                         ],
                         (object)[
@@ -230,6 +229,7 @@
                             'transmission' => 'Automatic',
                             'bodyType' => 'SUV',
                             'images' => ['https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=800&h=600&fit=crop'],
+                            'primaryImage' => (object)['image_path' => 'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=800&h=600&fit=crop'],
                             'certified' => true,
                             'featured' => true
                         ],
@@ -244,6 +244,7 @@
                             'transmission' => 'Automatic',
                             'bodyType' => 'Sedan',
                             'images' => ['https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&h=600&fit=crop'],
+                            'primaryImage' => (object)['image_path' => 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&h=600&fit=crop'],
                             'certified' => true,
                             'featured' => true
                         ],
@@ -258,6 +259,7 @@
                             'transmission' => 'Automatic',
                             'bodyType' => 'Sedan',
                             'images' => ['https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&h=600&fit=crop'],
+                            'primaryImage' => (object)['image_path' => 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&h=600&fit=crop'],
                             'certified' => false,
                             'featured' => true
                         ]
