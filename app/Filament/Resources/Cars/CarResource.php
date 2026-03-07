@@ -22,7 +22,7 @@ class CarResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTruck;
     
-    protected static ?string $navigationLabel = 'Cars';
+    protected static ?string $navigationLabel = 'Daftar Mobil';
     
     protected static ?int $navigationSort = 1;
 

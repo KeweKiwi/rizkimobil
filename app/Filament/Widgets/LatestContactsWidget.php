@@ -16,8 +16,8 @@ class LatestContactsWidget extends TableWidget
     public function table(Table $table): Table
     {
         return $table
-            ->heading('Latest Leads')
-            ->description('Recent customer inquiries — follow up via WhatsApp or email')
+            ->heading('Lead Terbaru')
+            ->description('Pertanyaan pelanggan terbaru — tindak lanjuti via WhatsApp atau email')
             ->query(
                 Contact::query()
                     ->with('car')
@@ -45,12 +45,12 @@ class LatestContactsWidget extends TableWidget
                     ->copyable(),
 
                 TextColumn::make('car.title')
-                    ->label('Interested In')
+                    ->label('Tertarik dengan')
                     ->description(fn (Contact $record) => $record->car
                         ? 'Rp ' . number_format($record->car->price, 0, ',', '.')
                         : null
                     )
-                    ->placeholder('General inquiry')
+                    ->placeholder('Pertanyaan umum')
                     ->color('gray'),
 
                 TextColumn::make('message')
@@ -62,7 +62,7 @@ class LatestContactsWidget extends TableWidget
                     ->color('gray'),
 
                 TextColumn::make('created_at')
-                    ->label('Received')
+                    ->label('Diterima')
                     ->since()
                     ->color('gray'),
             ])

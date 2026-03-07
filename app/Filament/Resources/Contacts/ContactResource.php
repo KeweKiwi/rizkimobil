@@ -22,9 +22,9 @@ class ContactResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedEnvelope;
     
-    protected static ?string $navigationLabel = 'Contact Inquiries';
+    protected static ?string $navigationLabel = 'Pertanyaan Masuk';
     
-    protected static ?string $modelLabel = 'Inquiry';
+    protected static ?string $modelLabel = 'Pertanyaan';
     
     protected static ?int $navigationSort = 3;
 

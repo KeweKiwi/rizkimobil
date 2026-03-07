@@ -31,11 +31,11 @@ class ContactsTable
                     ->icon('heroicon-m-phone'),
                 
                 TextColumn::make('car.model')
-                    ->label('Car of Interest')
+                    ->label('Tertarik dengan')
                     ->sortable()
                     ->searchable()
-                    ->description(fn ($record) => $record->car ? $record->car->make . ' ' . $record->car->year : 'General inquiry')
-                    ->default('General inquiry'),
+                    ->description(fn ($record) => $record->car ? $record->car->make . ' ' . $record->car->year : 'Pertanyaan umum')
+                    ->default('Pertanyaan umum'),
                 
                 TextColumn::make('message')
                     ->limit(50)
@@ -49,7 +49,7 @@ class ContactsTable
                     ->toggleable(),
                 
                 TextColumn::make('created_at')
-                    ->label('Received')
+                    ->label('Diterima')
                     ->dateTime('M d, Y H:i')
                     ->sortable()
                     ->toggleable(),

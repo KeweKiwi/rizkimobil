@@ -20,7 +20,7 @@ class LocationResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMapPin;
     
-    protected static ?string $navigationLabel = 'Locations';
+    protected static ?string $navigationLabel = 'Cabang / Lokasi';
     
     protected static ?int $navigationSort = 2;
 

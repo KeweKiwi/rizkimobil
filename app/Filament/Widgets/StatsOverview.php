@@ -33,24 +33,24 @@ class StatsOverview extends StatsOverviewWidget
         )->values()->toArray();
 
         return [
-            Stat::make('Available Stock', $availableCount)
-                ->description('Rp ' . number_format($inventoryValue, 0, ',', '.') . ' total value')
+            Stat::make('Stok Tersedia', $availableCount)
+                ->description('Rp ' . number_format($inventoryValue, 0, ',', '.') . ' total nilai inventaris')
                 ->descriptionIcon('heroicon-m-truck')
                 ->color('info'),
 
-            Stat::make('Leads This Week', $leadsThisWeek)
-                ->description($leadsTotal . ' total inquiries all time')
+            Stat::make('Lead Minggu Ini', $leadsThisWeek)
+                ->description($leadsTotal . ' total pertanyaan sepanjang waktu')
                 ->descriptionIcon('heroicon-m-chat-bubble-left-ellipsis')
                 ->color('success')
                 ->chart($leadTrend),
 
-            Stat::make('STNK Expiring Soon', $stnkExpiring)
-                ->description('Cars expiring within 30 days')
+            Stat::make('STNK Segera Habis', $stnkExpiring)
+                ->description('Mobil dengan STNK habis dalam 30 hari')
                 ->descriptionIcon('heroicon-m-exclamation-triangle')
                 ->color($stnkExpiring > 0 ? 'danger' : 'success'),
 
-            Stat::make('Featured on Homepage', $featuredCount)
-                ->description('Highlighted in hero & featured section')
+            Stat::make('Ditampilkan di Homepage', $featuredCount)
+                ->description('Disorot di hero & grid unggulan')
                 ->descriptionIcon('heroicon-m-star')
                 ->color('warning'),
         ];

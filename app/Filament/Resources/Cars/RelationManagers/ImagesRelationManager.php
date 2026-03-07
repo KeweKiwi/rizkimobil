@@ -24,14 +24,14 @@ class ImagesRelationManager extends RelationManager
 {
     protected static string $relationship = 'images';
 
-    protected static ?string $title = 'Car Images (max 13)';
+    protected static ?string $title = 'Foto Mobil (maks. 13)';
 
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 FileUpload::make('image_path')
-                    ->label('Image')
+                    ->label('Foto')
                     ->image()
                     ->disk('public_root')
                     ->directory('images/cars')
@@ -39,22 +39,22 @@ class ImagesRelationManager extends RelationManager
                     ->required()
                     ->imageEditor()
                     ->imageEditorAspectRatios(['16:9', '4:3', null])
-                    ->maxSize(5120) // 5 MB
+                    ->maxSize(5120)
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                    ->helperText('Max 5 MB · JPEG / PNG / WebP · Recommended 1200×800 px')
+                    ->helperText('Maks. 5 MB · JPEG / PNG / WebP · Disarankan 1200×800 px')
                     ->columnSpanFull(),
 
                 Toggle::make('is_primary')
-                    ->label('Set as Primary Image')
-                    ->helperText('Shown as thumbnail in listings and the hero on the detail page')
+                    ->label('Jadikan Foto Utama')
+                    ->helperText('Ditampilkan sebagai thumbnail di listing dan hero di halaman detail')
                     ->default(false),
 
                 TextInput::make('sort_order')
-                    ->label('Display Order')
+                    ->label('Urutan Tampil')
                     ->numeric()
                     ->default(0)
                     ->minValue(0)
-                    ->helperText('Lower number = shown first'),
+                    ->helperText('Angka lebih kecil = tampil lebih awal'),
             ]);
     }
 
@@ -66,14 +66,14 @@ class ImagesRelationManager extends RelationManager
             ->defaultSort('sort_order', 'asc')
             ->columns([
                 ImageColumn::make('image_path')
-                    ->label('Preview')
+                    ->label('Pratinjau')
                     ->disk('public_root')
                     ->height(72)
                     ->width(108)
                     ->extraImgAttributes(['class' => 'rounded object-cover']),
 
                 IconColumn::make('is_primary')
-                    ->label('Primary')
+                    ->label('Utama')
                     ->boolean()
                     ->trueIcon('heroicon-s-star')
                     ->falseIcon('heroicon-o-star')
@@ -81,28 +81,28 @@ class ImagesRelationManager extends RelationManager
                     ->falseColor('gray'),
 
                 TextColumn::make('sort_order')
-                    ->label('Order')
+                    ->label('Urutan')
                     ->sortable(),
 
                 TextColumn::make('created_at')
-                    ->label('Uploaded')
+                    ->label('Diunggah')
                     ->dateTime('d M Y, H:i')
                     ->sortable()
                     ->toggleable(),
             ])
             ->filters([
                 TernaryFilter::make('is_primary')
-                    ->label('Primary Image Only'),
+                    ->label('Hanya Foto Utama'),
             ])
             ->headerActions([
                 CreateAction::make()
-                    ->label('Add Image')
+                    ->label('Tambah Foto')
                     ->before(function (RelationManager $livewire) {
                         $count = $livewire->getOwnerRecord()->images()->count();
                         if ($count >= 13) {
                             Notification::make()
-                                ->title('Image limit reached')
-                                ->body('A car can have a maximum of 13 images. Please delete one before adding more.')
+                                ->title('Batas foto tercapai')
+                                ->body('Satu mobil maksimal 13 foto. Hapus foto lama sebelum menambah yang baru.')
                                 ->danger()
                                 ->send();
                             $this->halt();

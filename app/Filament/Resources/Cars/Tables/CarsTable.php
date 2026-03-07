@@ -29,7 +29,7 @@ class CarsTable
                     ->extraImgAttributes(['class' => 'rounded object-cover']),
 
                 TextColumn::make('make')
-                    ->label('Brand')
+                    ->label('Merek')
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
@@ -40,14 +40,14 @@ class CarsTable
                     ->description(fn ($record) => trim($record->variant . ' · ' . $record->year, ' · ')),
 
                 TextColumn::make('price')
-                    ->label('Price')
+                    ->label('Harga')
                     ->formatStateUsing(fn ($state) => 'Rp ' . number_format($state, 0, ',', '.'))
                     ->sortable()
                     ->weight('bold')
                     ->color('warning'),
 
                 TextColumn::make('mileage_km')
-                    ->label('Mileage')
+                    ->label('Kilometer')
                     ->formatStateUsing(fn ($state) => number_format($state, 0, ',', '.') . ' km')
                     ->sortable()
                     ->alignEnd(),
@@ -61,7 +61,7 @@ class CarsTable
                     }),
 
                 TextColumn::make('fuel_type')
-                    ->label('Fuel')
+                    ->label('BBM')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'bensin'   => 'gray',
@@ -73,7 +73,7 @@ class CarsTable
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('location.name')
-                    ->label('Branch')
+                    ->label('Cabang')
                     ->sortable()
                     ->toggleable(),
 
@@ -89,7 +89,7 @@ class CarsTable
                 TextColumn::make('sold')
                     ->label('Status')
                     ->badge()
-                    ->formatStateUsing(fn ($state) => $state ? 'Sold' : 'Available')
+                    ->formatStateUsing(fn ($state) => $state ? 'Terjual' : 'Tersedia')
                     ->color(fn ($state) => $state ? 'danger' : 'success'),
 
                 TextColumn::make('stnk_valid_until')
@@ -100,14 +100,14 @@ class CarsTable
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('created_at')
-                    ->label('Listed')
+                    ->label('Ditambahkan')
                     ->date('d M Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('make')
-                    ->label('Brand')
+                    ->label('Merek')
                     ->options([
                         'Toyota'        => 'Toyota',
                         'Honda'         => 'Honda',
@@ -123,13 +123,14 @@ class CarsTable
                     ->multiple(),
 
                 SelectFilter::make('transmission')
+                    ->label('Transmisi')
                     ->options([
-                        'automatic' => 'Automatic',
+                        'automatic' => 'Otomatis',
                         'manual'    => 'Manual',
                     ]),
 
                 SelectFilter::make('fuel_type')
-                    ->label('Fuel Type')
+                    ->label('Bahan Bakar')
                     ->options([
                         'bensin'   => 'Bensin',
                         'diesel'   => 'Diesel',
@@ -138,7 +139,7 @@ class CarsTable
                     ]),
 
                 SelectFilter::make('body_type')
-                    ->label('Body Type')
+                    ->label('Tipe Bodi')
                     ->options([
                         'suv'       => 'SUV',
                         'mpv'       => 'MPV',
@@ -149,14 +150,14 @@ class CarsTable
                     ]),
 
                 TernaryFilter::make('featured')
-                    ->placeholder('All listings')
-                    ->trueLabel('Featured only')
-                    ->falseLabel('Not featured'),
+                    ->placeholder('Semua listing')
+                    ->trueLabel('Hanya unggulan')
+                    ->falseLabel('Bukan unggulan'),
 
                 TernaryFilter::make('sold')
-                    ->placeholder('All listings')
-                    ->trueLabel('Sold')
-                    ->falseLabel('Available'),
+                    ->placeholder('Semua listing')
+                    ->trueLabel('Terjual')
+                    ->falseLabel('Tersedia'),
 
                 TrashedFilter::make(),
             ])

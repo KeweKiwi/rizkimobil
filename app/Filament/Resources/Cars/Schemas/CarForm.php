@@ -19,19 +19,19 @@ class CarForm
             ->components([
 
                 // ── BASIC INFO ───────────────────────────────────────────────
-                Section::make('Basic Information')
-                    ->description('Core listing details visible to customers')
+                Section::make('Informasi Dasar')
+                    ->description('Detail utama listing yang terlihat oleh pelanggan')
                     ->icon('heroicon-o-identification')
                     ->schema([
                         TextInput::make('title')
-                            ->label('Listing Title')
-                            ->placeholder('e.g., Toyota Avanza 1.5 Veloz AT 2022')
-                            ->helperText('Auto-generated if left blank: Year Make Model Variant')
+                            ->label('Judul Listing')
+                            ->placeholder('cth., Toyota Avanza 1.5 Veloz AT 2022')
+                            ->helperText('Dibuat otomatis jika dikosongkan: Tahun Merek Model Varian')
                             ->maxLength(255)
                             ->columnSpanFull(),
 
                         Select::make('make')
-                            ->label('Brand / Make')
+                            ->label('Merek')
                             ->required()
                             ->searchable()
                             ->options([
@@ -59,16 +59,16 @@ class CarForm
                         TextInput::make('model')
                             ->label('Model')
                             ->required()
-                            ->placeholder('e.g., Avanza, Civic, Rush')
+                            ->placeholder('cth., Avanza, Civic, Rush')
                             ->maxLength(255),
 
                         TextInput::make('variant')
-                            ->label('Variant / Trim')
-                            ->placeholder('e.g., GR Sport, Limited, 1.5 AT')
+                            ->label('Varian / Tipe')
+                            ->placeholder('cth., GR Sport, Limited, 1.5 AT')
                             ->maxLength(255),
 
                         TextInput::make('year')
-                            ->label('Year')
+                            ->label('Tahun')
                             ->required()
                             ->numeric()
                             ->minValue(1990)
@@ -78,27 +78,28 @@ class CarForm
                     ->columns(2),
 
                 // ── SPECIFICATIONS ────────────────────────────────────────────
-                Section::make('Specifications')
-                    ->description('Technical details about the vehicle')
+                Section::make('Spesifikasi')
+                    ->description('Detail teknis kendaraan')
                     ->icon('heroicon-o-cog-6-tooth')
                     ->schema([
                         TextInput::make('mileage_km')
-                            ->label('Mileage')
+                            ->label('Kilometer')
                             ->required()
                             ->numeric()
                             ->minValue(0)
                             ->suffix('km')
-                            ->placeholder('e.g., 45000'),
+                            ->placeholder('cth., 45000'),
 
                         Select::make('transmission')
+                            ->label('Transmisi')
                             ->required()
                             ->options([
-                                'automatic' => 'Automatic',
+                                'automatic' => 'Otomatis',
                                 'manual'    => 'Manual',
                             ]),
 
                         Select::make('fuel_type')
-                            ->label('Fuel Type')
+                            ->label('Bahan Bakar')
                             ->required()
                             ->options([
                                 'bensin'   => 'Bensin (Gasoline)',
@@ -108,7 +109,7 @@ class CarForm
                             ]),
 
                         Select::make('body_type')
-                            ->label('Body Type')
+                            ->label('Tipe Bodi')
                             ->required()
                             ->options([
                                 'suv'         => 'SUV',
@@ -123,37 +124,37 @@ class CarForm
                             ]),
 
                         TextInput::make('color')
-                            ->label('Exterior Color')
+                            ->label('Warna Eksterior')
                             ->required()
-                            ->placeholder('e.g., Pearl White, Midnight Black')
+                            ->placeholder('cth., Putih Mutiara, Hitam')
                             ->maxLength(100),
 
                         TextInput::make('seats')
-                            ->label('Seating Capacity')
+                            ->label('Kapasitas Kursi')
                             ->numeric()
                             ->minValue(2)
                             ->maxValue(20)
-                            ->suffix('seats')
-                            ->placeholder('e.g., 5 or 7'),
+                            ->suffix('kursi')
+                            ->placeholder('cth., 5 atau 7'),
                     ])
                     ->columns(3),
 
                 // ── PRICING & LOCATION ────────────────────────────────────────
-                Section::make('Pricing & Location')
-                    ->description('Set the asking price and dealership branch')
+                Section::make('Harga & Lokasi')
+                    ->description('Tentukan harga jual dan cabang dealer')
                     ->icon('heroicon-o-banknotes')
                     ->schema([
                         TextInput::make('price')
-                            ->label('Asking Price')
+                            ->label('Harga Jual')
                             ->required()
                             ->numeric()
                             ->prefix('Rp')
                             ->minValue(0)
-                            ->placeholder('e.g., 285000000')
-                            ->helperText('Enter full amount in Rupiah — no dots or commas'),
+                            ->placeholder('cth., 285000000')
+                            ->helperText('Masukkan harga penuh dalam Rupiah — tanpa titik atau koma'),
 
                         Select::make('location_id')
-                            ->label('Branch / Location')
+                            ->label('Cabang / Lokasi')
                             ->relationship('location', 'name')
                             ->searchable()
                             ->preload()
@@ -162,68 +163,68 @@ class CarForm
                                 TextInput::make('city')->maxLength(100),
                                 TextInput::make('address')->maxLength(255),
                             ])
-                            ->helperText('Which branch has this car?'),
+                            ->helperText('Cabang mana yang memiliki mobil ini?'),
                     ])
                     ->columns(2),
 
                 // ── VEHICLE DOCUMENTATION ─────────────────────────────────────
-                Section::make('Vehicle Documentation')
-                    ->description('Legal and registration details')
+                Section::make('Dokumen Kendaraan')
+                    ->description('Detail legalitas dan registrasi')
                     ->icon('heroicon-o-document-text')
                     ->schema([
                         TextInput::make('vin')
-                            ->label('VIN / Chassis Number')
-                            ->placeholder('e.g., MHRRD18501J007654')
+                            ->label('VIN / Nomor Rangka')
+                            ->placeholder('cth., MHRRD18501J007654')
                             ->unique(ignoreRecord: true)
                             ->maxLength(255),
 
                         Select::make('plate_parity')
-                            ->label('License Plate Parity')
+                            ->label('Ganjil / Genap')
                             ->options([
-                                'ganjil' => 'Ganjil (Odd)',
-                                'genap'  => 'Genap (Even)',
+                                'ganjil' => 'Ganjil',
+                                'genap'  => 'Genap',
                             ])
-                            ->helperText('Indonesian odd/even traffic restriction'),
+                            ->helperText('Sistem pembatasan kendaraan berdasarkan plat nomor'),
 
                         DatePicker::make('stnk_valid_until')
-                            ->label('STNK Valid Until')
+                            ->label('STNK Berlaku Hingga')
                             ->displayFormat('d M Y')
-                            ->helperText('Vehicle registration expiry date'),
+                            ->helperText('Tanggal kadaluarsa STNK kendaraan'),
                     ])
                     ->columns(3),
 
                 // ── DESCRIPTION & FEATURES ────────────────────────────────────
-                Section::make('Description & Features')
-                    ->description('What makes this car stand out')
+                Section::make('Deskripsi & Fitur')
+                    ->description('Keunggulan dan detail tambahan mobil ini')
                     ->icon('heroicon-o-list-bullet')
                     ->schema([
                         Textarea::make('description')
-                            ->label('Description')
+                            ->label('Deskripsi')
                             ->rows(5)
                             ->maxLength(5000)
-                            ->placeholder('Describe the car condition, history, modifications, etc.')
+                            ->placeholder('Jelaskan kondisi, riwayat, dan modifikasi kendaraan...')
                             ->columnSpanFull(),
 
                         TagsInput::make('features')
-                            ->label('Features & Equipment')
-                            ->placeholder('Type a feature and press Enter')
-                            ->helperText('e.g., Sunroof, 360 Camera, Android Auto, Leather Seats, ABS, Dual Airbags')
+                            ->label('Fitur & Kelengkapan')
+                            ->placeholder('Ketik fitur lalu tekan Enter')
+                            ->helperText('cth., Sunroof, Kamera 360, Android Auto, Jok Kulit, ABS, Dual Airbag')
                             ->columnSpanFull(),
                     ]),
 
                 // ── STATUS & VISIBILITY ───────────────────────────────────────
-                Section::make('Status & Visibility')
-                    ->description('Control how and where this listing appears')
+                Section::make('Status & Visibilitas')
+                    ->description('Atur bagaimana dan di mana listing ini ditampilkan')
                     ->icon('heroicon-o-eye')
                     ->schema([
                         Toggle::make('featured')
-                            ->label('Featured on Homepage')
-                            ->helperText('Shown in hero carousel and featured grid')
+                            ->label('Tampilkan di Homepage')
+                            ->helperText('Ditampilkan di hero carousel dan grid unggulan')
                             ->default(false),
 
                         Toggle::make('sold')
-                            ->label('Mark as Sold')
-                            ->helperText('Hides the car from the public inventory')
+                            ->label('Tandai Sebagai Terjual')
+                            ->helperText('Menyembunyikan mobil dari inventaris publik')
                             ->default(false),
                     ])
                     ->columns(2),

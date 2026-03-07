@@ -17,8 +17,8 @@ class LatestCarsWidget extends TableWidget
     public function table(Table $table): Table
     {
         return $table
-            ->heading('STNK Expiring Soon')
-            ->description('Available cars with vehicle registration expiring within 30 days — take action')
+            ->heading('STNK Segera Habis')
+            ->description('Mobil tersedia yang STNK-nya habis dalam 30 hari — segera tindak lanjuti')
             ->query(
                 Car::query()
                     ->where('sold', false)
@@ -35,7 +35,7 @@ class LatestCarsWidget extends TableWidget
                     ->extraImgAttributes(['class' => 'rounded object-cover']),
 
                 TextColumn::make('title')
-                    ->label('Car')
+                    ->label('Mobil')
                     ->description(fn (Car $record) => $record->make . ' · ' . $record->year)
                     ->weight('bold'),
 
@@ -44,7 +44,7 @@ class LatestCarsWidget extends TableWidget
                     ->color('gray'),
 
                 TextColumn::make('stnk_valid_until')
-                    ->label('STNK Expires')
+                    ->label('STNK Berakhir')
                     ->date('d M Y')
                     ->color(fn (Car $record) => $record->stnk_valid_until->isPast()
                         ? 'danger'
@@ -56,18 +56,18 @@ class LatestCarsWidget extends TableWidget
                     ->label('Status')
                     ->badge()
                     ->getStateUsing(fn (Car $record) => $record->stnk_valid_until->isPast()
-                        ? 'Expired'
-                        : 'Expiring in ' . $record->stnk_valid_until->diffForHumans()
+                        ? 'Kadaluarsa'
+                        : 'Habis ' . $record->stnk_valid_until->diffForHumans()
                     )
                     ->color(fn (Car $record) => $record->stnk_valid_until->isPast() ? 'danger' : 'warning'),
 
                 TextColumn::make('location.name')
-                    ->label('Location')
+                    ->label('Lokasi')
                     ->color('gray')
                     ->placeholder('—'),
             ])
-            ->emptyStateHeading('All good!')
-            ->emptyStateDescription('No cars have STNK expiring in the next 30 days.')
+            ->emptyStateHeading('Semua aman!')
+            ->emptyStateDescription('Tidak ada mobil dengan STNK habis dalam 30 hari ke depan.')
             ->emptyStateIcon('heroicon-o-check-circle')
             ->paginated(false);
     }
