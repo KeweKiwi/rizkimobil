@@ -10,6 +10,8 @@
             <img
                 src="{{ $imageUrl }}"
                 alt="{{ $car->year }} {{ $car->make }} {{ $car->model }}"
+                loading="lazy"
+                decoding="async"
                 class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity group-hover:opacity-100"></div>

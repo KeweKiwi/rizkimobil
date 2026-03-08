@@ -92,6 +92,7 @@
                                 class="relative h-16 w-20 sm:h-20 sm:w-28 shrink-0 overflow-hidden rounded-lg border transition-all {{ $index === 0 ? 'border-red-600 ring-2 ring-red-600/30' : 'border-gray-700 hover:border-red-600/50 opacity-60 hover:opacity-100' }}"
                                 onclick="setMainImage({{ $index }})" data-thumbnail="{{ $index }}">
                                 <img src="{{ asset($img->image_path) }}" alt=""
+                                    loading="lazy" decoding="async"
                                     class="h-full w-full object-cover" />
                             </button>
                         @endforeach>

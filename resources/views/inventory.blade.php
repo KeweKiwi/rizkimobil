@@ -131,40 +131,44 @@
         border-color: #e53e3e;
         box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1), 0 0 15px rgba(239, 68, 68, 0.2);
     }
-    .filter-checkbox-group {
+    .filter-btn-group {
         display: flex;
-        flex-direction: column;
-        gap: 10px;
+        flex-wrap: wrap;
+        gap: 7px;
     }
-    .filter-checkbox-item {
-        display: flex;
+    .filter-btn {
+        position: relative;
+        display: inline-flex;
         align-items: center;
-        gap: 10px;
+        padding: 5px 13px;
+        border-radius: 20px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        background: #f8f8f8;
+        font-size: 13px;
+        font-weight: 500;
+        color: #444;
         cursor: pointer;
-        padding: 8px 12px;
-        border-radius: 6px;
-        transition: all 0.2s;
-    }
-    .filter-checkbox-item:hover {
-        background: rgba(239, 68, 68, 0.05);
-    }
-    .filter-checkbox {
-        width: 18px;
-        height: 18px;
-        border-radius: 4px;
-        border: 2px solid rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-        transition: all 0.2s;
-        accent-color: #e53e3e;
-    }
-    .filter-checkbox:checked {
-        border-color: #e53e3e;
-    }
-    .filter-checkbox-label {
-        font-size: 14px;
-        color: #333;
-        cursor: pointer;
+        transition: all 0.18s;
         user-select: none;
+        white-space: nowrap;
+    }
+    .filter-btn:hover {
+        border-color: rgba(229, 62, 62, 0.5);
+        background: rgba(229, 62, 62, 0.06);
+        color: #e53e3e;
+    }
+    .filter-btn:has(input:checked) {
+        background: #e53e3e;
+        border-color: #e53e3e;
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(229, 62, 62, 0.35);
+    }
+    .filter-btn input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        pointer-events: none;
     }
     .clear-filters-btn {
         width: 100%;
@@ -470,17 +474,12 @@
                             <!-- Body Type -->
                             <div class="filter-group">
                                 <label class="filter-label">Tipe Body</label>
-                                <div class="filter-checkbox-group">
+                                <div class="filter-btn-group">
                                     @foreach($bodyTypes as $type)
-                                        <label class="filter-checkbox-item">
-                                            <input
-                                                type="checkbox"
-                                                name="body_type[]"
-                                                value="{{ $type }}"
-                                                {{ in_array($type, request('body_type', [])) ? 'checked' : '' }}
-                                                class="filter-checkbox"
-                                            />
-                                            <span class="filter-checkbox-label">{{ ucfirst($type) }}</span>
+                                        <label class="filter-btn">
+                                            <input type="checkbox" name="body_type[]" value="{{ $type }}"
+                                                {{ in_array($type, request('body_type', [])) ? 'checked' : '' }} />
+                                            {{ ucfirst($type) }}
                                         </label>
                                     @endforeach
                                 </div>
@@ -489,17 +488,12 @@
                             <!-- Fuel Type -->
                             <div class="filter-group">
                                 <label class="filter-label">Jenis Bahan Bakar</label>
-                                <div class="filter-checkbox-group">
+                                <div class="filter-btn-group">
                                     @foreach($fuelTypes as $type)
-                                        <label class="filter-checkbox-item">
-                                            <input
-                                                type="checkbox"
-                                                name="fuel_type[]"
-                                                value="{{ $type }}"
-                                                {{ in_array($type, request('fuel_type', [])) ? 'checked' : '' }}
-                                                class="filter-checkbox"
-                                            />
-                                            <span class="filter-checkbox-label">{{ ucfirst($type) }}</span>
+                                        <label class="filter-btn">
+                                            <input type="checkbox" name="fuel_type[]" value="{{ $type }}"
+                                                {{ in_array($type, request('fuel_type', [])) ? 'checked' : '' }} />
+                                            {{ ucfirst($type) }}
                                         </label>
                                     @endforeach
                                 </div>
@@ -508,17 +502,12 @@
                             <!-- Transmission -->
                             <div class="filter-group">
                                 <label class="filter-label">Transmisi</label>
-                                <div class="filter-checkbox-group">
+                                <div class="filter-btn-group">
                                     @foreach($transmissions as $type)
-                                        <label class="filter-checkbox-item">
-                                            <input
-                                                type="checkbox"
-                                                name="transmission[]"
-                                                value="{{ $type }}"
-                                                {{ in_array($type, request('transmission', [])) ? 'checked' : '' }}
-                                                class="filter-checkbox"
-                                            />
-                                            <span class="filter-checkbox-label">{{ ucfirst($type) }}</span>
+                                        <label class="filter-btn">
+                                            <input type="checkbox" name="transmission[]" value="{{ $type }}"
+                                                {{ in_array($type, request('transmission', [])) ? 'checked' : '' }} />
+                                            {{ ucfirst($type) }}
                                         </label>
                                     @endforeach
                                 </div>
@@ -706,17 +695,12 @@
             <!-- Body Type -->
             <div class="filter-group">
                 <label class="filter-label">Tipe Body</label>
-                <div class="filter-checkbox-group">
+                <div class="filter-btn-group">
                     @foreach($bodyTypes as $type)
-                        <label class="filter-checkbox-item">
-                            <input
-                                type="checkbox"
-                                name="body_type[]"
-                                value="{{ $type }}"
-                                {{ in_array($type, request('body_type', [])) ? 'checked' : '' }}
-                                class="filter-checkbox"
-                            />
-                            <span class="filter-checkbox-label">{{ ucfirst($type) }}</span>
+                        <label class="filter-btn">
+                            <input type="checkbox" name="body_type[]" value="{{ $type }}"
+                                {{ in_array($type, request('body_type', [])) ? 'checked' : '' }} />
+                            {{ ucfirst($type) }}
                         </label>
                     @endforeach
                 </div>
@@ -725,17 +709,12 @@
             <!-- Fuel Type -->
             <div class="filter-group">
                 <label class="filter-label">Jenis Bahan Bakar</label>
-                <div class="filter-checkbox-group">
+                <div class="filter-btn-group">
                     @foreach($fuelTypes as $type)
-                        <label class="filter-checkbox-item">
-                            <input
-                                type="checkbox"
-                                name="fuel_type[]"
-                                value="{{ $type }}"
-                                {{ in_array($type, request('fuel_type', [])) ? 'checked' : '' }}
-                                class="filter-checkbox"
-                            />
-                            <span class="filter-checkbox-label">{{ ucfirst($type) }}</span>
+                        <label class="filter-btn">
+                            <input type="checkbox" name="fuel_type[]" value="{{ $type }}"
+                                {{ in_array($type, request('fuel_type', [])) ? 'checked' : '' }} />
+                            {{ ucfirst($type) }}
                         </label>
                     @endforeach
                 </div>
@@ -744,17 +723,12 @@
             <!-- Transmission -->
             <div class="filter-group">
                 <label class="filter-label">Transmisi</label>
-                <div class="filter-checkbox-group">
+                <div class="filter-btn-group">
                     @foreach($transmissions as $type)
-                        <label class="filter-checkbox-item">
-                            <input
-                                type="checkbox"
-                                name="transmission[]"
-                                value="{{ $type }}"
-                                {{ in_array($type, request('transmission', [])) ? 'checked' : '' }}
-                                class="filter-checkbox"
-                            />
-                            <span class="filter-checkbox-label">{{ ucfirst($type) }}</span>
+                        <label class="filter-btn">
+                            <input type="checkbox" name="transmission[]" value="{{ $type }}"
+                                {{ in_array($type, request('transmission', [])) ? 'checked' : '' }} />
+                            {{ ucfirst($type) }}
                         </label>
                     @endforeach
                 </div>
