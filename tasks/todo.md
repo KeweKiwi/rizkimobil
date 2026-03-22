@@ -6,6 +6,72 @@
 - [x] Create `tasks/lessons.md`
 - [x] Confirm the workflow will be used for subsequent tasks
 
+## Current Task: Add Image Upload On Create Car
+- [x] Review the existing create/edit car flow, image relation manager, and `car_images` schema
+- [x] Add a create-only image upload field to the car form with the same upload constraints as edit
+- [x] Persist uploaded images as `CarImage` records after a new `Car` is created
+- [x] Verify the new flow with syntax checks and document the review result
+
+## Current Task: Add Back To Index Admin Action
+- [x] Review the current create/edit car admin pages and choose the minimal place to add index navigation
+- [x] Add a header action on the create and edit car admin pages that links back to the index page
+- [x] Verify syntax and document the review result
+
+## Current Task: Add Store Index Shortcut From Admin
+- [x] Confirm which frontend route renders `index.blade.php`
+- [x] Add a header action on the create and edit car admin pages that links to the frontend store homepage
+- [x] Verify syntax and document the review result
+
+## Current Task: Move Store Shortcut To Global Admin Header
+- [x] Inspect the Filament panel setup and choose the correct global topbar hook
+- [x] Remove the page-specific store shortcut from create/edit pages
+- [x] Add a global admin-header store shortcut that is available from anywhere in the panel
+- [x] Verify syntax and document the review result
+
+## Current Task: Add Testimonial Section To Homepage
+- [x] Review the homepage Blade, controller data, and existing design language
+- [x] Add testimonial/rating data to the homepage controller in a way that keeps the view clean
+- [x] Implement an elegant testimonial section on `index.blade.php` that matches the site theme
+- [x] Verify syntax and document the review result
+
+## Current Task: Reorder Homepage Story Sections
+- [x] Review the current homepage section order and available local imagery for the introduction block
+- [x] Move the testimonial section below `Mengapa Memilih Rizki Mobil`
+- [x] Add a theme-matching Rizki Mobil introduction section below testimonials
+- [x] Verify syntax and document the review result
+
+## Current Task: Refine Rizki Mobil Intro Section
+- [x] Review the current about-section copy and layout to identify why it feels too long and less elegant
+- [x] Shorten the Rizki Mobil intro copy and improve information hierarchy
+- [x] Redesign the section layout for a cleaner, more elegant presentation
+- [x] Verify syntax and document the review result
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.
+- Added a create-only `Foto Mobil` upload section so new car listings can include images before the first save.
+- The create page now removes uploaded image paths from the car payload, then creates ordered `CarImage` records after the `Car` record exists.
+- Refined the create-page uploader placement and behavior so the photo section sits at the bottom of the form and is optimized for batch uploads instead of single-image editing.
+- Syntax checks passed for `app/Filament/Resources/Cars/Schemas/CarForm.php` and `app/Filament/Resources/Cars/Pages/CreateCar.php`.
+- Added a `Kembali ke Daftar` header action on the create and edit car admin pages so it is easy to return to the index after making changes.
+- Syntax checks passed for `app/Filament/Resources/Cars/Pages/CreateCar.php` and `app/Filament/Resources/Cars/Pages/EditCar.php`.
+- Confirmed that `routes/web.php` maps `/` to `HomeController@index`, which renders `resources/views/index.blade.php`.
+- Added a `Lihat Store` header action on the create and edit car admin pages so the storefront can be checked directly after changes.
+- Syntax checks passed for `app/Filament/Resources/Cars/Pages/CreateCar.php` and `app/Filament/Resources/Cars/Pages/EditCar.php` after adding the storefront shortcut.
+- Moved the storefront shortcut out of page-specific actions and into the global Filament topbar so it is available from anywhere in admin.
+- Removed the page-specific `Lihat Store` action from the car create/edit pages to avoid duplication.
+- Syntax checks passed for `app/Providers/Filament/AdminPanelProvider.php`, `app/Filament/Resources/Cars/Pages/CreateCar.php`, and `app/Filament/Resources/Cars/Pages/EditCar.php`.
+- `php artisan view:cache` completed successfully, confirming the new topbar Blade view compiles.
+- Added curated testimonial/rating data in the homepage controller so the Blade section stays presentational and easy to extend later.
+- Added a dark, theme-matching testimonial section after the featured cars block with subtle red glow accents, rating chips, and responsive card layout.
+- Syntax checks passed for `app/Http/Controllers/HomeController.php`.
+- `php artisan view:cache` completed successfully after the homepage Blade changes, confirming the new testimonial section compiles.
+- Reordered the homepage story flow so `Mengapa Memilih Rizki Mobil` now leads into testimonials, matching the narrative sequence requested by the user.
+- Added an introduction section for Rizki Mobil below testimonials with a refined two-column layout, warm light background, brand-led copy, and a visual panel built from local brand assets.
+- Syntax checks passed for `app/Http/Controllers/HomeController.php` after adding the homepage introduction data.
+- `php artisan view:cache` completed successfully after the section reorder and the new company-introduction block.
+- Refined the Rizki Mobil introduction section by shortening the headline and supporting copy so the composition feels lighter and more controlled.
+- Reworked the right-side visual into a calmer brand card with restrained hierarchy and cleaner stat presentation, replacing the heavier oversized layout.
+- Syntax checks passed for `app/Http/Controllers/HomeController.php` after refining the homepage introduction content.
+- `php artisan view:cache` completed successfully after the refined Rizki Mobil intro redesign.
+- `php artisan test` still fails in the existing `Tests\Feature\ExampleTest` because the test homepage hits `HomeController` before a `cars` table exists in the in-memory sqlite test database; this appears unrelated to the create-image change.

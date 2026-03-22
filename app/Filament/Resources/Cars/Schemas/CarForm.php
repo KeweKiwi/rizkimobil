@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Cars\Schemas;
 
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
@@ -228,6 +229,30 @@ class CarForm
                             ->default(false),
                     ])
                     ->columns(2),
+
+                Section::make('Foto Mobil')
+                    ->description('Upload foto awal saat membuat listing baru')
+                    ->icon('heroicon-o-photo')
+                    ->visibleOn('create')
+                    ->schema([
+                        FileUpload::make('initial_images')
+                            ->label('Foto')
+                            ->default([])
+                            ->image()
+                            ->multiple()
+                            ->reorderable()
+                            ->appendFiles()
+                            ->maxFiles(13)
+                            ->maxParallelUploads(13)
+                            ->panelLayout('grid')
+                            ->disk('public_root')
+                            ->directory('images/cars')
+                            ->visibility('public')
+                            ->maxSize(5120)
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->helperText('Bisa upload sampai 13 foto sekaligus. Foto pertama akan dijadikan foto utama, lalu urutan dan foto utama bisa diatur lagi setelah listing dibuat.')
+                            ->columnSpanFull(),
+                    ]),
 
             ]);
     }

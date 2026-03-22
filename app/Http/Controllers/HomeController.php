@@ -49,6 +49,46 @@ class HomeController extends Controller
             'carsInStock' => Car::where('sold', false)->count()
         ];
 
+        $testimonials = [
+            [
+                'name' => 'Farhan Ashari',
+                'headline' => 'Unit rapi, proses cepat, dan transparan sejak awal.',
+                'quote' => 'Avanza yang saya ambil kondisinya sesuai foto, interior bersih, dan semua detail dijelaskan dengan jujur. Pengalaman beli terasa tenang karena timnya responsif.',
+                'rating' => 5,
+                'purchase' => 'Toyota Avanza 2022',
+            ],
+            [
+                'name' => 'Bayu Novandrie',
+                'headline' => 'Mobil mulus tanpa drama, langsung nyaman dipakai harian.',
+                'quote' => 'Saya cek unit sebelum deal dan hasilnya sesuai ekspektasi. Mesin halus, body terawat, dan handling admin sampai penyerahan mobil terasa profesional.',
+                'rating' => 5,
+                'purchase' => 'Honda Brio RS 2021',
+            ],
+            [
+                'name' => 'Nadia Permata',
+                'headline' => 'Pelayanan hangat, pilihan unitnya juga terasa curated.',
+                'quote' => 'Yang paling saya suka, mereka tidak memaksa. Dijelaskan plus-minus unit secara terbuka, jadi keputusan beli terasa mantap dan tidak terburu-buru.',
+                'rating' => 4,
+                'purchase' => 'Mitsubishi Xpander 2020',
+            ],
+        ];
+
+        $aboutRizki = [
+            'kicker' => 'Tentang Rizki Mobil',
+            'title' => 'Jual beli mobil bekas yang terasa lebih tenang, jujur, dan terkurasi.',
+            'subtitle' => 'Rizki Mobil Indonesia hadir untuk membuat proses memilih mobil terasa lebih ringan tanpa mengorbankan kualitas.',
+            'paragraphs' => [
+                'Kami memilih unit dengan standar yang jelas, menyajikan informasi secara terbuka, dan mendampingi pelanggan sampai benar-benar yakin dengan pilihannya.',
+                'Bagi kami, pengalaman membeli mobil yang baik bukan soal cepat saja, tetapi soal rasa percaya sejak awal sampai mobil diterima.',
+            ],
+            'highlights' => [
+                ['value' => 'Kurasi Ketat', 'label' => 'Unit dipilih dengan standar yang jelas'],
+                ['value' => 'Transparan', 'label' => 'Informasi dijelaskan sejak awal'],
+                ['value' => 'Personal', 'label' => 'Pendampingan terasa hangat dan fokus'],
+            ],
+            'image' => 'images/cars/aset/logo-rmi-hitam.png',
+        ];
+
         // Get user favorites if authenticated
         $favorites = [];
         if (Auth::check()) {
@@ -56,6 +96,6 @@ class HomeController extends Controller
         }
 
 
-        return view('index', compact('featuredCars', 'carMakes', 'stats', 'favorites'));
+        return view('index', compact('featuredCars', 'carMakes', 'stats', 'testimonials', 'aboutRizki', 'favorites'));
     }
 }

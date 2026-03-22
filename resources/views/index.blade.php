@@ -422,6 +422,520 @@
     </div>
 </section>
 
+<!-- Customer Testimonials -->
+<style>
+    .testimonials-section {
+        background:
+            radial-gradient(circle at top left, rgba(229, 62, 62, 0.16), transparent 32%),
+            radial-gradient(circle at bottom right, rgba(229, 62, 62, 0.12), transparent 28%),
+            linear-gradient(180deg, #111214 0%, #09090b 100%);
+        padding: clamp(56px, 11vw, 88px) 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .testimonials-shell {
+        display: grid;
+        gap: 24px;
+        align-items: start;
+    }
+    @media (min-width: 1024px) {
+        .testimonials-shell {
+            grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
+            gap: 32px;
+        }
+    }
+    .testimonials-intro {
+        position: relative;
+        overflow: hidden;
+        border-radius: 18px;
+        padding: clamp(28px, 5vw, 36px);
+        background: linear-gradient(160deg, rgba(24, 24, 27, 0.94), rgba(10, 10, 11, 0.88));
+        border: 1px solid rgba(239, 68, 68, 0.18);
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.32);
+    }
+    .testimonials-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 18px;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+    }
+    .testimonials-kicker::before {
+        content: '';
+        width: 24px;
+        height: 1px;
+        background: rgba(239, 68, 68, 0.65);
+    }
+    .testimonials-title {
+        font-family: var(--font-display);
+        font-size: clamp(28px, 6vw, 40px);
+        font-weight: 700;
+        line-height: 1.08;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 14px;
+    }
+    .testimonials-description {
+        color: rgba(255, 255, 255, 0.68);
+        font-size: 15px;
+        line-height: 1.8;
+        max-width: 34rem;
+    }
+    .testimonials-highlight {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 28px;
+    }
+    .testimonials-highlight-card {
+        min-width: 140px;
+        border-radius: 14px;
+        padding: 16px 18px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .testimonials-highlight-number {
+        font-family: var(--font-display);
+        font-size: 28px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1;
+    }
+    .testimonials-highlight-label {
+        margin-top: 6px;
+        color: rgba(255, 255, 255, 0.58);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+    }
+    .testimonials-grid {
+        display: grid;
+        gap: 18px;
+    }
+    @media (min-width: 768px) {
+        .testimonials-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .testimonials-grid .testimonial-card:first-child {
+            grid-column: span 2;
+        }
+    }
+    .testimonial-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 18px;
+        padding: 24px;
+        background: linear-gradient(180deg, rgba(19, 19, 23, 0.96), rgba(10, 10, 11, 0.92));
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24);
+        transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+    }
+    .testimonial-card::after {
+        content: '';
+        position: absolute;
+        inset: auto -24% -42% auto;
+        width: 160px;
+        height: 160px;
+        border-radius: 999px;
+        background: radial-gradient(circle, rgba(229, 62, 62, 0.16), transparent 70%);
+        pointer-events: none;
+    }
+    .testimonial-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(239, 68, 68, 0.28);
+        box-shadow: 0 24px 54px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(239, 68, 68, 0.06);
+    }
+    .testimonial-topline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+    }
+    .testimonial-name {
+        font-family: var(--font-display);
+        font-size: 19px;
+        font-weight: 700;
+        color: #fff;
+    }
+    .testimonial-purchase {
+        margin-top: 6px;
+        color: rgba(255, 255, 255, 0.48);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+    }
+    .testimonial-rating {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(229, 62, 62, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.16);
+        color: #ffd166;
+        flex-shrink: 0;
+    }
+    .testimonial-rating-value {
+        font-family: var(--font-display);
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+    }
+    .testimonial-stars {
+        display: inline-flex;
+        gap: 4px;
+    }
+    .testimonial-stars svg {
+        width: 14px;
+        height: 14px;
+    }
+    .testimonial-headline {
+        font-family: var(--font-display);
+        font-size: 18px;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.94);
+        line-height: 1.5;
+        margin-bottom: 14px;
+    }
+    .testimonial-quote {
+        color: rgba(255, 255, 255, 0.68);
+        font-size: 14px;
+        line-height: 1.8;
+    }
+    .about-rizki-section {
+        background:
+            radial-gradient(circle at top left, rgba(229, 62, 62, 0.06), transparent 28%),
+            linear-gradient(180deg, #f7f2ed 0%, #ffffff 100%);
+        padding: clamp(60px, 12vw, 96px) 0;
+    }
+    .about-rizki-shell {
+        display: grid;
+        gap: 32px;
+        align-items: center;
+    }
+    @media (min-width: 1024px) {
+        .about-rizki-shell {
+            grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+            gap: 64px;
+        }
+    }
+    .about-rizki-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: rgba(17, 17, 17, 0.58);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        margin-bottom: 16px;
+    }
+    .about-rizki-kicker::before {
+        content: '';
+        width: 24px;
+        height: 1px;
+        background: rgba(229, 62, 62, 0.72);
+    }
+    .about-rizki-title {
+        font-family: var(--font-display);
+        font-size: clamp(32px, 5vw, 56px);
+        font-weight: 700;
+        line-height: 1.02;
+        letter-spacing: -0.03em;
+        color: #141414;
+        max-width: 11ch;
+    }
+    .about-rizki-subtitle {
+        margin-top: 16px;
+        color: rgba(17, 17, 17, 0.6);
+        font-size: 18px;
+        line-height: 1.75;
+        max-width: 38rem;
+    }
+    .about-rizki-copy {
+        display: grid;
+        gap: 14px;
+        margin-top: 22px;
+        color: rgba(17, 17, 17, 0.76);
+        font-size: 15px;
+        line-height: 1.85;
+        max-width: 40rem;
+    }
+    .about-rizki-highlights {
+        display: grid;
+        gap: 12px;
+        margin-top: 26px;
+    }
+    @media (min-width: 640px) {
+        .about-rizki-highlights {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+    .about-rizki-highlight {
+        border-radius: 16px;
+        padding: 16px 16px 14px;
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(17, 17, 17, 0.08);
+        box-shadow: 0 14px 28px rgba(15, 23, 42, 0.05);
+    }
+    .about-rizki-highlight-value {
+        font-family: var(--font-display);
+        font-size: 16px;
+        font-weight: 700;
+        color: #18181b;
+    }
+    .about-rizki-highlight-label {
+        margin-top: 8px;
+        color: rgba(17, 17, 17, 0.6);
+        font-size: 12px;
+        line-height: 1.65;
+    }
+    .about-rizki-visual {
+        min-height: 100%;
+        border-radius: 28px;
+        overflow: hidden;
+        background:
+            radial-gradient(circle at top left, rgba(239, 68, 68, 0.18), transparent 34%),
+            linear-gradient(160deg, #17171a 0%, #0b0b0d 100%);
+        box-shadow: 0 30px 80px rgba(15, 23, 42, 0.14);
+        border: 1px solid rgba(17, 17, 17, 0.08);
+        padding: clamp(26px, 5vw, 36px);
+    }
+    .about-rizki-visual-panel {
+        width: 100%;
+        height: 100%;
+        border-radius: 24px;
+        padding: clamp(28px, 6vw, 36px);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        display: grid;
+        gap: 24px;
+        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+    }
+    .about-rizki-visual-topline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+    }
+    .about-rizki-visual-kicker {
+        color: rgba(255, 255, 255, 0.54);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+    }
+    .about-rizki-visual-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(229, 62, 62, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.18);
+        color: rgba(255, 255, 255, 0.88);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+    }
+    .about-rizki-logo {
+        width: min(100%, 210px);
+        margin: 8px 0 0;
+        filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.28));
+    }
+    .about-rizki-visual-copy {
+        max-width: 24rem;
+    }
+    .about-rizki-visual-title {
+        font-family: var(--font-display);
+        font-size: clamp(22px, 3vw, 28px);
+        font-weight: 700;
+        line-height: 1.15;
+        color: #fff;
+        max-width: 12ch;
+        margin-top: 4px;
+    }
+    .about-rizki-visual-description {
+        margin-top: 12px;
+        color: rgba(255, 255, 255, 0.68);
+        font-size: 14px;
+        line-height: 1.8;
+    }
+    .about-rizki-stats {
+        display: grid;
+        gap: 12px;
+        margin-top: 6px;
+    }
+    .about-rizki-stat {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .about-rizki-stat:first-child {
+        border-top: none;
+        padding-top: 0;
+    }
+    .about-rizki-stat-value {
+        font-family: var(--font-display);
+        font-size: 28px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1;
+        white-space: nowrap;
+    }
+    .about-rizki-stat-label {
+        color: rgba(255, 255, 255, 0.62);
+        font-size: 13px;
+        line-height: 1.7;
+        text-align: right;
+        max-width: 15rem;
+    }
+    .about-rizki-visual-label {
+        color: rgba(255, 255, 255, 0.62);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+    }
+    @media (max-width: 640px) {
+        .about-rizki-stat {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+        .about-rizki-stat-label {
+            text-align: left;
+            max-width: none;
+        }
+    }
+</style>
+
+<section class="testimonials-section">
+    <div class="container mx-auto px-4">
+        <div class="testimonials-shell">
+            <div class="testimonials-intro">
+                <span class="testimonials-kicker">Ulasan Pelanggan</span>
+                <h2 class="testimonials-title">Kepercayaan Yang Terasa Sejak Pertemuan Pertama.</h2>
+                <p class="testimonials-description">
+                    Kami ingin pengalaman membeli mobil terasa jernih, hangat, dan meyakinkan. Karena itu, ulasan pelanggan kami selalu bicara tentang kualitas unit, transparansi proses, dan rasa aman setelah transaksi selesai.
+                </p>
+
+                <div class="testimonials-highlight">
+                    <div class="testimonials-highlight-card">
+                        <p class="testimonials-highlight-number">4.9/5</p>
+                        <p class="testimonials-highlight-label">Rata-Rata Penilaian</p>
+                    </div>
+                    <div class="testimonials-highlight-card">
+                        <p class="testimonials-highlight-number">1.200+</p>
+                        <p class="testimonials-highlight-label">Review Positif</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonials-grid">
+                @foreach($testimonials as $testimonial)
+                    <article class="testimonial-card">
+                        <div class="testimonial-topline">
+                            <div>
+                                <h3 class="testimonial-name">{{ $testimonial['name'] }}</h3>
+                                <p class="testimonial-purchase">{{ $testimonial['purchase'] }}</p>
+                            </div>
+
+                            <div class="testimonial-rating" aria-label="Rating {{ $testimonial['rating'] }} dari 5">
+                                <span class="testimonial-rating-value">{{ number_format($testimonial['rating'], 1) }}</span>
+                                <div class="testimonial-stars">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <svg
+                                            fill="{{ $i <= $testimonial['rating'] ? '#ffd166' : 'rgba(255,255,255,0.16)' }}"
+                                            viewBox="0 0 20 20"
+                                            aria-hidden="true"
+                                        >
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.176 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81H7.03a1 1 0 00.951-.69l1.07-3.292z"/>
+                                        </svg>
+                                    @endfor
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="testimonial-headline">{{ $testimonial['headline'] }}</p>
+                        <p class="testimonial-quote">"{{ $testimonial['quote'] }}"</p>
+                    </article>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="about-rizki-section">
+    <div class="container mx-auto px-4">
+        <div class="about-rizki-shell">
+            <div>
+                <span class="about-rizki-kicker">{{ $aboutRizki['kicker'] }}</span>
+                <h2 class="about-rizki-title">{{ $aboutRizki['title'] }}</h2>
+                <p class="about-rizki-subtitle">{{ $aboutRizki['subtitle'] }}</p>
+
+                <div class="about-rizki-copy">
+                    @foreach($aboutRizki['paragraphs'] as $paragraph)
+                        <p>{{ $paragraph }}</p>
+                    @endforeach
+                </div>
+
+                <div class="about-rizki-highlights">
+                    @foreach($aboutRizki['highlights'] as $highlight)
+                        <div class="about-rizki-highlight">
+                            <p class="about-rizki-highlight-value">{{ $highlight['value'] }}</p>
+                            <p class="about-rizki-highlight-label">{{ $highlight['label'] }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="about-rizki-visual">
+                <div class="about-rizki-visual-panel">
+                    <div class="about-rizki-visual-topline">
+                        <p class="about-rizki-visual-kicker">Rizki Mobil Indonesia</p>
+                        <span class="about-rizki-visual-badge">Terverifikasi</span>
+                    </div>
+
+                    <div class="about-rizki-visual-copy">
+                        <img
+                            src="{{ asset($aboutRizki['image']) }}"
+                            alt="Logo Rizki Mobil Indonesia"
+                            class="about-rizki-logo"
+                        />
+                        <p class="about-rizki-visual-label">Rizki Mobil Indonesia</p>
+                        <h3 class="about-rizki-visual-title">Kualitas unit yang dijelaskan dengan cara yang jujur.</h3>
+                        <p class="about-rizki-visual-description">
+                            Kami merancang pengalaman beli mobil yang terasa rapi, profesional, dan tetap dekat secara personal.
+                        </p>
+                    </div>
+
+                    <div class="about-rizki-stats">
+                        <div class="about-rizki-stat">
+                            <strong class="about-rizki-stat-value">{{ $stats['yearsInBusiness'] }}+</strong>
+                            <span class="about-rizki-stat-label">tahun pengalaman membangun kepercayaan pelanggan</span>
+                        </div>
+                        <div class="about-rizki-stat">
+                            <strong class="about-rizki-stat-value">{{ number_format($stats['carsSold']) }}+</strong>
+                            <span class="about-rizki-stat-label">unit telah menemukan pemilik baru lewat proses yang lebih tenang</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- CTA Section -->
 <section class="bg-background py-16 lg:py-24">
     <div class="container mx-auto px-4">

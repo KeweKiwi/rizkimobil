@@ -15,3 +15,8 @@
 - User reminder: apply all relevant instructions from `AGENTS.md` for this repo, not only selected items. 
 - User reminder: explicitly follow the `Task Management` and `Core Principles` sections from `AGENTS.md`.
 - User reminder: explicitly follow the `Autonomous Bug Fixing` section from `AGENTS.md`.
+- When adding create-page media uploads, optimize for bulk upload UX by placing the section after the core fields and configuring the uploader for obvious multi-file behavior instead of single-item editing.
+- When the user asks for navigation back to `index.blade.php` or the store, map that request to the frontend `home` route, not the Filament resource index.
+- When the user asks for a shortcut that should be reachable from anywhere in admin, implement it at the panel/topbar level instead of page-specific actions.
+- For homepage composition changes, follow the narrative order requested by the user exactly instead of assuming the first elegant placement is the desired one.
+- For homepage brand sections, avoid oversized headline blocks that dominate the layout; prioritize restrained hierarchy, shorter copy, and cleaner spacing for elegance.
