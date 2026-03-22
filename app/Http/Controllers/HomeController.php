@@ -89,6 +89,21 @@ class HomeController extends Controller
             'image' => 'images/cars/aset/logo-rmi-hitam.png',
         ];
 
+        $faqs = [
+            [
+                'question' => 'Apakah semua mobil di Rizki Mobil sudah melalui inspeksi menyeluruh?',
+                'answer' => 'Setiap unit kami kurasi dan cek dengan standar yang jelas agar kondisi utama, riwayat pemakaian, dan detail pentingnya bisa dijelaskan secara terbuka sejak awal.',
+            ],
+            [
+                'question' => 'Apakah Rizki Mobil menerima tukar tambah kendaraan?',
+                'answer' => 'Ya, kami melayani tukar tambah untuk berbagai merek dan tahun. Tim kami akan bantu proses appraisal agar nilainya terasa fair dan transparan.',
+            ],
+            [
+                'question' => 'Apakah saya bisa melihat atau mencoba unit sebelum membeli?',
+                'answer' => 'Bisa. Anda dapat menjadwalkan visit, inspeksi langsung, atau diskusi lebih dulu dengan tim kami agar keputusan beli terasa lebih yakin dan nyaman.',
+            ],
+        ];
+
         // Get user favorites if authenticated
         $favorites = [];
         if (Auth::check()) {
@@ -96,6 +111,6 @@ class HomeController extends Controller
         }
 
 
-        return view('index', compact('featuredCars', 'carMakes', 'stats', 'testimonials', 'aboutRizki', 'favorites'));
+        return view('index', compact('featuredCars', 'carMakes', 'stats', 'testimonials', 'aboutRizki', 'faqs', 'favorites'));
     }
 }

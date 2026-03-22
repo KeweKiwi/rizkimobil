@@ -285,10 +285,18 @@
 
 <!-- Why Choose Us -->
 <style>
+    .trust-story-section {
+        background:
+            radial-gradient(circle at top left, rgba(229, 62, 62, 0.16), transparent 32%),
+            radial-gradient(circle at bottom right, rgba(229, 62, 62, 0.12), transparent 28%),
+            linear-gradient(180deg, #111214 0%, #09090b 100%);
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
     /* Why Choose Us Dark Theme with Red Glow */
     .why-choose-section {
-        background: #0a0a0b;
-        padding: clamp(40px, 10vw, 64px) 0;
+        background: transparent;
+        padding: clamp(40px, 10vw, 64px) 0 clamp(28px, 7vw, 40px);
     }
     .why-choose-title {
         font-family: var(--font-display);
@@ -372,6 +380,7 @@
     }
 </style>
 
+<div class="trust-story-section">
 <section class="why-choose-section">
     <div class="container mx-auto px-4">
         <h2 class="why-choose-title">Mengapa Memilih Rizki Mobil?</h2>
@@ -425,13 +434,8 @@
 <!-- Customer Testimonials -->
 <style>
     .testimonials-section {
-        background:
-            radial-gradient(circle at top left, rgba(229, 62, 62, 0.16), transparent 32%),
-            radial-gradient(circle at bottom right, rgba(229, 62, 62, 0.12), transparent 28%),
-            linear-gradient(180deg, #111214 0%, #09090b 100%);
-        padding: clamp(56px, 11vw, 88px) 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        background: transparent;
+        padding: clamp(20px, 5vw, 28px) 0 clamp(56px, 11vw, 88px);
     }
     .testimonials-shell {
         display: grid;
@@ -669,8 +673,8 @@
     }
     .about-rizki-highlights {
         display: grid;
-        gap: 12px;
-        margin-top: 26px;
+        gap: 16px;
+        margin-top: 30px;
     }
     @media (min-width: 640px) {
         .about-rizki-highlights {
@@ -678,23 +682,87 @@
         }
     }
     .about-rizki-highlight {
-        border-radius: 16px;
-        padding: 16px 16px 14px;
-        background: rgba(255, 255, 255, 0.86);
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 22px 22px 20px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(252, 248, 244, 0.98));
         border: 1px solid rgba(17, 17, 17, 0.08);
-        box-shadow: 0 14px 28px rgba(15, 23, 42, 0.05);
+        box-shadow: 0 18px 38px rgba(15, 23, 42, 0.06);
+        transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+    }
+    .about-rizki-highlight::before {
+        content: '';
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 3px;
+        background: linear-gradient(90deg, rgba(239, 68, 68, 0.88), rgba(249, 115, 22, 0.28));
+    }
+    .about-rizki-highlight::after {
+        content: '';
+        position: absolute;
+        top: -42px;
+        right: -32px;
+        width: 120px;
+        height: 120px;
+        border-radius: 999px;
+        background: radial-gradient(circle, rgba(239, 68, 68, 0.12), transparent 68%);
+        pointer-events: none;
+    }
+    .about-rizki-highlight:hover {
+        transform: translateY(-3px);
+        border-color: rgba(239, 68, 68, 0.18);
+        box-shadow: 0 24px 44px rgba(15, 23, 42, 0.09);
+    }
+    .about-rizki-highlight-topline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+    .about-rizki-highlight-index {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: rgba(239, 68, 68, 0.08);
+        color: rgba(185, 28, 28, 0.88);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+    .about-rizki-highlight-mark {
+        width: 28px;
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        background: rgba(17, 17, 17, 0.04);
+        color: rgba(17, 17, 17, 0.48);
+    }
+    .about-rizki-highlight-mark svg {
+        width: 14px;
+        height: 14px;
     }
     .about-rizki-highlight-value {
         font-family: var(--font-display);
-        font-size: 16px;
+        font-size: 17px;
         font-weight: 700;
         color: #18181b;
+        letter-spacing: -0.02em;
     }
     .about-rizki-highlight-label {
-        margin-top: 8px;
-        color: rgba(17, 17, 17, 0.6);
-        font-size: 12px;
-        line-height: 1.65;
+        margin-top: 10px;
+        color: rgba(17, 17, 17, 0.58);
+        font-size: 13px;
+        line-height: 1.75;
+        max-width: 18rem;
     }
     .about-rizki-visual {
         min-height: 100%;
@@ -875,6 +943,7 @@
         </div>
     </div>
 </section>
+</div>
 
 <section class="about-rizki-section">
     <div class="container mx-auto px-4">
@@ -891,8 +960,16 @@
                 </div>
 
                 <div class="about-rizki-highlights">
-                    @foreach($aboutRizki['highlights'] as $highlight)
+                    @foreach($aboutRizki['highlights'] as $index => $highlight)
                         <div class="about-rizki-highlight">
+                            <div class="about-rizki-highlight-topline">
+                                <span class="about-rizki-highlight-index">{{ str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) }}</span>
+                                <span class="about-rizki-highlight-mark" aria-hidden="true">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 12h14m-7-7 7 7-7 7"/>
+                                    </svg>
+                                </span>
+                            </div>
                             <p class="about-rizki-highlight-value">{{ $highlight['value'] }}</p>
                             <p class="about-rizki-highlight-label">{{ $highlight['label'] }}</p>
                         </div>
@@ -931,6 +1008,174 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .faq-section {
+        position: relative;
+        overflow: hidden;
+        padding: clamp(56px, 10vw, 88px) 0;
+        background:
+            radial-gradient(circle at top left, rgba(239, 68, 68, 0.08), transparent 26%),
+            linear-gradient(180deg, #fcfbf9 0%, #f7f2ee 100%);
+    }
+    .faq-section::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(90deg, rgba(17, 17, 17, 0.02) 1px, transparent 1px),
+            linear-gradient(rgba(17, 17, 17, 0.02) 1px, transparent 1px);
+        background-size: 34px 34px;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 85%);
+        pointer-events: none;
+    }
+    .faq-shell {
+        position: relative;
+        z-index: 1;
+    }
+    .faq-header {
+        max-width: 42rem;
+        margin-bottom: 32px;
+    }
+    .faq-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: rgba(17, 17, 17, 0.55);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+    }
+    .faq-kicker::before {
+        content: '';
+        width: 28px;
+        height: 1px;
+        background: rgba(239, 68, 68, 0.7);
+    }
+    .faq-title {
+        margin-top: 18px;
+        font-family: var(--font-display);
+        font-size: clamp(30px, 6vw, 44px);
+        font-weight: 700;
+        line-height: 1.04;
+        letter-spacing: -0.03em;
+        color: #111111;
+    }
+    .faq-description {
+        margin-top: 14px;
+        color: rgba(17, 17, 17, 0.62);
+        font-size: 15px;
+        line-height: 1.9;
+        max-width: 34rem;
+    }
+    .faq-grid {
+        display: grid;
+        gap: 20px;
+    }
+    @media (min-width: 1024px) {
+        .faq-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+    .faq-card {
+        position: relative;
+        overflow: hidden;
+        min-height: 100%;
+        border-radius: 26px;
+        padding: 28px 26px 30px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(252, 248, 244, 0.96));
+        border: 1px solid rgba(17, 17, 17, 0.08);
+        box-shadow: 0 22px 48px rgba(15, 23, 42, 0.06);
+        transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+    }
+    .faq-card::before {
+        content: '';
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 3px;
+        background: linear-gradient(90deg, rgba(239, 68, 68, 0.84), rgba(249, 115, 22, 0.22));
+    }
+    .faq-card::after {
+        content: '';
+        position: absolute;
+        top: -46px;
+        right: -30px;
+        width: 132px;
+        height: 132px;
+        border-radius: 999px;
+        background: radial-gradient(circle, rgba(239, 68, 68, 0.1), transparent 68%);
+        pointer-events: none;
+    }
+    .faq-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(239, 68, 68, 0.16);
+        box-shadow: 0 28px 54px rgba(15, 23, 42, 0.09);
+    }
+    .faq-card-question {
+        position: relative;
+        padding-right: 52px;
+        font-family: var(--font-display);
+        font-size: clamp(22px, 3.4vw, 28px);
+        font-weight: 700;
+        line-height: 1.12;
+        letter-spacing: -0.03em;
+        color: #161616;
+    }
+    .faq-card-index {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 999px;
+        background: rgba(239, 68, 68, 0.08);
+        color: rgba(185, 28, 28, 0.84);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+    }
+    .faq-card-divider {
+        width: 100%;
+        height: 1px;
+        margin: 22px 0 20px;
+        background: linear-gradient(90deg, rgba(17, 17, 17, 0.12), rgba(17, 17, 17, 0.04));
+    }
+    .faq-card-answer {
+        color: rgba(17, 17, 17, 0.58);
+        font-size: 16px;
+        line-height: 1.8;
+        max-width: 30rem;
+    }
+</style>
+
+<section class="faq-section">
+    <div class="container mx-auto px-4">
+        <div class="faq-shell">
+            <div class="faq-header">
+                <span class="faq-kicker">FAQ Rizki Mobil</span>
+                <h2 class="faq-title">Pertanyaan yang sering muncul sebelum pelanggan mengambil keputusan.</h2>
+                <p class="faq-description">
+                    Kami rangkum hal-hal yang paling sering ditanyakan agar proses memilih mobil terasa lebih jelas, tenang, dan tidak penuh tebakan.
+                </p>
+            </div>
+
+            <div class="faq-grid">
+                @foreach($faqs as $index => $faq)
+                    <article class="faq-card">
+                        <span class="faq-card-index">{{ str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) }}</span>
+                        <h3 class="faq-card-question">{{ $faq['question'] }}</h3>
+                        <div class="faq-card-divider"></div>
+                        <p class="faq-card-answer">{{ $faq['answer'] }}</p>
+                    </article>
+                @endforeach
             </div>
         </div>
     </div>

@@ -20,3 +20,6 @@
 - When the user asks for a shortcut that should be reachable from anywhere in admin, implement it at the panel/topbar level instead of page-specific actions.
 - For homepage composition changes, follow the narrative order requested by the user exactly instead of assuming the first elegant placement is the desired one.
 - For homepage brand sections, avoid oversized headline blocks that dominate the layout; prioritize restrained hierarchy, shorter copy, and cleaner spacing for elegance.
+- For adjacent homepage sections in the same visual story, keep their background tone and transition language aligned so the page does not feel visually broken between blocks.
+- When two homepage sections are meant to read as one continuous story, prefer a shared wrapper background over two separate sections with duplicated background styles.
+- For elegance-focused homepage sections, prefer quieter supporting patterns like editorial lists, slimmer badges, and softer panel contrast over multiple boxed elements with equal visual weight.

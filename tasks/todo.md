@@ -46,6 +46,27 @@
 - [x] Redesign the section layout for a cleaner, more elegant presentation
 - [x] Verify syntax and document the review result
 
+## Current Task: Elevate Rizki Mobil Intro Elegance
+- [x] Review the refined about-section and identify the remaining visual heaviness
+- [x] Simplify the left-side hierarchy and supporting highlights for a more editorial look
+- [x] Refine the right-side brand panel to feel lighter and more premium
+- [x] Verify syntax and document the review result
+
+## Current Task: Align Why Choose Background With Testimonials
+- [x] Review the visual break between the `Mengapa Memilih Rizki Mobil` and testimonial sections
+- [x] Update the `Mengapa Memilih Rizki Mobil` background to match the testimonial tone and transition
+- [x] Verify Blade compilation and document the review result
+
+## Current Task: Merge Why Choose And Testimonials Background
+- [x] Review the remaining visual seam between the `Mengapa Memilih Rizki Mobil` and testimonial sections
+- [x] Refactor the homepage markup/CSS so both sections share one continuous background wrapper
+- [x] Verify Blade compilation and document the review result
+
+## Current Task: Add Homepage FAQ Section
+- [x] Review the homepage structure, CTA placement, and the cleanest source for FAQ content
+- [x] Add curated FAQ data and implement a theme-matching FAQ section above the final CTA
+- [x] Verify Blade compilation and document the review result
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.
@@ -74,4 +95,13 @@
 - Reworked the right-side visual into a calmer brand card with restrained hierarchy and cleaner stat presentation, replacing the heavier oversized layout.
 - Syntax checks passed for `app/Http/Controllers/HomeController.php` after refining the homepage introduction content.
 - `php artisan view:cache` completed successfully after the refined Rizki Mobil intro redesign.
+- Further elevated the Rizki Mobil intro by replacing boxed highlight cards with a more editorial list treatment and loosening the left-column hierarchy.
+- Lightened the right-side brand panel with softer gradients, slimmer badge/stats treatment, and more breathing room so the section feels more premium.
+- `php artisan view:cache` completed successfully after the final elegance pass on the Rizki Mobil intro.
+- Aligned the `Mengapa Memilih Rizki Mobil` section background, glow accents, and divider treatment with the testimonial block so the transition reads as one continuous visual story.
+- `php artisan view:cache` completed successfully after the homepage background alignment update.
+- Replaced the duplicated dark section backgrounds with one shared `trust-story-section` wrapper so `Mengapa Memilih Rizki Mobil` and `Ulasan Pelanggan` now read as a single continuous canvas.
+- `php artisan view:cache` completed successfully after merging the homepage background wrapper.
+- Added curated FAQ content in `HomeController` and inserted a light, brand-accented FAQ section above the final CTA so common buyer questions are answered before the conversion block.
+- `php -l app/Http/Controllers/HomeController.php` and `php artisan view:cache` both completed successfully after the FAQ section was added.
 - `php artisan test` still fails in the existing `Tests\Feature\ExampleTest` because the test homepage hits `HomeController` before a `cars` table exists in the in-memory sqlite test database; this appears unrelated to the create-image change.
