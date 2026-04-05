@@ -17,7 +17,6 @@ class HomeController extends Controller
             ->take(4)
             ->get();
 
-        // Car makes for search dropdown
         $carMakes = [
             'Toyota',
             'Honda',
@@ -38,7 +37,7 @@ class HomeController extends Controller
             'GMC',
             'Tesla',
             'Porsche',
-            'Volvo'
+            'Volvo',
         ];
 
         // Statistics

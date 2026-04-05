@@ -336,7 +336,7 @@
                                         number_format($car->price, 0, ',', '.') .
                                         '. Apakah masih tersedia?',
                                 );
-                                $whatsappLink = "https://wa.me/6281234567890?text={$whatsappMessage}";
+                                $whatsappLink = "https://wa.me/6281359359069?text={$whatsappMessage}";
                             @endphp
 
                             <a href="{{ $whatsappLink }}" target="_blank" rel="noopener noreferrer"

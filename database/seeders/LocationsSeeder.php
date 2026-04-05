@@ -14,7 +14,7 @@ class LocationsSeeder extends Seeder
             'address' => 'Jl. Contoh No. 1',
             'city' => 'Jakarta',
             'province' => 'DKI Jakarta',
-            'whatsapp' => '6281234567890',
+            'whatsapp' => '6281359359069',
             'google_maps_url' => 'https://maps.google.com',
             'is_active' => true,
         ]);

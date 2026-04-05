@@ -22,6 +22,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Inventory page
 Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory');
+Route::get('/inventory/suggestions', [InventoryController::class, 'suggestions'])->name('inventory.suggestions');
 
 // Single car page
 Route::get('/car/{id}', [CarController::class, 'show'])->name('car.show');

@@ -188,15 +188,69 @@
         justify-content: center;
         gap: 8px;
     }
+    .clear-filters-btn.is-disabled {
+        background: rgba(15, 23, 42, 0.04);
+        border-color: rgba(15, 23, 42, 0.08);
+        color: rgba(17, 17, 17, 0.38);
+        box-shadow: none;
+        pointer-events: none;
+    }
     .clear-filters-btn:hover {
         background: #e53e3e;
         color: white;
         box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
     }
+    .clear-filters-btn.is-disabled:hover {
+        background: rgba(15, 23, 42, 0.04);
+        color: rgba(17, 17, 17, 0.38);
+        box-shadow: none;
+    }
     .range-inputs {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 8px;
+    }
+    .mileage-preset-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+    .mileage-preset-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        padding: 0 16px;
+        border-radius: 16px;
+        border: 1px solid rgba(17, 17, 17, 0.18);
+        background: linear-gradient(180deg, #ffffff 0%, #f7f7f7 100%);
+        color: rgba(17, 17, 17, 0.54);
+        font-family: var(--font-display);
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+    }
+    .mileage-preset-btn:hover {
+        transform: translateY(-1px);
+        border-color: rgba(229, 62, 62, 0.36);
+        color: #c53030;
+        box-shadow: 0 12px 24px rgba(229, 62, 62, 0.08);
+    }
+    .mileage-preset-btn.is-active {
+        border-color: #e53e3e;
+        background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+        color: #ffffff;
+        box-shadow: 0 14px 28px rgba(229, 62, 62, 0.2);
+    }
+    .mileage-preset-btn.is-active:hover {
+        color: #ffffff;
+    }
+    @media (max-width: 639px) {
+        .mileage-preset-grid {
+            grid-template-columns: 1fr;
+        }
     }
     
     /* Toolbar */
@@ -406,23 +460,9 @@
                     </div>
                     <div class="filter-body">
                         <form action="{{ route('inventory') }}" method="GET" id="filter-form">
-                            <!-- Search -->
-                            <div class="filter-group">
-                                <label for="search" class="filter-label">Pencarian</label>
-                                <div class="relative">
-                                    <svg class="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                                    </svg>
-                                    <input
-                                        id="search"
-                                        name="search"
-                                        type="text"
-                                        placeholder="Cari merek atau model..."
-                                        value="{{ request('search') }}"
-                                        class="filter-input pl-12"
-                                    />
-                                </div>
-                            </div>
+                            @if(request()->filled('search'))
+                                <input type="hidden" name="search" value="{{ request('search') }}" />
+                            @endif
 
                             <!-- Location -->
                             <div class="filter-group">
@@ -536,35 +576,40 @@
 
                             <!-- Mileage Range -->
                             <div class="filter-group">
-                                <label class="filter-label">Kilometer</label>
-                                <div class="range-inputs">
-                                    <input
-                                        type="number"
-                                        name="mileage_min"
-                                        placeholder="Min"
-                                        value="{{ request('mileage_min') }}"
-                                        class="filter-input"
-                                    />
-                                    <input
-                                        type="number"
-                                        name="mileage_max"
-                                        placeholder="Max"
-                                        value="{{ request('mileage_max') }}"
-                                        class="filter-input"
-                                    />
+                                <label class="filter-label">Jarak Tempuh</label>
+                                <input type="hidden" name="mileage_min" value="{{ request('mileage_min') }}" data-mileage-min />
+                                <input type="hidden" name="mileage_max" value="{{ request('mileage_max') }}" data-mileage-max />
+                                <div class="mileage-preset-grid">
+                                    @foreach($mileagePresets as $preset)
+                                        @php
+                                            $isActivePreset = (request()->filled('mileage_min') ? (int) request('mileage_min') : null) === $preset['min']
+                                                && (request()->filled('mileage_max') ? (int) request('mileage_max') : null) === $preset['max'];
+                                        @endphp
+                                        <button
+                                            type="button"
+                                            class="mileage-preset-btn {{ $isActivePreset ? 'is-active' : '' }}"
+                                            data-mileage-option
+                                            data-min="{{ $preset['min'] ?? '' }}"
+                                            data-max="{{ $preset['max'] ?? '' }}"
+                                            aria-pressed="{{ $isActivePreset ? 'true' : 'false' }}"
+                                        >
+                                            {{ $preset['label'] }}
+                                        </button>
+                                    @endforeach
                                 </div>
                             </div>
 
                             <!-- Clear Filters -->
-                            @if(request()->hasAny(['search', 'location', 'make', 'price_range', 'body_type', 'fuel_type', 'transmission', 'year_min', 'year_max', 'mileage_min', 'mileage_max']))
-                                <a href="{{ route('inventory') }}" class="clear-filters-btn">
-                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                                    </svg>
-                                    Hapus Semua Filter
-                                </a>
-                            @endif
-                        </form>
+                            <a
+                                href="{{ route('inventory') }}"
+                                class="clear-filters-btn {{ request()->hasAny(['search', 'location', 'make', 'price_range', 'body_type', 'fuel_type', 'transmission', 'year_min', 'year_max', 'mileage_min', 'mileage_max']) ? '' : 'is-disabled' }}"
+                                data-clear-filters
+                            >
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                                Hapus Semua Filter
+                            </a>
                         </form>
                     </div>
                 </div>
@@ -646,17 +691,9 @@
         </div>
         
         <form action="{{ route('inventory') }}" method="GET">
-            <!-- Search -->
-            <div class="filter-group">
-                <label class="filter-label">Pencarian</label>
-                <input
-                    name="search"
-                    type="text"
-                    placeholder="Cari merek atau model..."
-                    value="{{ request('search') }}"
-                    class="filter-input"
-                />
-            </div>
+            @if(request()->filled('search'))
+                <input type="hidden" name="search" value="{{ request('search') }}" />
+            @endif
 
             <!-- Location -->
             <div class="filter-group">
@@ -734,6 +771,31 @@
                 </div>
             </div>
 
+            <!-- Mileage Range -->
+            <div class="filter-group">
+                <label class="filter-label">Jarak Tempuh</label>
+                <input type="hidden" name="mileage_min" value="{{ request('mileage_min') }}" data-mileage-min />
+                <input type="hidden" name="mileage_max" value="{{ request('mileage_max') }}" data-mileage-max />
+                <div class="mileage-preset-grid">
+                    @foreach($mileagePresets as $preset)
+                        @php
+                            $isActivePreset = (request()->filled('mileage_min') ? (int) request('mileage_min') : null) === $preset['min']
+                                && (request()->filled('mileage_max') ? (int) request('mileage_max') : null) === $preset['max'];
+                        @endphp
+                        <button
+                            type="button"
+                            class="mileage-preset-btn {{ $isActivePreset ? 'is-active' : '' }}"
+                            data-mileage-option
+                            data-min="{{ $preset['min'] ?? '' }}"
+                            data-max="{{ $preset['max'] ?? '' }}"
+                            aria-pressed="{{ $isActivePreset ? 'true' : 'false' }}"
+                        >
+                            {{ $preset['label'] }}
+                        </button>
+                    @endforeach
+                </div>
+            </div>
+
             <!-- Mobile Actions -->
             <div class="mobile-filter-actions">
                 <button type="submit" class="apply-filters-btn">
@@ -768,6 +830,80 @@
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(func, delay);
         };
+    }
+
+    function setupMileagePresetButtons(form, onChange = null) {
+        if (!form) {
+            return;
+        }
+
+        const minInput = form.querySelector('[data-mileage-min]');
+        const maxInput = form.querySelector('[data-mileage-max]');
+        const buttons = form.querySelectorAll('[data-mileage-option]');
+
+        if (!minInput || !maxInput || buttons.length === 0) {
+            return;
+        }
+
+        const syncButtons = () => {
+            buttons.forEach((button) => {
+                const isActive = minInput.value === button.dataset.min && maxInput.value === button.dataset.max;
+                button.classList.toggle('is-active', isActive);
+                button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            });
+        };
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const isActive = minInput.value === button.dataset.min && maxInput.value === button.dataset.max;
+
+                if (isActive) {
+                    minInput.value = '';
+                    maxInput.value = '';
+                } else {
+                    minInput.value = button.dataset.min;
+                    maxInput.value = button.dataset.max;
+                }
+
+                syncButtons();
+
+                if (typeof onChange === 'function') {
+                    onChange();
+                }
+            });
+        });
+
+        syncButtons();
+    }
+
+    function syncClearFiltersButton(form) {
+        if (!form) {
+            return;
+        }
+
+        const clearButton = form.querySelector('[data-clear-filters]');
+
+        if (!clearButton) {
+            return;
+        }
+
+        const formData = new FormData(form);
+        let hasActiveFilters = false;
+
+        for (const [key, value] of formData.entries()) {
+            if (key === 'sort') {
+                continue;
+            }
+
+            if (value !== null && String(value).trim() !== '') {
+                hasActiveFilters = true;
+                break;
+            }
+        }
+
+        clearButton.classList.toggle('is-disabled', !hasActiveFilters);
+        clearButton.setAttribute('aria-disabled', hasActiveFilters ? 'false' : 'true');
+        clearButton.tabIndex = hasActiveFilters ? 0 : -1;
     }
     
     // Show loading state
@@ -861,24 +997,41 @@
     
     // Add event listeners
     if (filterForm) {
+        setupMileagePresetButtons(filterForm, () => {
+            syncClearFiltersButton(filterForm);
+            fetchResults();
+        });
+        syncClearFiltersButton(filterForm);
+
         // Text inputs with debounce
         const textInputs = filterForm.querySelectorAll('input[type=\"text\"], input[type=\"number\"]');
         textInputs.forEach(input => {
-            input.addEventListener('input', debounce(fetchResults, 800));
+            input.addEventListener('input', debounce(() => {
+                syncClearFiltersButton(filterForm);
+                fetchResults();
+            }, 800));
         });
         
         // Select dropdowns - instant
         const selects = filterForm.querySelectorAll('select');
         selects.forEach(select => {
-            select.addEventListener('change', fetchResults);
+            select.addEventListener('change', () => {
+                syncClearFiltersButton(filterForm);
+                fetchResults();
+            });
         });
         
         // Checkboxes - instant
         const checkboxes = filterForm.querySelectorAll('input[type=\"checkbox\"]');
         checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', fetchResults);
+            checkbox.addEventListener('change', () => {
+                syncClearFiltersButton(filterForm);
+                fetchResults();
+            });
         });
     }
+
+    setupMileagePresetButtons(document.querySelector('#mobile-filters form'));
     
     // Sort dropdown
     const sortSelect = document.querySelector('select[name=\"sort\"]');

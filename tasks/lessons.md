@@ -23,3 +23,9 @@
 - For adjacent homepage sections in the same visual story, keep their background tone and transition language aligned so the page does not feel visually broken between blocks.
 - When two homepage sections are meant to read as one continuous story, prefer a shared wrapper background over two separate sections with duplicated background styles.
 - For elegance-focused homepage sections, prefer quieter supporting patterns like editorial lists, slimmer badges, and softer panel contrast over multiple boxed elements with equal visual weight.
+- For inputs with absolutely positioned icons, use an explicit component class for icon spacing instead of relying only on utility padding so placeholder text cannot be overlapped.
+- When the user promotes a key search interaction to the global header, remove redundant page-level search inputs and preserve the same query through related filter forms with hidden fields.
+- For quick-pick inventory filters like mileage, prefer preset buttons over raw min/max numeric inputs while keeping the underlying query parameters compatible with existing filtering logic.
+- For AJAX-driven filters, do not rely on Blade-only conditional rendering for controls like "clear filters"; keep the control mounted and sync its visible/disabled state in JavaScript.
+- For search UX, do not force one global pattern across all pages when the user wants different behavior per route; keep homepage discovery search and inventory search as distinct experiences when requested.
+- When two light-brand homepage sections like About and FAQ should feel continuous, merge them under one shared wrapper background instead of trying to match them with separate section backgrounds.

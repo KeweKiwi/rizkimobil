@@ -80,6 +80,23 @@ class Car extends Model
         return $img ? asset($img->image_path) : 'https://via.placeholder.com/800x600?text=No+Image';
     }
 
+    public function getSearchLabelAttribute(): string
+    {
+        $fallback = trim(implode(' ', array_filter([
+            $this->year,
+            $this->make,
+            $this->model,
+            $this->variant,
+        ])));
+
+        $parts = array_values(array_filter([
+            $this->title,
+            $fallback,
+        ]));
+
+        return $parts[0] ?? $fallback;
+    }
+
     /**
      * Scope: featured cars
      */
@@ -116,6 +133,22 @@ class Car extends Model
         }
 
         return $query;
+    }
+
+    public function scopeTextSearch($query, ?string $search)
+    {
+        $search = trim((string) $search);
+
+        if ($search === '') {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($search) {
+            $q->where('title', 'like', "%{$search}%")
+                ->orWhere('make', 'like', "%{$search}%")
+                ->orWhere('model', 'like', "%{$search}%")
+                ->orWhere('variant', 'like', "%{$search}%");
+        });
     }
 
     public function location()

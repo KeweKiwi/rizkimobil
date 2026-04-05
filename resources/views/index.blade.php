@@ -7,22 +7,21 @@
 <!-- Search Bar - Floating overlap -->
 <section id="search-section" style="position: relative; margin-top: -64px; z-index: 30; padding-bottom: 32px;">
     <style>
-        /* All selectors scoped under #search-section so nothing can override */
         #search-section .s-card {
-            background: rgba(255, 255, 255, 0.98) !important;
-            backdrop-filter: blur(14px) !important;
-            -webkit-backdrop-filter: blur(14px) !important;
-            border: 1px solid rgba(239, 68, 68, 0.3) !important;
-            border-radius: 10px !important;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 14px rgba(239,68,68,0.18) !important;
+            background: rgba(255, 255, 255, 0.985) !important;
+            backdrop-filter: blur(18px) !important;
+            -webkit-backdrop-filter: blur(18px) !important;
+            border: 1px solid rgba(239, 68, 68, 0.18) !important;
+            border-radius: 18px !important;
+            box-shadow: 0 22px 54px rgba(15, 23, 42, 0.12), 0 0 24px rgba(239, 68, 68, 0.08) !important;
             padding: clamp(18px, 4vw, 28px) !important;
         }
         #search-section .s-card h3 {
             color: #111 !important;
             font-size: 16px !important;
-            font-weight: 700 !important;
+            font-weight: 800 !important;
             text-transform: uppercase !important;
-            letter-spacing: 0.12em !important;
+            letter-spacing: 0.14em !important;
             margin: 0 0 18px 0 !important;
         }
         #search-section .s-form {
@@ -30,51 +29,71 @@
             flex-direction: column !important;
             gap: 12px !important;
         }
-        @media (min-width: 768px) {
-            #search-section .s-form { flex-direction: row !important; }
+        @media (min-width: 1024px) {
+            #search-section .s-form {
+                flex-direction: row !important;
+                align-items: center !important;
+            }
         }
         #search-section .s-input,
         #search-section .s-select {
             flex: 1 !important;
-            height: 42px !important;
-            padding: 0 14px !important;
-            border-radius: 6px !important;
-            border: 1px solid rgba(0,0,0,0.15) !important;
+            height: 50px !important;
+            padding: 0 16px !important;
+            border-radius: 12px !important;
+            border: 1px solid rgba(17, 17, 17, 0.14) !important;
             background: #fff !important;
             color: #111 !important;
             font-size: 14px !important;
             outline: none !important;
-            transition: border-color 0.2s !important;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
             -webkit-appearance: auto !important;
             appearance: auto !important;
             box-shadow: none !important;
         }
-        #search-section .s-input::placeholder { color: rgba(0,0,0,0.45) !important; }
-        #search-section .s-select option { background: #fff !important; color: #111 !important; }
+        #search-section .s-input::placeholder {
+            color: rgba(17, 17, 17, 0.42) !important;
+        }
+        #search-section .s-select option {
+            background: #fff !important;
+            color: #111 !important;
+        }
         #search-section .s-input:focus,
-        #search-section .s-select:focus { border-color: rgba(239,68,68,0.6) !important; }
+        #search-section .s-select:focus {
+            border-color: rgba(239, 68, 68, 0.45) !important;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.08) !important;
+        }
         #search-section .s-btn {
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
             gap: 8px !important;
-            height: 42px !important;
+            height: 50px !important;
+            min-width: 148px !important;
             padding: 0 28px !important;
             border: none !important;
-            border-radius: 6px !important;
-            background: #e53e3e !important;
+            border-radius: 12px !important;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
             color: #fff !important;
             font-size: 14px !important;
-            font-weight: 700 !important;
+            font-weight: 800 !important;
             text-transform: uppercase !important;
-            letter-spacing: 0.1em !important;
+            letter-spacing: 0.14em !important;
             cursor: pointer !important;
-            transition: background 0.2s !important;
-            box-shadow: 0 0 16px 2px rgba(239,68,68,0.4) !important;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease !important;
+            box-shadow: 0 16px 34px rgba(239, 68, 68, 0.22) !important;
             white-space: nowrap !important;
         }
-        #search-section .s-btn:hover { background: #c53030 !important; }
-        #search-section .s-btn svg { width: 16px !important; height: 16px !important; color: #fff !important; }
+        #search-section .s-btn:hover {
+            transform: translateY(-1px) !important;
+            filter: brightness(1.02) !important;
+            box-shadow: 0 20px 42px rgba(239, 68, 68, 0.26) !important;
+        }
+        #search-section .s-btn svg {
+            width: 16px !important;
+            height: 16px !important;
+            color: #fff !important;
+        }
     </style>
 
     <div class="container mx-auto px-4">
@@ -84,7 +103,7 @@
                 <select name="make" class="s-select">
                     <option value="">Pilih Merek</option>
                     @foreach($carMakes as $make)
-                        <option value="{{ $make }}" {{ request('make') == $make ? 'selected' : '' }}>{{ $make }}</option>
+                        <option value="{{ $make }}">{{ $make }}</option>
                     @endforeach
                 </select>
 
@@ -92,16 +111,15 @@
                     type="text"
                     name="model"
                     placeholder="Model (mis. Avanza)"
-                    value="{{ request('model') }}"
                     class="s-input"
                 />
 
-                <select name="priceRange" class="s-select">
+                <select name="price_range" class="s-select">
                     <option value="">Rentang Harga</option>
-                    <option value="0-30000" {{ request('priceRange') == '0-30000' ? 'selected' : '' }}>Di bawah Rp 100 juta</option>
-                    <option value="30000-50000" {{ request('priceRange') == '30000-50000' ? 'selected' : '' }}>Rp 100 juta - Rp 200 juta</option>
-                    <option value="50000-75000" {{ request('priceRange') == '50000-75000' ? 'selected' : '' }}>Rp 200 juta - Rp 300 juta</option>
-                    <option value="75000-999999" {{ request('priceRange') == '75000-999999' ? 'selected' : '' }}>Di atas Rp 300 juta</option>
+                    <option value="0-100000000">Di bawah Rp 100 juta</option>
+                    <option value="100000000-200000000">Rp 100 juta - Rp 200 juta</option>
+                    <option value="200000000-300000000">Rp 200 juta - Rp 300 juta</option>
+                    <option value="300000000-999999999">Di atas Rp 300 juta</option>
                 </select>
 
                 <button type="submit" class="s-btn">
@@ -612,143 +630,375 @@
         font-size: 14px;
         line-height: 1.8;
     }
+    
+    /* === ABOUT RIZKI MOBIL - NEW DESIGN === */
+    .about-faq-section {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, #fef7f0 0%, #fdf2e9 25%, #fce8db 50%, #f5f5f5 100%);
+    }
+    .about-faq-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(to left, rgba(245, 245, 245, 0.9), transparent);
+        pointer-events: none;
+    }
     .about-rizki-section {
-        background:
-            radial-gradient(circle at top left, rgba(229, 62, 62, 0.06), transparent 28%),
-            linear-gradient(180deg, #f7f2ed 0%, #ffffff 100%);
-        padding: clamp(60px, 12vw, 96px) 0;
+        position: relative;
+        overflow: hidden;
+        padding: clamp(80px, 14vw, 120px) 0 clamp(40px, 6vw, 60px);
+        background: transparent;
     }
     .about-rizki-shell {
+        position: relative;
         display: grid;
-        gap: 32px;
+        gap: 48px;
         align-items: center;
     }
     @media (min-width: 1024px) {
         .about-rizki-shell {
-            grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-            gap: 64px;
+            grid-template-columns: 1fr 420px;
+            gap: 80px;
         }
     }
+    @media (min-width: 1280px) {
+        .about-rizki-shell {
+            grid-template-columns: 1fr 480px;
+            gap: 100px;
+        }
+    }
+    
+    /* Left Side - Content */
     .about-rizki-kicker {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        color: rgba(17, 17, 17, 0.58);
-        font-size: 12px;
-        font-weight: 700;
+        gap: 12px;
+        color: #6b7280;
+        font-size: 13px;
+        font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.18em;
-        margin-bottom: 16px;
+        letter-spacing: 0.15em;
+        margin-bottom: 24px;
     }
     .about-rizki-kicker::before {
         content: '';
-        width: 24px;
-        height: 1px;
-        background: rgba(229, 62, 62, 0.72);
+        width: 32px;
+        height: 2px;
+        background: linear-gradient(90deg, #ef4444, #f97316);
+        border-radius: 2px;
     }
     .about-rizki-title {
         font-family: var(--font-display);
-        font-size: clamp(32px, 5vw, 56px);
+        font-size: clamp(36px, 6vw, 64px);
         font-weight: 700;
-        line-height: 1.02;
+        line-height: 1.05;
         letter-spacing: -0.03em;
-        color: #141414;
-        max-width: 11ch;
+        color: #111827;
+    }
+    .about-rizki-title-highlight {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
     .about-rizki-subtitle {
-        margin-top: 16px;
-        color: rgba(17, 17, 17, 0.6);
-        font-size: 18px;
-        line-height: 1.75;
-        max-width: 38rem;
+        margin-top: 28px;
+        color: #4b5563;
+        font-size: 17px;
+        line-height: 1.8;
+        max-width: 540px;
     }
     .about-rizki-copy {
         display: grid;
-        gap: 14px;
-        margin-top: 22px;
-        color: rgba(17, 17, 17, 0.76);
+        gap: 16px;
+        margin-top: 20px;
+        color: #6b7280;
         font-size: 15px;
         line-height: 1.85;
-        max-width: 40rem;
+        max-width: 540px;
     }
+    
+    /* Feature Cards - Enhanced Design */
     .about-rizki-highlights {
         display: grid;
-        gap: 16px;
-        margin-top: 30px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-top: 48px;
     }
-    @media (min-width: 640px) {
+    @media (max-width: 768px) {
         .about-rizki-highlights {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: 1fr;
+            gap: 16px;
         }
     }
     .about-rizki-highlight {
         position: relative;
         overflow: hidden;
         border-radius: 24px;
-        padding: 22px 22px 20px;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(252, 248, 244, 0.98));
-        border: 1px solid rgba(17, 17, 17, 0.08);
-        box-shadow: 0 18px 38px rgba(15, 23, 42, 0.06);
-        transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+        padding: 28px 24px 24px;
+        background: linear-gradient(145deg, #ffffff 0%, #fefefe 100%);
+        border: 1px solid rgba(239, 68, 68, 0.08);
+        box-shadow: 
+            0 4px 6px rgba(0, 0, 0, 0.02),
+            0 12px 24px rgba(0, 0, 0, 0.04),
+            0 -1px 0 rgba(255, 255, 255, 0.8) inset;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .about-rizki-highlight::before {
         content: '';
         position: absolute;
-        inset: 0 0 auto 0;
-        height: 3px;
-        background: linear-gradient(90deg, rgba(239, 68, 68, 0.88), rgba(249, 115, 22, 0.28));
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #ef4444 0%, #f97316 50%, #fca5a5 100%);
     }
     .about-rizki-highlight::after {
         content: '';
         position: absolute;
-        top: -42px;
-        right: -32px;
-        width: 120px;
-        height: 120px;
-        border-radius: 999px;
-        background: radial-gradient(circle, rgba(239, 68, 68, 0.12), transparent 68%);
-        pointer-events: none;
+        top: -60px;
+        right: -60px;
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(239, 68, 68, 0.08) 0%, transparent 70%);
+        transition: all 0.4s ease;
     }
     .about-rizki-highlight:hover {
-        transform: translateY(-3px);
-        border-color: rgba(239, 68, 68, 0.18);
-        box-shadow: 0 24px 44px rgba(15, 23, 42, 0.09);
+        transform: translateY(-8px);
+        box-shadow: 
+            0 8px 16px rgba(239, 68, 68, 0.08),
+            0 20px 40px rgba(239, 68, 68, 0.12),
+            0 -1px 0 rgba(255, 255, 255, 0.8) inset;
+        border-color: rgba(239, 68, 68, 0.2);
+    }
+    .about-rizki-highlight:hover::after {
+        transform: scale(1.3);
+        background: radial-gradient(circle, rgba(239, 68, 68, 0.12) 0%, transparent 70%);
     }
     .about-rizki-highlight-topline {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 18px;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 1;
     }
     .about-rizki-highlight-index {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 40px;
-        height: 28px;
-        padding: 0 10px;
-        border-radius: 999px;
-        background: rgba(239, 68, 68, 0.08);
-        color: rgba(185, 28, 28, 0.88);
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
+        font-size: 13px;
+        font-weight: 800;
+        color: #ef4444;
+        background: linear-gradient(135deg, #fef2f2, #fee2e2);
+        padding: 6px 14px;
+        border-radius: 20px;
+        letter-spacing: 0.05em;
     }
     .about-rizki-highlight-mark {
-        width: 28px;
-        height: 28px;
-        display: inline-flex;
+        width: 40px;
+        height: 40px;
+        display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 999px;
-        background: rgba(17, 17, 17, 0.04);
-        color: rgba(17, 17, 17, 0.48);
+        border-radius: 12px;
+        background: linear-gradient(135deg, #fef2f2, #fff);
+        border: 1px solid rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        transition: all 0.3s ease;
+    }
+    .about-rizki-highlight:hover .about-rizki-highlight-mark {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        border-color: #ef4444;
+        color: #fff;
+        transform: translateX(4px);
     }
     .about-rizki-highlight-mark svg {
-        width: 14px;
-        height: 14px;
+        width: 18px;
+        height: 18px;
+    }
+    .about-rizki-highlight-icon {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+        transition: all 0.3s ease;
+    }
+    .about-rizki-highlight:hover .about-rizki-highlight-icon {
+        transform: scale(1.05);
+        box-shadow: 0 8px 24px rgba(239, 68, 68, 0.2);
+    }
+    .about-rizki-highlight-icon svg {
+        width: 30px;
+        height: 30px;
+        color: #ef4444;
+    }
+    .about-rizki-highlight-value {
+        font-family: var(--font-display);
+        font-size: 20px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 1;
+    }
+    .about-rizki-highlight-label {
+        color: #6b7280;
+        font-size: 14px;
+        line-height: 1.7;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Right Side - Dark Card */
+    .about-rizki-visual {
+        position: relative;
+        border-radius: 32px;
+        background: linear-gradient(160deg, #1f2937 0%, #111827 50%, #0f172a 100%);
+        padding: 36px;
+        box-shadow: 
+            0 50px 100px -20px rgba(0, 0, 0, 0.25),
+            0 30px 60px -30px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    .about-rizki-visual::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 32px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        pointer-events: none;
+    }
+    .about-rizki-visual-panel {
+        position: relative;
+    }
+    .about-rizki-visual-topline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        margin-bottom: 28px;
+    }
+    .about-rizki-visual-kicker {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+    }
+    .about-rizki-visual-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 16px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+    .about-rizki-logo {
+        height: 56px;
+        width: auto;
+        margin-bottom: 32px;
+        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    }
+    .about-rizki-visual-copy {
+        margin-bottom: 32px;
+    }
+    .about-rizki-visual-label {
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        margin-bottom: 12px;
+    }
+    .about-rizki-visual-title {
+        font-family: var(--font-display);
+        font-size: clamp(24px, 3vw, 32px);
+        font-weight: 700;
+        line-height: 1.2;
+        color: #ffffff;
+    }
+    .about-rizki-visual-title span {
+        color: #ef4444;
+    }
+    .about-rizki-visual-description {
+        margin-top: 16px;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 14px;
+        line-height: 1.8;
+    }
+    
+    /* Stats */
+    .about-rizki-stats {
+        display: grid;
+        gap: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 28px;
+    }
+    .about-rizki-stat {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .about-rizki-stat:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+    .about-rizki-stat:first-child {
+        padding-top: 0;
+    }
+    .about-rizki-stat-value {
+        font-family: var(--font-display);
+        font-size: 42px;
+        font-weight: 700;
+        color: #ffffff;
+        line-height: 1;
+        letter-spacing: -0.02em;
+    }
+    .about-rizki-stat-label {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 13px;
+        line-height: 1.6;
+        text-align: right;
+        max-width: 180px;
+    }
+    @media (max-width: 640px) {
+        .about-rizki-visual {
+            padding: 28px;
+        }
+        .about-rizki-stat {
+            flex-direction: column;
+            gap: 8px;
+        }
+        .about-rizki-stat-label {
+            text-align: left;
+            max-width: none;
+        }
+        .about-rizki-stat-value {
+            font-size: 36px;
+        }
+    }
     }
     .about-rizki-highlight-value {
         font-family: var(--font-display);
@@ -763,128 +1013,6 @@
         font-size: 13px;
         line-height: 1.75;
         max-width: 18rem;
-    }
-    .about-rizki-visual {
-        min-height: 100%;
-        border-radius: 28px;
-        overflow: hidden;
-        background:
-            radial-gradient(circle at top left, rgba(239, 68, 68, 0.18), transparent 34%),
-            linear-gradient(160deg, #17171a 0%, #0b0b0d 100%);
-        box-shadow: 0 30px 80px rgba(15, 23, 42, 0.14);
-        border: 1px solid rgba(17, 17, 17, 0.08);
-        padding: clamp(26px, 5vw, 36px);
-    }
-    .about-rizki-visual-panel {
-        width: 100%;
-        height: 100%;
-        border-radius: 24px;
-        padding: clamp(28px, 6vw, 36px);
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        display: grid;
-        gap: 24px;
-        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
-    }
-    .about-rizki-visual-topline {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        padding-bottom: 18px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.09);
-    }
-    .about-rizki-visual-kicker {
-        color: rgba(255, 255, 255, 0.54);
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.16em;
-    }
-    .about-rizki-visual-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        border-radius: 999px;
-        background: rgba(229, 62, 62, 0.12);
-        border: 1px solid rgba(239, 68, 68, 0.18);
-        color: rgba(255, 255, 255, 0.88);
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-    }
-    .about-rizki-logo {
-        width: min(100%, 210px);
-        margin: 8px 0 0;
-        filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.28));
-    }
-    .about-rizki-visual-copy {
-        max-width: 24rem;
-    }
-    .about-rizki-visual-title {
-        font-family: var(--font-display);
-        font-size: clamp(22px, 3vw, 28px);
-        font-weight: 700;
-        line-height: 1.15;
-        color: #fff;
-        max-width: 12ch;
-        margin-top: 4px;
-    }
-    .about-rizki-visual-description {
-        margin-top: 12px;
-        color: rgba(255, 255, 255, 0.68);
-        font-size: 14px;
-        line-height: 1.8;
-    }
-    .about-rizki-stats {
-        display: grid;
-        gap: 12px;
-        margin-top: 6px;
-    }
-    .about-rizki-stat {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 14px 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .about-rizki-stat:first-child {
-        border-top: none;
-        padding-top: 0;
-    }
-    .about-rizki-stat-value {
-        font-family: var(--font-display);
-        font-size: 28px;
-        font-weight: 700;
-        color: #fff;
-        line-height: 1;
-        white-space: nowrap;
-    }
-    .about-rizki-stat-label {
-        color: rgba(255, 255, 255, 0.62);
-        font-size: 13px;
-        line-height: 1.7;
-        text-align: right;
-        max-width: 15rem;
-    }
-    .about-rizki-visual-label {
-        color: rgba(255, 255, 255, 0.62);
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.16em;
-    }
-    @media (max-width: 640px) {
-        .about-rizki-stat {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-        .about-rizki-stat-label {
-            text-align: left;
-            max-width: none;
-        }
     }
 </style>
 
@@ -945,12 +1073,20 @@
 </section>
 </div>
 
+<div class="about-faq-section">
 <section class="about-rizki-section">
     <div class="container mx-auto px-4">
         <div class="about-rizki-shell">
+            <!-- Left Content -->
             <div>
                 <span class="about-rizki-kicker">{{ $aboutRizki['kicker'] }}</span>
-                <h2 class="about-rizki-title">{{ $aboutRizki['title'] }}</h2>
+                <h2 class="about-rizki-title">
+                    Jual beli mobil<br>
+                    bekas yang<br>
+                    terasa lebih<br>
+                    <span class="about-rizki-title-highlight">tenang, jujur,</span><br>
+                    <span class="about-rizki-title-highlight">dan terkurasi.</span>
+                </h2>
                 <p class="about-rizki-subtitle">{{ $aboutRizki['subtitle'] }}</p>
 
                 <div class="about-rizki-copy">
@@ -960,23 +1096,67 @@
                 </div>
 
                 <div class="about-rizki-highlights">
-                    @foreach($aboutRizki['highlights'] as $index => $highlight)
-                        <div class="about-rizki-highlight">
-                            <div class="about-rizki-highlight-topline">
-                                <span class="about-rizki-highlight-index">{{ str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) }}</span>
-                                <span class="about-rizki-highlight-mark" aria-hidden="true">
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 12h14m-7-7 7 7-7 7"/>
-                                    </svg>
-                                </span>
-                            </div>
-                            <p class="about-rizki-highlight-value">{{ $highlight['value'] }}</p>
-                            <p class="about-rizki-highlight-label">{{ $highlight['label'] }}</p>
+                    <!-- Card 1: Kurasi Ketat -->
+                    <div class="about-rizki-highlight">
+                        <div class="about-rizki-highlight-topline">
+                            <span class="about-rizki-highlight-index">01</span>
+                            <span class="about-rizki-highlight-mark" aria-hidden="true">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                </svg>
+                            </span>
                         </div>
-                    @endforeach
+                        <div class="about-rizki-highlight-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                        </div>
+                        <p class="about-rizki-highlight-value">Kurasi Ketat</p>
+                        <p class="about-rizki-highlight-label">Unit dipilih dengan standar yang jelas dan inspeksi menyeluruh</p>
+                    </div>
+                    
+                    <!-- Card 2: Transparan -->
+                    <div class="about-rizki-highlight">
+                        <div class="about-rizki-highlight-topline">
+                            <span class="about-rizki-highlight-index">02</span>
+                            <span class="about-rizki-highlight-mark" aria-hidden="true">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="about-rizki-highlight-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                        </div>
+                        <p class="about-rizki-highlight-value">Transparan</p>
+                        <p class="about-rizki-highlight-label">Informasi dijelaskan sejak awal tanpa ada yang disembunyikan</p>
+                    </div>
+                    
+                    <!-- Card 3: Personal -->
+                    <div class="about-rizki-highlight">
+                        <div class="about-rizki-highlight-topline">
+                            <span class="about-rizki-highlight-index">03</span>
+                            <span class="about-rizki-highlight-mark" aria-hidden="true">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="about-rizki-highlight-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                        </div>
+                        <p class="about-rizki-highlight-value">Personal</p>
+                        <p class="about-rizki-highlight-label">Pendampingan terasa hangat dan fokus pada kebutuhan Anda</p>
+                    </div>
                 </div>
             </div>
 
+            <!-- Right Card -->
             <div class="about-rizki-visual">
                 <div class="about-rizki-visual-panel">
                     <div class="about-rizki-visual-topline">
@@ -984,14 +1164,17 @@
                         <span class="about-rizki-visual-badge">Terverifikasi</span>
                     </div>
 
+                    <img
+                        src="{{ asset($aboutRizki['image']) }}"
+                        alt="Logo Rizki Mobil Indonesia"
+                        class="about-rizki-logo"
+                    />
+
                     <div class="about-rizki-visual-copy">
-                        <img
-                            src="{{ asset($aboutRizki['image']) }}"
-                            alt="Logo Rizki Mobil Indonesia"
-                            class="about-rizki-logo"
-                        />
                         <p class="about-rizki-visual-label">Rizki Mobil Indonesia</p>
-                        <h3 class="about-rizki-visual-title">Kualitas unit yang dijelaskan dengan cara yang jujur.</h3>
+                        <h3 class="about-rizki-visual-title">
+                            Kualitas unit yang dijelaskan dengan cara <span>yang jujur.</span>
+                        </h3>
                         <p class="about-rizki-visual-description">
                             Kami merancang pengalaman beli mobil yang terasa rapi, profesional, dan tetap dekat secara personal.
                         </p>
@@ -1014,64 +1197,52 @@
 </section>
 
 <style>
+    /* === FAQ SECTION - SEAMLESS DESIGN === */
     .faq-section {
         position: relative;
-        overflow: hidden;
-        padding: clamp(56px, 10vw, 88px) 0;
-        background:
-            radial-gradient(circle at top left, rgba(239, 68, 68, 0.08), transparent 26%),
-            linear-gradient(180deg, #fcfbf9 0%, #f7f2ee 100%);
-    }
-    .faq-section::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background:
-            linear-gradient(90deg, rgba(17, 17, 17, 0.02) 1px, transparent 1px),
-            linear-gradient(rgba(17, 17, 17, 0.02) 1px, transparent 1px);
-        background-size: 34px 34px;
-        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 85%);
-        pointer-events: none;
+        padding: clamp(20px, 4vw, 40px) 0 clamp(80px, 12vw, 120px);
+        background: transparent;
     }
     .faq-shell {
         position: relative;
         z-index: 1;
     }
     .faq-header {
-        max-width: 42rem;
-        margin-bottom: 32px;
+        max-width: 48rem;
+        margin-bottom: 40px;
     }
     .faq-kicker {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        color: rgba(17, 17, 17, 0.55);
-        font-size: 12px;
-        font-weight: 700;
+        gap: 12px;
+        color: #6b7280;
+        font-size: 13px;
+        font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.15em;
     }
     .faq-kicker::before {
         content: '';
-        width: 28px;
-        height: 1px;
-        background: rgba(239, 68, 68, 0.7);
+        width: 32px;
+        height: 2px;
+        background: linear-gradient(90deg, #ef4444, #f97316);
+        border-radius: 2px;
     }
     .faq-title {
-        margin-top: 18px;
+        margin-top: 16px;
         font-family: var(--font-display);
-        font-size: clamp(30px, 6vw, 44px);
+        font-size: clamp(32px, 5vw, 48px);
         font-weight: 700;
-        line-height: 1.04;
+        line-height: 1.1;
         letter-spacing: -0.03em;
-        color: #111111;
+        color: #111827;
     }
     .faq-description {
-        margin-top: 14px;
-        color: rgba(17, 17, 17, 0.62);
-        font-size: 15px;
-        line-height: 1.9;
-        max-width: 34rem;
+        margin-top: 16px;
+        color: #6b7280;
+        font-size: 16px;
+        line-height: 1.75;
+        max-width: 36rem;
     }
     .faq-grid {
         display: grid;
@@ -1086,45 +1257,26 @@
         position: relative;
         overflow: hidden;
         min-height: 100%;
-        border-radius: 26px;
-        padding: 28px 26px 30px;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(252, 248, 244, 0.96));
-        border: 1px solid rgba(17, 17, 17, 0.08);
-        box-shadow: 0 22px 48px rgba(15, 23, 42, 0.06);
-        transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+        border-radius: 24px;
+        padding: 28px 24px 24px;
+        background: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s ease;
     }
     .faq-card::before {
         content: '';
         position: absolute;
-        inset: 0 0 auto 0;
+        top: 0;
+        left: 0;
+        right: 0;
         height: 3px;
-        background: linear-gradient(90deg, rgba(239, 68, 68, 0.84), rgba(249, 115, 22, 0.22));
-    }
-    .faq-card::after {
-        content: '';
-        position: absolute;
-        top: -46px;
-        right: -30px;
-        width: 132px;
-        height: 132px;
-        border-radius: 999px;
-        background: radial-gradient(circle, rgba(239, 68, 68, 0.1), transparent 68%);
-        pointer-events: none;
+        background: linear-gradient(90deg, #ef4444 0%, #fca5a5 100%);
     }
     .faq-card:hover {
         transform: translateY(-4px);
-        border-color: rgba(239, 68, 68, 0.16);
-        box-shadow: 0 28px 54px rgba(15, 23, 42, 0.09);
-    }
-    .faq-card-question {
-        position: relative;
-        padding-right: 52px;
-        font-family: var(--font-display);
-        font-size: clamp(22px, 3.4vw, 28px);
-        font-weight: 700;
-        line-height: 1.12;
-        letter-spacing: -0.03em;
-        color: #161616;
+        box-shadow: 0 12px 32px rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.15);
     }
     .faq-card-index {
         position: absolute;
@@ -1135,24 +1287,37 @@
         justify-content: center;
         width: 36px;
         height: 36px;
-        border-radius: 999px;
-        background: rgba(239, 68, 68, 0.08);
-        color: rgba(185, 28, 28, 0.84);
-        font-size: 11px;
+        border-radius: 10px;
+        background: #fef2f2;
+        color: #ef4444;
+        font-size: 13px;
         font-weight: 700;
-        letter-spacing: 0.14em;
+        transition: all 0.3s ease;
+    }
+    .faq-card:hover .faq-card-index {
+        background: #ef4444;
+        color: #fff;
+    }
+    .faq-card-question {
+        padding-right: 50px;
+        font-family: var(--font-display);
+        font-size: clamp(17px, 2vw, 20px);
+        font-weight: 700;
+        line-height: 1.3;
+        color: #111827;
+        margin-bottom: 12px;
     }
     .faq-card-divider {
-        width: 100%;
-        height: 1px;
-        margin: 22px 0 20px;
-        background: linear-gradient(90deg, rgba(17, 17, 17, 0.12), rgba(17, 17, 17, 0.04));
+        width: 40px;
+        height: 2px;
+        margin: 0 0 12px;
+        background: linear-gradient(90deg, #ef4444, #fca5a5);
+        border-radius: 2px;
     }
     .faq-card-answer {
-        color: rgba(17, 17, 17, 0.58);
-        font-size: 16px;
-        line-height: 1.8;
-        max-width: 30rem;
+        color: #6b7280;
+        font-size: 14px;
+        line-height: 1.75;
     }
 </style>
 
@@ -1180,6 +1345,7 @@
         </div>
     </div>
 </section>
+</div>
 
 <!-- CTA Section -->
 <section class="bg-background py-16 lg:py-24">

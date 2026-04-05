@@ -67,6 +67,27 @@
 - [x] Add curated FAQ data and implement a theme-matching FAQ section above the final CTA
 - [x] Verify Blade compilation and document the review result
 
+## Current Task: Move Car Search To Global Header
+- [x] Inspect the header layout, inventory filtering flow, and the cleanest suggestion data source for available stock
+- [x] Add a global header search with live suggestions sourced from available cars
+- [x] Remove redundant visible search inputs from the homepage and inventory page while preserving query behavior
+- [x] Verify Blade/controller changes and document the review result
+
+## Current Task: Convert Mileage Filter To Preset Buttons
+- [x] Inspect the current mileage filter UI and request handling in the inventory page
+- [x] Replace mileage min/max inputs with theme-matching preset buttons for desktop and mobile
+- [x] Verify the filter behavior and document the review result
+
+## Current Task: Split Search UX Between Home And Inventory
+- [x] Inspect the current header search and homepage layout to choose a clean route-based split
+- [x] Restore the homepage floating search card while keeping the inventory header search pattern
+- [x] Verify Blade/controller changes and document the review result
+
+## Current Task: Merge About And FAQ Background
+- [x] Inspect the current About Rizki Mobil and FAQ section backgrounds and markup
+- [x] Refactor the homepage markup/CSS so About and FAQ share one continuous background wrapper
+- [x] Verify Blade compilation and document the review result
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.
@@ -104,4 +125,15 @@
 - `php artisan view:cache` completed successfully after merging the homepage background wrapper.
 - Added curated FAQ content in `HomeController` and inserted a light, brand-accented FAQ section above the final CTA so common buyer questions are answered before the conversion block.
 - `php -l app/Http/Controllers/HomeController.php` and `php artisan view:cache` both completed successfully after the FAQ section was added.
+- Moved car search into the global header with a live suggestion dropdown backed by available inventory, including direct links to matching car detail pages and a fallback path to filtered inventory results.
+- Removed the old homepage floating search block and the visible inventory-page search fields, while preserving the `search` query through inventory filter forms via hidden inputs.
+- `php -l` passed for `app/Http/Controllers/HomeController.php`, `app/Http/Controllers/InventoryController.php`, and `app/Models/Car.php`; `php artisan route:list --name=inventory.suggestions` and `php artisan view:cache` also completed successfully.
+- Replaced the inventory mileage min/max inputs with preset buttons such as `< 10k KM` and `10 - 30k KM`, styled to match the existing filter system while still submitting the same `mileage_min` and `mileage_max` parameters.
+- Added the same mileage preset interaction to the mobile filter sheet, with toggle behavior and desktop AJAX refresh support so the filter stays fast and consistent across breakpoints.
+- `php -l app/Http/Controllers/InventoryController.php` and `php artisan view:cache` completed successfully after the mileage-filter redesign.
+- Split the search experience by route: the homepage now uses a floating discovery search card again, while the inventory page keeps the global header search with live suggestions.
+- Restored homepage search support data in `HomeController` and aligned the floating form parameters with the current inventory filters so the handoff remains consistent.
+- `php -l app/Http/Controllers/HomeController.php` and `php artisan view:cache` completed successfully after the search UX split.
+- Merged the `Tentang Rizki Mobil` and `FAQ` sections under one shared `about-faq-section` wrapper so the light brand background now flows continuously without a visible seam.
+- `php artisan view:cache` completed successfully after the About/FAQ background merge.
 - `php artisan test` still fails in the existing `Tests\Feature\ExampleTest` because the test homepage hits `HomeController` before a `cars` table exists in the in-memory sqlite test database; this appears unrelated to the create-image change.

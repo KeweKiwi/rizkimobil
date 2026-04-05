@@ -56,7 +56,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('contact') }}" class="group flex items-center gap-2 text-gray-400 transition-colors hover:text-red-500">
+                        <a href="https://wa.me/6281359359069?text=Halo%20Rizki%20Mobil%2C%20saya%20tertarik%20dengan%20mobil%20di%20website%20Anda" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-2 text-gray-400 transition-colors hover:text-red-500">
                             <span class="h-1.5 w-1.5 rounded-full bg-red-600/50 transition-all group-hover:w-6 group-hover:bg-red-600"></span>
                             Hubungi Kami
                         </a>
@@ -135,6 +135,18 @@
                             </svg>
                         </div>
                         <span class="text-gray-400">(021) 123-4567</span>
+                    </li>
+                    <li class="group flex items-start gap-3">
+                        <div class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-red-600/30 bg-red-600/10 transition-all group-hover:border-red-600 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.3)]">
+                            <svg class="h-4 w-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="text-gray-400 text-sm leading-relaxed">
+                            <p class="font-medium text-gray-300">Jam Operasional</p>
+                            <p>Senin - Sabtu: 08.00 - 17.00</p>
+                            <p>Minggu: Tutup</p>
+                        </div>
                     </li>
                 </ul>
             </div>

@@ -19,13 +19,7 @@ class InventoryController extends Controller
             ->with(['primaryImage']);
 
         // Filter search (make or model)
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('make', 'like', '%' . $search . '%')
-                  ->orWhere('model', 'like', '%' . $search . '%');
-            });
-        }
+        $query->textSearch($request->search);
 
         // Filter make
         if ($request->filled('make')) {
@@ -120,6 +114,13 @@ class InventoryController extends Controller
         // Transmissions (from enum)
         $transmissions = ['manual', 'automatic'];
 
+        $mileagePresets = [
+            ['label' => '< 10k KM', 'min' => null, 'max' => 10000],
+            ['label' => '10 - 30k KM', 'min' => 10000, 'max' => 30000],
+            ['label' => '30 - 50k KM', 'min' => 30000, 'max' => 50000],
+            ['label' => '> 50k KM', 'min' => 50000, 'max' => null],
+        ];
+
         // Get active locations
         $locations = Location::where('is_active', true)->pluck('name', 'id');
 
@@ -135,6 +136,35 @@ class InventoryController extends Controller
             ]);
         }
 
-        return view('inventory', compact('cars', 'carMakes', 'bodyTypes', 'fuelTypes', 'transmissions', 'locations', 'favorites'));
+        return view('inventory', compact('cars', 'carMakes', 'bodyTypes', 'fuelTypes', 'transmissions', 'mileagePresets', 'locations', 'favorites'));
+    }
+
+    public function suggestions(Request $request)
+    {
+        $search = trim((string) $request->get('q', ''));
+
+        $cars = Car::query()
+            ->available()
+            ->with('primaryImage')
+            ->textSearch($search)
+            ->orderByDesc('featured')
+            ->orderByDesc('created_at')
+            ->limit(6)
+            ->get();
+
+        return response()->json([
+            'suggestions' => $cars->map(fn (Car $car) => [
+                'id' => $car->id,
+                'label' => $car->search_label,
+                'meta' => trim(implode(' • ', array_filter([
+                    $car->make,
+                    $car->model,
+                    $car->year,
+                ]))),
+                'price' => 'Rp ' . number_format((int) $car->price, 0, ',', '.'),
+                'image' => $car->main_image,
+                'url' => route('car.show', $car->id),
+            ]),
+        ]);
     }
 }
