@@ -4,27 +4,30 @@ namespace App\Filament\Widgets;
 
 use App\Models\Car;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
 
 class LatestCarsWidget extends TableWidget
 {
-    protected static ?int $sort = 3;
+    protected static ?int $sort = 6;
 
     protected int | string | array $columnSpan = 'full';
 
     public function table(Table $table): Table
     {
         return $table
-            ->heading('STNK Segera Habis')
-            ->description('Mobil tersedia yang STNK-nya habis dalam 30 hari — segera tindak lanjuti')
+            ->heading('Stok Siap Didorong')
+            ->description('Unit aktif bernilai tinggi dan listing unggulan yang paling layak diprioritaskan untuk penjualan.')
             ->query(
                 Car::query()
+                    ->with(['location', 'primaryImage', 'images'])
                     ->where('sold', false)
-                    ->whereNotNull('stnk_valid_until')
-                    ->where('stnk_valid_until', '<=', now()->addDays(30))
-                    ->orderBy('stnk_valid_until', 'asc')
+                    ->orderByDesc('featured')
+                    ->orderByDesc('price')
+                    ->latest()
+                    ->limit(8)
             )
             ->columns([
                 ImageColumn::make('image')
@@ -40,35 +43,45 @@ class LatestCarsWidget extends TableWidget
                     ->weight('bold'),
 
                 TextColumn::make('price')
-                    ->formatStateUsing(fn ($state) => 'Rp ' . number_format($state, 0, ',', '.'))
+                    ->label('Harga')
+                    ->formatStateUsing(fn ($state) => $state ? 'Rp ' . number_format($state, 0, ',', '.') : '—')
+                    ->color('warning')
+                    ->weight('bold'),
+
+                IconColumn::make('featured')
+                    ->label('Unggulan')
+                    ->boolean()
+                    ->trueIcon('heroicon-s-star')
+                    ->falseIcon('heroicon-o-star')
+                    ->trueColor('warning')
+                    ->falseColor('gray')
+                    ->alignCenter(),
+
+                TextColumn::make('mileage_km')
+                    ->label('KM')
+                    ->formatStateUsing(fn ($state) => number_format((int) $state, 0, ',', '.') . ' km')
                     ->color('gray'),
 
                 TextColumn::make('stnk_valid_until')
-                    ->label('STNK Berakhir')
+                    ->label('STNK')
                     ->date('d M Y')
-                    ->color(fn (Car $record) => $record->stnk_valid_until->isPast()
-                        ? 'danger'
-                        : ($record->stnk_valid_until->diffInDays(now()) <= 7 ? 'warning' : 'gray')
-                    )
-                    ->weight(fn (Car $record) => $record->stnk_valid_until->isPast() ? 'bold' : null),
-
-                TextColumn::make('stnk_status')
-                    ->label('Status')
-                    ->badge()
-                    ->getStateUsing(fn (Car $record) => $record->stnk_valid_until->isPast()
-                        ? 'Kadaluarsa'
-                        : 'Habis ' . $record->stnk_valid_until->diffForHumans()
-                    )
-                    ->color(fn (Car $record) => $record->stnk_valid_until->isPast() ? 'danger' : 'warning'),
+                    ->placeholder('Belum diisi')
+                    ->color(fn (Car $record) => match (true) {
+                        $record->stnk_valid_until === null => 'gray',
+                        $record->stnk_valid_until->isPast() => 'danger',
+                        $record->stnk_valid_until->diffInDays(now()) <= 30 => 'warning',
+                        default => 'gray',
+                    }),
 
                 TextColumn::make('location.name')
                     ->label('Lokasi')
                     ->color('gray')
                     ->placeholder('—'),
             ])
-            ->emptyStateHeading('Semua aman!')
-            ->emptyStateDescription('Tidak ada mobil dengan STNK habis dalam 30 hari ke depan.')
-            ->emptyStateIcon('heroicon-o-check-circle')
+            ->striped()
+            ->emptyStateHeading('Belum ada stok siap jual')
+            ->emptyStateDescription('Tambahkan listing aktif agar dashboard penjualan bisa memberi prioritas stok.')
+            ->emptyStateIcon('heroicon-o-truck')
             ->paginated(false);
     }
 }

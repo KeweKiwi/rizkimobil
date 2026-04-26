@@ -227,6 +227,11 @@ class CarForm
                             ->label('Tandai Sebagai Terjual')
                             ->helperText('Menyembunyikan mobil dari inventaris publik')
                             ->default(false),
+
+                        DatePicker::make('sold_at')
+                            ->label('Tanggal Terjual')
+                            ->displayFormat('d M Y')
+                            ->helperText('Diisi otomatis saat mobil ditandai terjual; bisa disesuaikan untuk laporan dashboard.'),
                     ])
                     ->columns(2),
 

@@ -30,6 +30,7 @@ class Car extends Model
         'features',
         'featured',
         'sold',
+        'sold_at',
     ];
 
     protected $casts = [
@@ -41,7 +42,21 @@ class Car extends Model
         'seats' => 'integer',
         'stnk_valid_until' => 'date',
         'price' => 'integer', // karena di migration kita pakai integer rupiah
+        'sold_at' => 'datetime',
     ];
+
+    protected static function booted(): void
+    {
+        static::saving(function (Car $car) {
+            if ($car->sold && $car->sold_at === null) {
+                $car->sold_at = now();
+            }
+
+            if (! $car->sold) {
+                $car->sold_at = null;
+            }
+        });
+    }
 
     /**
      * Car has many images

@@ -92,6 +92,13 @@ class CarsTable
                     ->formatStateUsing(fn ($state) => $state ? 'Terjual' : 'Tersedia')
                     ->color(fn ($state) => $state ? 'danger' : 'success'),
 
+                TextColumn::make('sold_at')
+                    ->label('Tanggal Terjual')
+                    ->date('d M Y')
+                    ->placeholder('—')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('stnk_valid_until')
                     ->label('STNK')
                     ->date('d M Y')

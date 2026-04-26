@@ -29,3 +29,4 @@
 - For AJAX-driven filters, do not rely on Blade-only conditional rendering for controls like "clear filters"; keep the control mounted and sync its visible/disabled state in JavaScript.
 - For search UX, do not force one global pattern across all pages when the user wants different behavior per route; keep homepage discovery search and inventory search as distinct experiences when requested.
 - When two light-brand homepage sections like About and FAQ should feel continuous, merge them under one shared wrapper background instead of trying to match them with separate section backgrounds.
+- For admin theme refinements, keep Filament colors aligned with the storefront identity: black or white surfaces with red gradients, not amber/orange or slate-blue dashboard styling.

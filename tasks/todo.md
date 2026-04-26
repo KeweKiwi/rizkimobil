@@ -88,6 +88,25 @@
 - [x] Refactor the homepage markup/CSS so About and FAQ share one continuous background wrapper
 - [x] Verify Blade compilation and document the review result
 
+## Current Task: Upgrade Admin Dashboard Visualization
+- [x] Review `AGENTS.md` and `tasks/lessons.md` before starting this non-trivial task
+- [x] Audit the current Filament dashboard widgets, theme, and available admin data
+- [x] Redesign the dashboard information hierarchy so the most important admin insights are easier to scan
+- [x] Add relevant dashboard visualizations for lead trend, stock distribution, and inventory health
+- [x] Refine the admin dashboard theme/layout so it feels more polished and professional
+- [x] Verify syntax/view compilation and document the review result
+
+## Current Task: Refocus Admin Dashboard On Sales
+- [x] Read `AGENTS.md` and relevant `tasks/lessons.md` notes before implementation
+- [x] Audit the current dashboard data model and identify available sales signals
+- [x] Replace lead-focused dashboard widgets with sales/inventory performance widgets
+- [x] Verify syntax/build behavior and document the review result
+
+## Current Task: Align Admin Dashboard Theme With Storefront
+- [x] Review the current Filament theme CSS and storefront red/black/white visual language
+- [x] Replace amber/slate admin styling with red gradients for dark and light mode
+- [x] Verify CSS build/view behavior and document the review result
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.
@@ -137,3 +156,25 @@
 - Merged the `Tentang Rizki Mobil` and `FAQ` sections under one shared `about-faq-section` wrapper so the light brand background now flows continuously without a visible seam.
 - `php artisan view:cache` completed successfully after the About/FAQ background merge.
 - `php artisan test` still fails in the existing `Tests\Feature\ExampleTest` because the test homepage hits `HomeController` before a `cars` table exists in the in-memory sqlite test database; this appears unrelated to the create-image change.
+- Replaced the default admin dashboard page with a custom Filament dashboard layout that uses a 12-column grid, clearer page hierarchy, and a stronger operational summary for admin users.
+- Upgraded the overview area with sharper KPI framing and added three relevant visualizations: lead trend over time, available-stock composition by body type, and active-stock price-band distribution.
+- Refined the operational tables so lead follow-up and STNK-priority inventory feel more intentional, easier to scan, and more aligned with the upgraded dashboard structure.
+- Elevated the shared admin theme with darker premium surfaces, softer gradients, better widget separation, and more polished card/table presentation so the panel feels closer to a professional admin dashboard.
+- `php -l` passed for `app/Filament/Pages/Dashboard.php`, `app/Filament/Widgets/StatsOverview.php`, `app/Filament/Widgets/LeadsTrendChart.php`, `app/Filament/Widgets/InventoryBodyTypeChart.php`, `app/Filament/Widgets/InventoryPriceBandChart.php`, `app/Filament/Widgets/LatestContactsWidget.php`, `app/Filament/Widgets/LatestCarsWidget.php`, and `app/Providers/Filament/AdminPanelProvider.php`.
+- `php artisan view:cache` completed successfully after the dashboard refactor.
+- `npm run build` completed successfully, including the updated Filament admin theme bundle.
+- Refocused the admin dashboard away from leads and toward sales: KPI cards now show estimated sold revenue, units sold this month, active stock value, and sell-through ratio.
+- Added a real `sold_at` timestamp so sales charts use a stable sale date instead of relying on generic listing updates; existing sold units were backfilled from `updated_at` during migration.
+- Replaced the lead trend/table widgets with `SalesTrendChart` and `SoldCarsWidget`, then adjusted stock widgets to support sales prioritization.
+- Updated the car admin form/table so admins can see or adjust the sale date when a unit is marked sold.
+- Fixed the existing homepage feature test setup with `RefreshDatabase` and made the car card partial tolerate the homepage fallback mock cars.
+- Applied the new migration locally with `php artisan migrate`.
+- `php -l` passed for the changed dashboard widgets, car model/form/table, new migration, test, and car-card partial.
+- `php artisan view:cache` completed successfully after the sales-dashboard refactor.
+- `php artisan test` passed: 2 tests, 2 assertions.
+- Aligned the Filament admin theme with the storefront palette by changing the panel primary color from amber to red.
+- Updated admin light mode to use white surfaces with soft red radial gradients, red-tinted borders, and a restrained red hover state.
+- Updated admin dark mode to use near-black surfaces with the same red glow language as the public homepage trust/testimonial sections.
+- Neutralized the admin gray scale so it no longer reads as slate-blue, and made the logo only invert in dark mode.
+- Removed leftover amber/orange/slate dashboard theme references from the admin CSS.
+- `php -l app/Providers/Filament/AdminPanelProvider.php`, `php artisan view:cache`, and `npm run build` completed successfully after the theme alignment.

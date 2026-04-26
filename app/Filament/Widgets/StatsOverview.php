@@ -3,7 +3,6 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Car;
-use App\Models\Contact;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -11,48 +10,133 @@ class StatsOverview extends StatsOverviewWidget
 {
     protected static ?int $sort = 1;
 
+    protected ?string $heading = 'Snapshot Penjualan';
+
+    protected ?string $description = 'Ringkasan unit terjual, estimasi omzet, dan stok siap jual berdasarkan data listing saat ini.';
+
+    protected int | array | null $columns = [
+        'md' => 2,
+        'xl' => 4,
+    ];
+
     protected function getStats(): array
     {
         $availableCount = Car::where('sold', false)->count();
-        $inventoryValue = Car::where('sold', false)->sum('price');
+        $soldCount = Car::where('sold', true)->count();
+        $totalInventoryCount = $availableCount + $soldCount;
 
-        $leadsThisWeek = Contact::where('created_at', '>=', now()->subDays(7))->count();
-        $leadsTotal    = Contact::count();
+        $inventoryValue = (int) Car::where('sold', false)->sum('price');
+        $soldValue = (int) Car::where('sold', true)->sum('price');
 
-        // STNK expiring within 30 days (including already expired)
+        $soldThisMonth = Car::where('sold', true)
+            ->where('sold_at', '>=', now()->startOfMonth())
+            ->count();
+
+        $previousMonthSold = Car::where('sold', true)
+            ->whereBetween('sold_at', [
+                now()->subMonthNoOverflow()->startOfMonth(),
+                now()->subMonthNoOverflow()->endOfMonth(),
+            ])
+            ->count();
+
         $stnkExpiring = Car::where('sold', false)
             ->whereNotNull('stnk_valid_until')
             ->where('stnk_valid_until', '<=', now()->addDays(30))
             ->count();
 
-        $featuredCount = Car::where('featured', true)->where('sold', false)->count();
+        $soldTrend = collect(range(5, 0))
+            ->map(fn (int $monthOffset) => Car::where('sold', true)->whereBetween('sold_at', [
+                now()->subMonths($monthOffset)->startOfMonth(),
+                now()->subMonths($monthOffset)->endOfMonth(),
+            ])->count())
+            ->values()
+            ->all();
 
-        // 7-day lead trend
-        $leadTrend = collect(range(6, 0))->map(
-            fn ($d) => Contact::whereDate('created_at', now()->subDays($d)->toDateString())->count()
-        )->values()->toArray();
+        $revenueTrend = collect(range(5, 0))
+            ->map(fn (int $monthOffset) => (int) Car::where('sold', true)->whereBetween('sold_at', [
+                now()->subMonths($monthOffset)->startOfMonth(),
+                now()->subMonths($monthOffset)->endOfMonth(),
+            ])->sum('price'))
+            ->values()
+            ->all();
+
+        $availableTrend = collect(range(5, 0))
+            ->map(fn (int $monthOffset) => Car::where('sold', false)->whereBetween('created_at', [
+                now()->subMonths($monthOffset)->startOfMonth(),
+                now()->subMonths($monthOffset)->endOfMonth(),
+            ])->count())
+            ->values()
+            ->all();
+
+        $sellThroughTrend = collect(range(5, 0))
+            ->map(fn (int $monthOffset) => Car::where('sold', true)->where('sold_at', '<=', now()->subMonths($monthOffset)->endOfMonth())->count())
+            ->values()
+            ->all();
+
+        $sellThroughRate = $totalInventoryCount > 0
+            ? round(($soldCount / $totalInventoryCount) * 100)
+            : 0;
 
         return [
-            Stat::make('Stok Tersedia', $availableCount)
-                ->description('Rp ' . number_format($inventoryValue, 0, ',', '.') . ' total nilai inventaris')
-                ->descriptionIcon('heroicon-m-truck')
-                ->color('info'),
-
-            Stat::make('Lead Minggu Ini', $leadsThisWeek)
-                ->description($leadsTotal . ' total pertanyaan sepanjang waktu')
-                ->descriptionIcon('heroicon-m-chat-bubble-left-ellipsis')
+            Stat::make('Estimasi Omzet Terjual', $this->formatRupiahCompact($soldValue))
+                ->description($soldCount . ' unit sudah terjual')
+                ->descriptionIcon('heroicon-m-banknotes')
                 ->color('success')
-                ->chart($leadTrend),
+                ->chart($revenueTrend),
 
-            Stat::make('STNK Segera Habis', $stnkExpiring)
-                ->description('Mobil dengan STNK habis dalam 30 hari')
-                ->descriptionIcon('heroicon-m-exclamation-triangle')
-                ->color($stnkExpiring > 0 ? 'danger' : 'success'),
+            Stat::make('Terjual Bulan Ini', $soldThisMonth)
+                ->description($this->formatSoldComparison($soldThisMonth, $previousMonthSold))
+                ->descriptionIcon('heroicon-m-arrow-trending-up')
+                ->color('warning')
+                ->chart($soldTrend),
 
-            Stat::make('Ditampilkan di Homepage', $featuredCount)
-                ->description('Disorot di hero & grid unggulan')
-                ->descriptionIcon('heroicon-m-star')
-                ->color('warning'),
+            Stat::make('Stok Siap Jual', $availableCount)
+                ->description($this->formatRupiahCompact($inventoryValue) . ' nilai listing aktif')
+                ->descriptionIcon('heroicon-m-truck')
+                ->color('info')
+                ->chart($availableTrend),
+
+            Stat::make('Rasio Terjual', $sellThroughRate . '%')
+                ->description($stnkExpiring > 0
+                    ? $stnkExpiring . ' stok aktif perlu cek STNK sebelum ditawarkan'
+                    : 'Dokumen stok aktif aman untuk ditawarkan'
+                )
+                ->descriptionIcon('heroicon-m-check-badge')
+                ->color($sellThroughRate >= 50 ? 'success' : 'gray')
+                ->chart($sellThroughTrend),
         ];
+    }
+
+    private function formatSoldComparison(int $current, int $previous): string
+    {
+        if ($previous === 0) {
+            return $current > 0
+                ? 'Mulai bergerak bulan ini'
+                : 'Belum ada unit ditandai terjual bulan ini';
+        }
+
+        $difference = $current - $previous;
+        $change = round((abs($difference) / $previous) * 100);
+
+        if ($difference === 0) {
+            return 'Stabil dibanding bulan lalu';
+        }
+
+        $direction = $difference > 0 ? 'naik' : 'turun';
+
+        return $change . '% ' . $direction . ' dibanding bulan lalu';
+    }
+
+    private function formatRupiahCompact(int $amount): string
+    {
+        if ($amount >= 1000000000) {
+            return 'Rp ' . number_format($amount / 1000000000, 1, ',', '.') . ' M';
+        }
+
+        if ($amount >= 1000000) {
+            return 'Rp ' . number_format($amount / 1000000, 0, ',', '.') . ' Jt';
+        }
+
+        return 'Rp ' . number_format($amount, 0, ',', '.');
     }
 }
