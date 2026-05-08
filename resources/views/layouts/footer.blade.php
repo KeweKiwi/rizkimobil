@@ -1,180 +1,330 @@
-<footer class="relative bg-gradient-to-br from-[#0A0C10] via-[#12141A] to-[#0A0C10] border-t border-red-600/20">
-    <!-- Red glow effect at top -->
-    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-600 to-transparent opacity-60"></div>
-    
-    <div class="container mx-auto px-4 py-16">
-        <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
-            <!-- Company Info -->
-            <div class="lg:col-span-1">
-                <div class="mb-6">
+@php
+    $whatsappNumber = '6281359359069';
+    $whatsappMessage = urlencode('Halo Rizki Mobil, saya ingin tanya stok mobil yang tersedia.');
+    $whatsappUrl = "https://wa.me/{$whatsappNumber}?text={$whatsappMessage}";
+@endphp
+
+<style>
+    .rmi-footer {
+        position: relative;
+        overflow: hidden;
+        background:
+            radial-gradient(circle at 10% 0%, rgba(239, 68, 68, 0.22), transparent 32%),
+            radial-gradient(circle at 88% 18%, rgba(239, 68, 68, 0.12), transparent 28%),
+            linear-gradient(135deg, #090d15 0%, #05070c 58%, #120306 100%);
+        color: #ffffff;
+    }
+    .rmi-footer::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+        background-size: 76px 76px;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.38), transparent 72%);
+        pointer-events: none;
+    }
+    .rmi-footer::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.9), transparent);
+    }
+    .rmi-footer-inner {
+        position: relative;
+        z-index: 1;
+        padding-top: clamp(56px, 7vw, 86px);
+        padding-bottom: 26px;
+    }
+    .rmi-footer-main {
+        display: grid;
+        gap: clamp(34px, 5vw, 72px);
+        align-items: start;
+    }
+    @media (min-width: 1024px) {
+        .rmi-footer-main {
+            grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+        }
+    }
+    .rmi-footer-logo {
+        width: 150px;
+        height: auto;
+        filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.34));
+    }
+    .rmi-footer-title {
+        margin-top: 26px;
+        max-width: 760px;
+        font-family: var(--font-display);
+        font-size: clamp(34px, 5vw, 64px);
+        font-weight: 900;
+        line-height: 0.98;
+        letter-spacing: 0;
+    }
+    .rmi-footer-title span {
+        color: #ff4747;
+    }
+    .rmi-footer-copy {
+        margin-top: 20px;
+        max-width: 640px;
+        color: rgba(255, 255, 255, 0.62);
+        font-size: 15px;
+        line-height: 1.85;
+    }
+    .rmi-footer-proof {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        max-width: 760px;
+        margin-top: 34px;
+        border-block: 1px solid rgba(255, 255, 255, 0.14);
+    }
+    .rmi-footer-proof span {
+        display: block;
+        padding: 16px 18px 16px 0;
+        color: rgba(255, 255, 255, 0.58);
+        font-size: 12px;
+        font-weight: 800;
+        line-height: 1.45;
+    }
+    .rmi-footer-proof span + span {
+        border-left: 1px solid rgba(255, 255, 255, 0.14);
+        padding-left: 18px;
+    }
+    .rmi-footer-actions {
+        display: grid;
+        gap: 18px;
+        padding: clamp(22px, 4vw, 34px);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035));
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.24);
+        backdrop-filter: blur(14px);
+    }
+    .rmi-footer-actions-label {
+        color: rgba(255, 255, 255, 0.52);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+    }
+    .rmi-footer-actions-title {
+        color: #ffffff;
+        font-family: var(--font-display);
+        font-size: clamp(24px, 3vw, 36px);
+        font-weight: 900;
+        line-height: 1.06;
+        letter-spacing: 0;
+    }
+    .rmi-footer-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 6px;
+    }
+    .rmi-footer-button {
+        display: inline-flex;
+        min-height: 50px;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border-radius: 999px;
+        padding: 0 20px;
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+    }
+    .rmi-footer-button svg {
+        width: 17px;
+        height: 17px;
+    }
+    .rmi-footer-button-primary {
+        background: #ef3333;
+        color: #ffffff;
+        box-shadow: 0 18px 38px rgba(239, 51, 51, 0.3);
+    }
+    .rmi-footer-button-secondary {
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.04);
+    }
+    .rmi-footer-button:hover {
+        transform: translateY(-2px);
+    }
+    .rmi-footer-button-primary:hover {
+        background: #dc2626;
+        box-shadow: 0 22px 44px rgba(220, 38, 38, 0.34);
+    }
+    .rmi-footer-button-secondary:hover {
+        border-color: rgba(239, 68, 68, 0.5);
+        background: rgba(239, 68, 68, 0.1);
+    }
+    .rmi-footer-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .rmi-footer-nav a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        border-radius: 999px;
+        padding: 0 13px;
+        color: rgba(255, 255, 255, 0.58);
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: color 0.2s ease, background 0.2s ease;
+    }
+    .rmi-footer-nav a:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.07);
+    }
+    .rmi-footer-bottom {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin-top: clamp(36px, 5vw, 62px);
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.44);
+        font-size: 13px;
+        line-height: 1.6;
+    }
+    @media (min-width: 768px) {
+        .rmi-footer-bottom {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+    .rmi-footer-code {
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+    }
+    @media (max-width: 640px) {
+        .rmi-footer-inner {
+            padding-top: 42px;
+            padding-bottom: 132px;
+        }
+        .rmi-footer-logo {
+            width: 132px;
+        }
+        .rmi-footer-title {
+            margin-top: 22px;
+            max-width: 22rem;
+            font-size: 32px;
+            line-height: 1.04;
+        }
+        .rmi-footer-copy {
+            font-size: 14px;
+            line-height: 1.75;
+        }
+        .rmi-footer-proof {
+            grid-template-columns: 1fr;
+            margin-top: 28px;
+        }
+        .rmi-footer-proof span {
+            padding: 14px 0;
+        }
+        .rmi-footer-proof span + span {
+            border-left: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.14);
+            padding-left: 0;
+        }
+        .rmi-footer-actions {
+            padding: 22px;
+        }
+        .rmi-footer-actions-title {
+            font-size: 28px;
+            line-height: 1.12;
+        }
+        .rmi-footer-button {
+            width: 100%;
+        }
+        .rmi-footer-nav {
+            gap: 8px;
+        }
+        .rmi-footer-bottom {
+            margin-top: 34px;
+        }
+    }
+</style>
+
+<footer class="rmi-footer">
+    <div class="container rmi-footer-inner mx-auto px-4">
+        <div class="rmi-footer-main">
+            <div>
+                <a href="{{ route('home') }}" class="inline-flex" aria-label="Rizki Mobil Indonesia">
                     <img
                         src="{{ asset('images/cars/aset/logo-rmi-hitam.png') }}"
                         alt="Rizki Mobil Indonesia"
-                        class="h-24 w-auto object-contain drop-shadow-[0_0_12px_rgba(239,68,68,0.4)]"
+                        class="rmi-footer-logo"
                     />
-                </div>
-                <p class="text-sm text-gray-400 leading-relaxed">
-                    Mitra terpercaya Anda dalam menemukan kendaraan bekas berkualitas dengan transparansi penuh dan ketenangan pikiran.
+                </a>
+
+                <h2 class="rmi-footer-title">Mobil bekas terkurasi, <span>dibicarakan dengan jelas.</span></h2>
+                <p class="rmi-footer-copy">
+                    Untuk stok, kondisi unit, opsi tukar tambah, dan jadwal lihat mobil, mulai dari percakapan singkat dengan admin Rizki Mobil.
                 </p>
-                <!-- Social Media Icons -->
-                <div class="mt-6 flex gap-3">
-                    <a href="#" class="group flex h-10 w-10 items-center justify-center rounded-lg border border-red-600/30 bg-red-600/10 transition-all hover:border-red-600 hover:bg-red-600/20 hover:shadow-[0_0_15px_rgba(239,68,68,0.4)]">
-                        <svg class="h-5 w-5 text-red-500 group-hover:text-red-400" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="group flex h-10 w-10 items-center justify-center rounded-lg border border-red-600/30 bg-red-600/10 transition-all hover:border-red-600 hover:bg-red-600/20 hover:shadow-[0_0_15px_rgba(239,68,68,0.4)]">
-                        <svg class="h-5 w-5 text-red-500 group-hover:text-red-400" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="group flex h-10 w-10 items-center justify-center rounded-lg border border-red-600/30 bg-red-600/10 transition-all hover:border-red-600 hover:bg-red-600/20 hover:shadow-[0_0_15px_rgba(239,68,68,0.4)]">
-                        <svg class="h-5 w-5 text-red-500 group-hover:text-red-400" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                        </svg>
-                    </a>
+
+                <div class="rmi-footer-proof" aria-label="Prinsip layanan Rizki Mobil">
+                    <span>Informasi unit dijelaskan sebelum visit.</span>
+                    <span>Stok dan harga dikonfirmasi ulang.</span>
+                    <span>Jadwal lihat mobil dibuat lebih terarah.</span>
                 </div>
             </div>
 
-            <!-- Quick Links -->
-            <div>
-                <h3 class="mb-6 text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
-                    <span class="h-px w-8 bg-gradient-to-r from-red-600 to-transparent"></span>
-                    Tautan Cepat
-                </h3>
-                <ul class="space-y-3 text-sm">
-                    <li>
-                        <a href="{{ route('home') }}" class="group flex items-center gap-2 text-gray-400 transition-colors hover:text-red-500">
-                            <span class="h-1.5 w-1.5 rounded-full bg-red-600/50 transition-all group-hover:w-6 group-hover:bg-red-600"></span>
-                            Beranda
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('inventory') }}" class="group flex items-center gap-2 text-gray-400 transition-colors hover:text-red-500">
-                            <span class="h-1.5 w-1.5 rounded-full bg-red-600/50 transition-all group-hover:w-6 group-hover:bg-red-600"></span>
-                            Inventori
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://wa.me/6281359359069?text=Halo%20Rizki%20Mobil%2C%20saya%20tertarik%20dengan%20mobil%20di%20website%20Anda" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-2 text-gray-400 transition-colors hover:text-red-500">
-                            <span class="h-1.5 w-1.5 rounded-full bg-red-600/50 transition-all group-hover:w-6 group-hover:bg-red-600"></span>
-                            Hubungi Kami
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="group flex items-center gap-2 text-gray-400 transition-colors hover:text-red-500">
-                            <span class="h-1.5 w-1.5 rounded-full bg-red-600/50 transition-all group-hover:w-6 group-hover:bg-red-600"></span>
-                            Tentang Kami
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <div class="rmi-footer-actions">
+                <p class="rmi-footer-actions-label">Next move</p>
+                <p class="rmi-footer-actions-title">Tanya unit yang sedang Anda incar, atau langsung lihat stok tersedia.</p>
 
-            <!-- Resources -->
-            <div>
-                <h3 class="mb-6 text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
-                    <span class="h-px w-8 bg-gradient-to-r from-red-600 to-transparent"></span>
-                    Sumber Daya
-                </h3>
-                <ul class="space-y-3 text-sm">
-                    <li>
-                        <a href="#" class="group flex items-center gap-2 text-gray-400 transition-colors hover:text-red-500">
-                            <span class="h-1.5 w-1.5 rounded-full bg-red-600/50 transition-all group-hover:w-6 group-hover:bg-red-600"></span>
-                            Opsi Pembiayaan
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="group flex items-center gap-2 text-gray-400 transition-colors hover:text-red-500">
-                            <span class="h-1.5 w-1.5 rounded-full bg-red-600/50 transition-all group-hover:w-6 group-hover:bg-red-600"></span>
-                            Nilai Tukar Tambah
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="group flex items-center gap-2 text-gray-400 transition-colors hover:text-red-500">
-                            <span class="h-1.5 w-1.5 rounded-full bg-red-600/50 transition-all group-hover:w-6 group-hover:bg-red-600"></span>
-                            Informasi Garansi
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="group flex items-center gap-2 text-gray-400 transition-colors hover:text-red-500">
-                            <span class="h-1.5 w-1.5 rounded-full bg-red-600/50 transition-all group-hover:w-6 group-hover:bg-red-600"></span>
-                            FAQ
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                <div class="rmi-footer-buttons">
+                    <a
+                        href="{{ $whatsappUrl }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="rmi-footer-button rmi-footer-button-primary"
+                    >
+                        Chat WhatsApp
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H8M17 7v9"/>
+                        </svg>
+                    </a>
+                    <a
+                        href="{{ route('inventory') }}"
+                        class="rmi-footer-button rmi-footer-button-secondary"
+                    >
+                        Lihat Stok
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M6 7v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7M9 7V5a3 3 0 0 1 6 0v2"/>
+                        </svg>
+                    </a>
+                </div>
 
-            <!-- Contact Info -->
-            <div>
-                <h3 class="mb-6 text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
-                    <span class="h-px w-8 bg-gradient-to-r from-red-600 to-transparent"></span>
-                    Hubungi Kami
-                </h3>
-                <ul class="space-y-4 text-sm">
-                    <li class="group flex items-start gap-3">
-                        <div class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-red-600/30 bg-red-600/10 transition-all group-hover:border-red-600 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.3)]">
-                            <svg class="h-4 w-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                        </div>
-                        <span class="text-gray-400 leading-relaxed">Jl. Otomotif No. 123, Jakarta 12345</span>
-                    </li>
-                    <li class="group flex items-center gap-3">
-                        <div class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-red-600/30 bg-red-600/10 transition-all group-hover:border-red-600 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.3)]">
-                            <svg class="h-4 w-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                            </svg>
-                        </div>
-                        <span class="text-gray-400">info@rizkimobil.com</span>
-                    </li>
-                    <li class="group flex items-center gap-3">
-                        <div class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-red-600/30 bg-red-600/10 transition-all group-hover:border-red-600 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.3)]">
-                            <svg class="h-4 w-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                            </svg>
-                        </div>
-                        <span class="text-gray-400">(021) 123-4567</span>
-                    </li>
-                    <li class="group flex items-start gap-3">
-                        <div class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-red-600/30 bg-red-600/10 transition-all group-hover:border-red-600 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.3)]">
-                            <svg class="h-4 w-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                        </div>
-                        <div class="text-gray-400 text-sm leading-relaxed">
-                            <p class="font-medium text-gray-300">Jam Operasional</p>
-                            <p>Senin - Sabtu: 08.00 - 17.00</p>
-                            <p>Minggu: Tutup</p>
-                        </div>
-                    </li>
-                </ul>
+                <nav class="rmi-footer-nav" aria-label="Footer navigation">
+                    <a href="{{ route('home') }}">Beranda</a>
+                    <a href="{{ route('inventory') }}">Inventori</a>
+                    <a href="{{ route('home') }}#tentang">Tentang</a>
+                    <a href="{{ route('home') }}#faq">FAQ</a>
+                    <a href="{{ route('contact') }}">Kontak</a>
+                </nav>
             </div>
         </div>
 
-        <!-- Bottom Bar -->
-        <div class="mt-16 border-t border-red-600/20 pt-8">
-            <div class="flex flex-col items-center justify-between gap-6 md:flex-row">
-                <p class="text-sm text-gray-500">
-                    © {{ date('Y') }} <span class="text-red-500 font-semibold">Rizki Mobil Indonesia</span>. Hak cipta dilindungi.
-                </p>
-                <div class="flex flex-wrap justify-center gap-6 text-sm">
-                    <a href="#" class="text-gray-500 transition-colors hover:text-red-500">
-                        Kebijakan Privasi
-                    </a>
-                    <span class="text-gray-700">•</span>
-                    <a href="#" class="text-gray-500 transition-colors hover:text-red-500">
-                        Syarat Layanan
-                    </a>
-                    <span class="text-gray-700">•</span>
-                    <a href="#" class="text-gray-500 transition-colors hover:text-red-500">
-                        Kebijakan Cookie
-                    </a>
-                </div>
-            </div>
+        <div class="rmi-footer-bottom">
+            <p>© {{ date('Y') }} Rizki Mobil Indonesia. Stok dan harga dapat berubah; konfirmasi terakhir melalui admin.</p>
+            <p class="rmi-footer-code">RMI / verified used car</p>
         </div>
     </div>
-    
-    <!-- Bottom accent line -->
-    <div class="h-1 bg-gradient-to-r from-transparent via-red-600 to-transparent opacity-40"></div>
 </footer>

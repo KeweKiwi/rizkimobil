@@ -34,10 +34,10 @@
         <a href="https://wa.me/6281359359069?text=Halo%20Rizki%20Mobil%2C%20saya%20tertarik%20dengan%20mobil%20di%20website%20Anda" 
            target="_blank" 
            rel="noopener noreferrer"
-           class="fixed bottom-6 right-6 z-50 group"
+           class="fixed bottom-4 right-4 z-50 group sm:bottom-6 sm:right-6"
            aria-label="Chat via WhatsApp">
             <!-- Button Container -->
-            <div class="flex items-center gap-3 rounded-full bg-gradient-to-br from-red-600 to-red-700 px-5 py-3.5 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(220,38,38,0.6)] hover:from-red-500 hover:to-red-600">
+            <div class="flex items-center gap-3 rounded-full bg-gradient-to-br from-red-600 to-red-700 p-3 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(220,38,38,0.6)] hover:from-red-500 hover:to-red-600 sm:px-5 sm:py-3.5">
                 <!-- WhatsApp Icon -->
                 <div class="relative flex h-10 w-10 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm">
                     <svg class="h-6 w-6 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -48,7 +48,7 @@
                 </div>
                 
                 <!-- Text -->
-                <span class="font-semibold text-white text-base pr-1">Chat Kami</span>
+                <span class="hidden font-semibold text-white text-base pr-1 sm:inline">Chat Kami</span>
             </div>
             
             <!-- Glow effect -->

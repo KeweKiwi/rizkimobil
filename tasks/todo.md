@@ -107,6 +107,75 @@
 - [x] Replace amber/slate admin styling with red gradients for dark and light mode
 - [x] Verify CSS build/view behavior and document the review result
 
+## Current Task: Make Footer Content More Relevant
+- [x] Review the existing footer, routes, and available contact/inventory links
+- [x] Replace placeholder footer content with showroom-relevant navigation, services, and contact CTAs
+- [x] Verify Blade compilation/tests and document the review result
+
+## Current Task: Simplify Footer To Useful Essentials
+- [x] Capture the correction that the previous footer was too busy
+- [x] Reduce footer content to only the most useful buyer actions
+- [x] Verify Blade compilation/tests and document the review result
+
+## Current Task: Redesign Contact Page UI
+- [x] Review contact route, controller validation, and current Blade form fields
+- [x] Replace the plain contact page with a polished Rizki Mobil contact experience
+- [x] Verify Blade/controller syntax and tests, then document the review result
+
+## Current Task: Add Long-Term Dashboard Performance
+- [x] Review `AGENTS.md`, `tasks/lessons.md`, and existing sales dashboard widgets
+- [x] Expand sales performance visualization beyond the current monthly/short-range view
+- [x] Adjust dashboard copy/KPI framing so admins can read long-term sales performance clearly
+- [x] Verify syntax, view compilation, and tests, then document the review result
+
+## Current Task: Redesign Homepage About Section
+- [x] Review `AGENTS.md`, `tasks/lessons.md`, and the existing homepage About/FAQ visual flow
+- [x] Redesign the `Tentang Rizki Mobil` section to feel more premium, intriguing, and aligned with the red/black/white showroom mood
+- [x] Keep the change scoped to the homepage section and preserve the shared About/FAQ background continuity
+- [x] Verify Blade compilation/build behavior and inspect the rendered section before documenting results
+
+## Current Task: Redesign Homepage FAQ Section
+- [x] Review `AGENTS.md`, `tasks/lessons.md`, and current FAQ/CTA markup
+- [x] Replace the flat FAQ card grid with a more premium decision-desk layout aligned to the showroom dossier mood
+- [x] Keep the change scoped to the homepage FAQ area while preserving the CTA and shared About/FAQ background continuity
+- [x] Verify Blade compilation/build behavior and inspect desktop/mobile render before documenting results
+
+## Current Task: Redesign Homepage Closing CTA
+- [x] Review `AGENTS.md`, `tasks/lessons.md`, and current closing CTA markup
+- [x] Replace the flat red CTA bar with a more premium showroom-style closing section that matches the homepage dossier mood
+- [x] Preserve the existing inventory/contact actions while improving hierarchy, visual interest, and responsive behavior
+- [x] Verify Blade compilation/build behavior and inspect desktop/mobile render before documenting results
+
+## Current Task: Reduce Homepage Section Redundancy
+- [x] Review `AGENTS.md`, `tasks/lessons.md`, and the three repeated About/FAQ/CTA compositions
+- [x] Replace repeated dark cards and redundant warm/grid backgrounds with clearer section rhythm: editorial About, open FAQ ledger, and full-bleed closing CTA
+- [x] Preserve the same content, routes, and brand mood while reducing nested cards and duplicated visual devices
+- [x] Verify Blade compilation/build behavior and inspect desktop/mobile render before documenting results
+
+## Current Task: Redesign Contact Page
+- [x] Review `AGENTS.md`, `tasks/lessons.md`, and the current contact page/form structure
+- [x] Replace the ordinary contact composition with a more premium concierge-style contact experience
+- [x] Preserve the existing contact form route, validation fields, WhatsApp path, and brand mood
+- [x] Verify Blade/build/test behavior and inspect desktop/mobile render before documenting results
+
+## Current Task: Remove Repeated Vehicle Imagery
+- [x] Review current image reuse across About, closing CTA, and Contact visual sections
+- [x] Give each section a distinct vehicle image role so repeated page moments no longer look copy-pasted
+- [x] Preserve section content, routes, and brand mood while changing only the visual assets/crops needed
+- [x] Verify Blade/build/test behavior and inspect the affected rendered sections before documenting results
+
+## Current Task: Redesign Header And Footer
+- [x] Review the current layout header/footer partials and shared navigation behavior
+- [x] Redesign header into a more premium showroom command bar while preserving nav, login/admin, stock CTA, and inventory search behavior
+- [x] Redesign footer into a stronger closing band with clearer brand/action hierarchy and concise useful links
+- [x] Verify Blade/build/test behavior and inspect desktop/mobile render before documenting results
+
+## Current Task: Smoke Test User And Admin
+- [ ] Run server-side syntax/build/test checks to catch Laravel, Vite, and PHPUnit errors
+- [ ] Render user-facing pages and exercise key interactions for console/HTTP/UI errors
+- [ ] Render admin login/dashboard routes and verify Filament surfaces for visible/runtime errors
+- [ ] Document findings, fixes if needed, and remaining risk
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.
@@ -172,9 +241,57 @@
 - `php -l` passed for the changed dashboard widgets, car model/form/table, new migration, test, and car-card partial.
 - `php artisan view:cache` completed successfully after the sales-dashboard refactor.
 - `php artisan test` passed: 2 tests, 2 assertions.
+- Rebuilt the public header as a premium dark command bar with a centered pill navigation rail, stronger stock/admin actions, responsive mobile menu, and preserved inventory live-search shelf.
+- Rebuilt the footer as a stronger showroom closing band with brand-led messaging, concise proof points, a glass action panel, useful footer navigation, and clearer copyright/status treatment.
+- Tightened the mobile footer by restoring container gutters, reducing mobile title/action sizing, and shrinking the floating WhatsApp button to an icon-only control on small screens so it no longer covers footer content.
+- `php -l` passed for `resources/views/layouts/app.blade.php`, `resources/views/layouts/header.blade.php`, and `resources/views/layouts/footer.blade.php`.
+- `php artisan view:cache`, `npm run build`, and `php artisan test` passed after the header/footer redesign.
+- Browser QA confirmed desktop and mobile render without horizontal overflow, the mobile menu opens correctly, and the inventory header search shelf/form remains available.
 - Aligned the Filament admin theme with the storefront palette by changing the panel primary color from amber to red.
 - Updated admin light mode to use white surfaces with soft red radial gradients, red-tinted borders, and a restrained red hover state.
 - Updated admin dark mode to use near-black surfaces with the same red glow language as the public homepage trust/testimonial sections.
 - Neutralized the admin gray scale so it no longer reads as slate-blue, and made the logo only invert in dark mode.
 - Removed leftover amber/orange/slate dashboard theme references from the admin CSS.
 - `php -l app/Providers/Filament/AdminPanelProvider.php`, `php artisan view:cache`, and `npm run build` completed successfully after the theme alignment.
+- Replaced the old footer placeholder content with showroom-relevant sections for stock browsing, buyer services, and support.
+- Removed dummy address/email/phone/social links and centered the footer contact flow around the real WhatsApp number already used across the site.
+- Added practical inventory footer links for all stock, Toyota, Honda, MPV, SUV, and units under Rp 100 juta.
+- Added homepage anchors for `Tentang Rizki Mobil` and `FAQ` so footer support links jump to meaningful sections.
+- `php -l resources/views/layouts/footer.blade.php`, `php -l resources/views/index.blade.php`, `php artisan view:cache`, and `php artisan test` completed successfully after the footer update.
+- Simplified the footer after user correction so it now contains only brand copy, primary WhatsApp CTA, stock CTA, three support links, and a short stock/price disclaimer.
+- Removed the previous directory-style stock/service/support link groups because they made the footer feel noisy instead of useful.
+- `php -l resources/views/layouts/footer.blade.php`, `php artisan view:cache`, and `php artisan test` completed successfully after simplifying the footer.
+- Replaced the plain `Contact Us` page with a polished Rizki Mobil contact layout using a dark brand hero, vehicle imagery, WhatsApp CTA, and a clean white form panel.
+- Removed the unused `subject` field from the contact form and aligned visible inputs with the backend validation fields: name, email, phone, and message.
+- Updated contact form success/error copy in `ContactController` to Indonesian so it matches the rest of the storefront.
+- `php -l resources/views/contact.blade.php`, `php -l app/Http/Controllers/ContactController.php`, `php artisan view:cache`, and `php artisan test` completed successfully after the contact UI redesign.
+- Expanded the sales dashboard chart from short daily ranges to selectable 30-day, 90-day, 12-month, and all-time views.
+- Changed the default sales performance view to 12 months and added a revenue line in juta Rupiah beside the sold-unit bars.
+- Reframed the KPI card from `Terjual Bulan Ini` to `Terjual 12 Bulan`, while still mentioning this month's unit count in the description.
+- `php -l` passed for the changed dashboard files, `php artisan view:cache` completed successfully, and `php artisan test` passed with 2 tests.
+- Direct chart data verification passed for all dashboard filters: 30 labels for 30 days, 13 labels for 90 days, 12 labels for 12 months, and yearly labels for all-time.
+- Reworked the homepage `Tentang Rizki Mobil` section from a large text/card layout into a more premium editorial dossier with cinematic vehicle imagery, a dark inspection overlay, proof stats, and a cleaner process rail.
+- Preserved the shared About/FAQ wrapper so the section still flows into FAQ without a harsh background break.
+- Added the existing `bmw13.jpg` vehicle image to the about data and kept the brand logo asset in the dossier overlay.
+- `php -l app/Http/Controllers/HomeController.php`, `php artisan view:cache`, and `npm run build` completed successfully after the redesign.
+- Visual QA used local Chrome DevTools Protocol screenshots after the default headless screenshot path rendered blank; desktop and mobile renders were inspected, and mobile layout metrics confirmed no horizontal overflow (`scrollWidth` 390, `clientWidth` 390).
+- Redesigned the homepage FAQ area from a flat three-card grid into a premium decision-desk layout with a dark consultation panel, proof rows, a `Tanya Admin` action, and large decision rows for each FAQ.
+- Kept the FAQ inside the shared About/FAQ visual background and preserved the existing CTA section below it.
+- `php artisan view:cache` and `npm run build` completed successfully after the FAQ redesign.
+- Visual QA used local Chrome DevTools Protocol screenshots for desktop and mobile because the standard headless screenshot path is unreliable in this environment; both renders were inspected for hierarchy, spacing, color alignment, and mobile fit.
+- Replaced the flat red closing CTA bar with a premium showroom handover panel using dark surfaces, vehicle imagery, a scan-line motif, proof points, and stronger action hierarchy.
+- Preserved the existing `inventory` and `contact` routes while making `Lihat Inventori` the primary action and `Hubungi Kami` the secondary action.
+- `php artisan view:cache` and `npm run build` completed successfully after the CTA redesign.
+- Visual QA used local Chrome DevTools Protocol screenshots for desktop and mobile; desktop render showed the full closing panel with vehicle/media card, and mobile metrics confirmed no horizontal overflow (`scrollWidth` 390, `clientWidth` 390).
+- Reduced the repeated About/FAQ/CTA rhythm by making About an open editorial section with a separate image band, FAQ a white decision ledger without cards, and the closing CTA a full-bleed dark handover band.
+- Removed duplicated dark card language from the About and FAQ sequence while preserving the red/black/white showroom mood and existing `inventory`/`contact` actions.
+- `php artisan view:cache`, `npm run build`, and `php artisan test` completed successfully after the rhythm refresh.
+- Visual QA inspected desktop screenshots for `#tentang`, `#faq`, and `.closing-cta-section`; mobile viewport screenshots were re-captured after the first clip method produced blank images, and mobile metrics confirmed no horizontal overflow (`scrollWidth` 390, `clientWidth` 390).
+- Reworked the contact page from a conventional dark hero plus form card into a premium concierge experience with a cinematic vehicle panel, direct WhatsApp/stock actions, contact-route guidance, and a stronger purchase-brief form.
+- Preserved the existing `contact.store` form fields (`name`, `phone`, `email`, `message`) and WhatsApp route while adding quick message prompts that fill and focus the message textarea.
+- `php -l resources/views/contact.blade.php`, `php artisan view:cache`, `npm run build`, `php artisan test`, and `git diff --check` completed successfully after the redesign.
+- Visual QA captured desktop and mobile contact-page screenshots via local Chrome DevTools Protocol; desktop/mobile metrics confirmed no horizontal overflow (`1440/1440` and `390/390`), and the quick-prompt click test returned the expected textarea value.
+- Split repeated vehicle imagery into distinct roles: About keeps `bmw13.jpg` for the dossier band, closing CTA now uses `bmw1.jpg` for the handover/action moment, and Contact now uses `fer1.jpg` for the concierge visual.
+- Added a dedicated `handover_image` key to the homepage about data so future CTA imagery does not accidentally reuse the About dossier image.
+- `php -l` passed for the changed controller and Blade files, and `php artisan view:cache`, `npm run build`, `php artisan test`, and `git diff --check` completed successfully after separating the images.
+- Visual QA verified the rendered image sources and desktop screenshots for About, closing CTA, and Contact; desktop and mobile metrics confirmed no horizontal overflow (`1440/1440` and `390/390`).

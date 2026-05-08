@@ -86,6 +86,8 @@ class HomeController extends Controller
                 ['value' => 'Personal', 'label' => 'Pendampingan terasa hangat dan fokus'],
             ],
             'image' => 'images/cars/aset/logo-rmi-hitam.png',
+            'vehicle_image' => 'images/cars/bmw13.jpg',
+            'handover_image' => 'images/cars/bmw1.jpg',
         ];
 
         $faqs = [

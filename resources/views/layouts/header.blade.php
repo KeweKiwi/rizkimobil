@@ -2,6 +2,7 @@
     $navLinks = [
         ['route' => 'home', 'label' => 'Beranda'],
         ['route' => 'inventory', 'label' => 'Inventori'],
+        ['route' => 'contact', 'label' => 'Kontak'],
     ];
 
     $headerSearchQuery = trim((string) request('search', ''));
@@ -9,10 +10,213 @@
 @endphp
 
 <style>
+    .rmi-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        width: 100%;
+    }
+    .rmi-header::before {
+        content: '';
+        display: block;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #ef3333 34%, rgba(255, 255, 255, 0.28) 50%, #ef3333 66%, transparent);
+    }
+    .rmi-header-shell {
+        position: relative;
+        overflow: hidden;
+        background:
+            radial-gradient(circle at 12% 0%, rgba(239, 68, 68, 0.14), transparent 28%),
+            linear-gradient(180deg, rgba(15, 18, 24, 0.98), rgba(8, 10, 14, 0.96));
+        border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+        box-shadow: 0 18px 54px rgba(0, 0, 0, 0.38);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+    .rmi-header-shell::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+        background-size: 64px 64px;
+        opacity: 0.42;
+        pointer-events: none;
+    }
+    .rmi-header-nav {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        min-height: 78px;
+        align-items: center;
+        gap: 24px;
+    }
+    .rmi-header-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 16px;
+        color: #ffffff;
+        text-decoration: none;
+    }
+    .rmi-header-logo {
+        width: 150px;
+        height: auto;
+        filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.32));
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .rmi-header-brand:hover .rmi-header-logo {
+        transform: translateY(-1px);
+        opacity: 0.94;
+    }
+    .rmi-header-brand-copy {
+        display: none;
+        padding-left: 16px;
+        border-left: 1px solid rgba(255, 255, 255, 0.14);
+    }
+    @media (min-width: 1180px) {
+        .rmi-header-brand-copy {
+            display: block;
+        }
+    }
+    .rmi-header-brand-copy span {
+        display: block;
+        color: rgba(255, 255, 255, 0.46);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        line-height: 1;
+        text-transform: uppercase;
+    }
+    .rmi-header-brand-copy strong {
+        display: block;
+        margin-top: 6px;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 12px;
+        font-weight: 800;
+        line-height: 1;
+    }
+    .rmi-header-center {
+        display: none;
+        justify-content: center;
+    }
+    @media (min-width: 768px) {
+        .rmi-header-center {
+            display: flex;
+        }
+    }
+    .rmi-header-nav-rail {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.045);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    .rmi-header-link {
+        position: relative;
+        display: inline-flex;
+        min-height: 38px;
+        align-items: center;
+        border-radius: 999px;
+        padding: 0 16px;
+        color: rgba(255, 255, 255, 0.58);
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.03em;
+        text-decoration: none;
+        transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
+    .rmi-header-link:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.07);
+    }
+    .rmi-header-link.is-active {
+        color: #ffffff;
+        background: rgba(239, 68, 68, 0.18);
+        box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.18);
+    }
+    .rmi-header-actions {
+        display: none;
+        align-items: center;
+        gap: 10px;
+        justify-content: end;
+    }
+    @media (min-width: 768px) {
+        .rmi-header-actions {
+            display: flex;
+        }
+    }
+    .rmi-header-cta,
+    .rmi-header-ghost {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        border-radius: 999px;
+        padding: 0 18px;
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0.02em;
+        text-decoration: none;
+        transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .rmi-header-cta {
+        color: #ffffff;
+        background: #ef3333;
+        box-shadow: 0 16px 36px rgba(239, 51, 51, 0.32);
+    }
+    .rmi-header-cta:hover {
+        transform: translateY(-1px);
+        background: #dc2626;
+        box-shadow: 0 20px 42px rgba(220, 38, 38, 0.38);
+    }
+    .rmi-header-ghost {
+        color: rgba(255, 255, 255, 0.68);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.04);
+    }
+    .rmi-header-ghost:hover {
+        color: #ffffff;
+        border-color: rgba(239, 68, 68, 0.42);
+        background: rgba(239, 68, 68, 0.1);
+    }
+    .rmi-header-cta svg,
+    .rmi-header-ghost svg {
+        width: 16px;
+        height: 16px;
+    }
+    .rmi-mobile-toggle {
+        display: inline-flex;
+        width: 44px;
+        height: 44px;
+        align-items: center;
+        justify-content: center;
+        justify-self: end;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 999px;
+        color: rgba(255, 255, 255, 0.76);
+        background: rgba(255, 255, 255, 0.055);
+        transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+    .rmi-mobile-toggle:hover {
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.28);
+        background: rgba(255, 255, 255, 0.09);
+    }
+    @media (min-width: 768px) {
+        .rmi-mobile-toggle {
+            display: none;
+        }
+    }
     .header-stock-search {
         position: relative;
         width: 100%;
-        max-width: 46rem;
+        max-width: 48rem;
     }
     .header-stock-search-form {
         position: relative;
@@ -21,8 +225,8 @@
         width: 100%;
         height: 3.25rem;
         border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.04));
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.06);
         color: #ffffff;
         padding: 0 3.25rem 0 3rem;
         font-size: 0.95rem;
@@ -33,7 +237,7 @@
         color: rgba(255, 255, 255, 0.46);
     }
     .header-stock-search-input:focus {
-        border-color: rgba(239, 68, 68, 0.45);
+        border-color: rgba(239, 68, 68, 0.48);
         background: rgba(255, 255, 255, 0.08);
         box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.08), 0 18px 42px rgba(0, 0, 0, 0.28);
     }
@@ -75,8 +279,8 @@
         right: 0;
         z-index: 70;
         overflow: hidden;
-        border-radius: 1.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 1.35rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
         background: linear-gradient(180deg, rgba(16, 18, 22, 0.98), rgba(9, 10, 13, 0.98));
         box-shadow: 0 28px 60px rgba(0, 0, 0, 0.42);
         backdrop-filter: blur(18px);
@@ -115,7 +319,7 @@
     .header-stock-search-label {
         color: #fff;
         font-size: 0.95rem;
-        font-weight: 600;
+        font-weight: 700;
         line-height: 1.35;
     }
     .header-stock-search-meta {
@@ -128,23 +332,70 @@
     .header-stock-search-price {
         color: rgba(255, 255, 255, 0.72);
         font-size: 0.82rem;
-        font-weight: 600;
+        font-weight: 700;
         white-space: nowrap;
     }
     .header-stock-search-all {
         grid-template-columns: minmax(0, 1fr) auto;
         border-top: 1px solid rgba(255, 255, 255, 0.06);
         color: #fff;
-        font-weight: 600;
+        font-weight: 700;
     }
     .header-stock-search-all small {
+        display: block;
+        margin-top: 0.2rem;
         color: rgba(255, 255, 255, 0.5);
         font-size: 0.75rem;
         font-weight: 500;
-        margin-top: 0.2rem;
-        display: block;
+    }
+    .rmi-header-search-shelf {
+        position: relative;
+        z-index: 1;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.025);
+    }
+    .rmi-mobile-menu {
+        position: relative;
+        z-index: 1;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(6, 8, 12, 0.98);
+    }
+    .rmi-mobile-menu-panel {
+        display: grid;
+        gap: 10px;
+        padding: 16px 0 18px;
+    }
+    .rmi-mobile-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 48px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 0 14px;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 14px;
+        font-weight: 800;
+        text-decoration: none;
+    }
+    .rmi-mobile-link.is-active {
+        color: #ffffff;
+        border-color: rgba(239, 68, 68, 0.32);
+        background: rgba(239, 68, 68, 0.12);
+    }
+    .rmi-mobile-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        padding-top: 8px;
     }
     @media (max-width: 767px) {
+        .rmi-header-nav {
+            grid-template-columns: 1fr auto;
+            min-height: 72px;
+        }
+        .rmi-header-logo {
+            width: 142px;
+        }
         .header-stock-search-input {
             height: 3rem;
             font-size: 0.9rem;
@@ -159,185 +410,144 @@
     }
 </style>
 
-<header
-    class="sticky top-0 z-50 w-full"
-    id="site-header">
-
-    {{-- Top red accent line --}}
-    <div class="h-[2px] w-full bg-gradient-to-r from-transparent via-red-600 to-transparent"></div>
-
-    <div class="bg-[#0A0C10]/95 backdrop-blur-md border-b border-white/[0.07]"
-         style="box-shadow: 0 4px 30px rgba(0,0,0,0.5), 0 1px 0 rgba(239,68,68,0.08);">
-
-        <nav class="container mx-auto flex h-[68px] items-center justify-between px-4 lg:px-6">
-
-            {{-- LOGO --}}
-            <a href="{{ route('home') }}" class="flex items-center shrink-0 group">
+<header class="rmi-header" id="site-header">
+    <div class="rmi-header-shell">
+        <nav class="container rmi-header-nav mx-auto px-4 lg:px-6" aria-label="Primary navigation">
+            <a href="{{ route('home') }}" class="rmi-header-brand">
                 <img
                     src="{{ asset('images/cars/aset/logo-rmi-hitam.png') }}"
                     alt="Rizki Mobil Indonesia"
-                    class="h-20 w-auto object-contain transition-all duration-300
-                           opacity-90 group-hover:opacity-100"
+                    class="rmi-header-logo"
                 />
+                <span class="rmi-header-brand-copy">
+                    <span>Rizki Mobil</span>
+                    <strong>Verified used cars</strong>
+                </span>
             </a>
 
-            {{-- DESKTOP NAV --}}
-            <div class="hidden md:flex items-center gap-1">
-                @foreach($navLinks as $link)
-                    @php $active = request()->routeIs($link['route']); @endphp
-                    <a href="{{ route($link['route']) }}"
-                       class="relative px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-200
-                              {{ $active ? 'text-white' : 'text-white/60 hover:text-white' }}">
-                        {{ $link['label'] }}
-                        <span class="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] rounded-full bg-red-500 transition-all duration-300
-                                     {{ $active ? 'w-4/5' : 'w-0' }}"></span>
-                    </a>
-                @endforeach
+            <div class="rmi-header-center">
+                <div class="rmi-header-nav-rail">
+                    @foreach($navLinks as $link)
+                        @php $active = request()->routeIs($link['route']); @endphp
+                        <a href="{{ route($link['route']) }}" class="rmi-header-link {{ $active ? 'is-active' : '' }}">
+                            {{ $link['label'] }}
+                        </a>
+                    @endforeach
+                </div>
             </div>
 
-            {{-- RIGHT SIDE --}}
-            <div class="hidden md:flex items-center gap-3">
-                <a href="{{ route('inventory') }}"
-                   class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold
-                          bg-red-600 hover:bg-red-500 text-white
-                          transition-all duration-200 shadow-[0_0_16px_rgba(220,38,38,0.4)]
-                          hover:shadow-[0_0_24px_rgba(220,38,38,0.6)] hover:-translate-y-px">
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            <div class="rmi-header-actions">
+                <a href="{{ route('inventory') }}" class="rmi-header-cta">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M6 7v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7M9 7V5a3 3 0 0 1 6 0v2"/>
                     </svg>
                     Lihat Stok
                 </a>
 
                 @auth
                     @if(auth()->user()->is_admin)
-                        <a href="/admin"
-                           class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium
-                                  border border-white/20 text-white/60 hover:text-white hover:border-white/40
-                                  transition-all duration-200">
-                            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <a href="/admin" class="rmi-header-ghost">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                             </svg>
                             Admin
                         </a>
                     @endif
                 @else
-                    <a href="/admin/login"
-                       class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium
-                              border border-white/20 text-white/60 hover:text-white hover:border-white/40
-                              transition-all duration-200">
-                        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    <a href="/admin/login" class="rmi-header-ghost">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7z"/>
                         </svg>
                         Login
                     </a>
                 @endauth
             </div>
 
-            {{-- MOBILE HAMBURGER --}}
             <button
                 type="button"
                 id="mobile-menu-btn"
-                class="md:hidden inline-flex items-center justify-center h-9 w-9 rounded-lg
-                       text-white/70 hover:text-white hover:bg-white/10 transition"
+                data-mobile-menu-toggle
+                class="rmi-mobile-toggle"
                 aria-expanded="false"
-                onclick="toggleMobileMenu()">
+                aria-label="Toggle navigation"
+                onclick="toggleMobileMenu()"
+            >
                 <svg id="icon-open" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16M4 12h16M4 17h16"/>
                 </svg>
-                <svg id="icon-close" class="h-5 w-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                <svg id="icon-close" class="hidden h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
             </button>
         </nav>
 
         @if($showHeaderSearch)
-        <div class="border-t border-white/[0.06]">
-            <div class="container mx-auto flex items-center justify-between gap-4 px-4 py-3 lg:px-6">
-                <div
-                    class="header-stock-search"
-                    data-global-car-search
-                    data-suggestions-url="{{ route('inventory.suggestions') }}"
-                    data-results-url="{{ route('inventory') }}"
-                >
-                    <form action="{{ route('inventory') }}" method="GET" class="header-stock-search-form">
-                        <svg class="header-stock-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                        <input
-                            type="search"
-                            name="search"
-                            value="{{ $headerSearchQuery }}"
-                            placeholder="Cari stok mobil, merek, atau model"
-                            class="header-stock-search-input"
-                            autocomplete="off"
-                            data-search-input
-                        />
-                        <button
-                            type="button"
-                            class="header-stock-search-clear {{ $headerSearchQuery === '' ? 'hidden' : '' }}"
-                            aria-label="Hapus pencarian"
-                            data-search-clear
-                        >
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <div class="rmi-header-search-shelf">
+                <div class="container mx-auto flex items-center justify-between gap-4 px-4 py-3 lg:px-6">
+                    <div
+                        class="header-stock-search"
+                        data-global-car-search
+                        data-suggestions-url="{{ route('inventory.suggestions') }}"
+                        data-results-url="{{ route('inventory') }}"
+                    >
+                        <form action="{{ route('inventory') }}" method="GET" class="header-stock-search-form">
+                            <svg class="header-stock-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"/>
                             </svg>
-                        </button>
-                    </form>
+                            <input
+                                type="search"
+                                name="search"
+                                value="{{ $headerSearchQuery }}"
+                                placeholder="Cari stok mobil, merek, atau model"
+                                class="header-stock-search-input"
+                                autocomplete="off"
+                                data-search-input
+                            />
+                            <button
+                                type="button"
+                                class="header-stock-search-clear {{ $headerSearchQuery === '' ? 'hidden' : '' }}"
+                                aria-label="Hapus pencarian"
+                                data-search-clear
+                            >
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </form>
 
-                    <div class="header-stock-search-dropdown hidden" data-search-dropdown></div>
+                        <div class="header-stock-search-dropdown hidden" data-search-dropdown></div>
+                    </div>
+
+                    <p class="hidden shrink-0 text-xs font-black uppercase tracking-[0.22em] text-white/34 xl:block">
+                        Stok tersedia / live search
+                    </p>
                 </div>
-
-                <p class="hidden xl:block shrink-0 text-xs uppercase tracking-[0.22em] text-white/34">
-                    Cari langsung dari stok yang tersedia
-                </p>
             </div>
-        </div>
         @endif
-    </div>
 
-    {{-- MOBILE MENU --}}
-    <div
-        id="mobile-menu"
-        class="hidden md:hidden bg-[#0D0F14] border-b border-white/[0.07]
-               transition-all duration-200">
-        <div class="container mx-auto px-4 py-3 space-y-1">
-            @foreach($navLinks as $link)
-                @php $active = request()->routeIs($link['route']); @endphp
-                <a href="{{ route($link['route']) }}"
-                   class="flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                          {{ $active
-                              ? 'bg-red-600/15 text-white border-l-2 border-red-500 pl-2'
-                              : 'text-white/70 hover:bg-white/[0.06] hover:text-white' }}">
-                    {{ $link['label'] }}
-                </a>
-            @endforeach
-
-            <div class="pt-2 mt-2 border-t border-white/[0.07] flex gap-2">
-                <a href="{{ route('inventory') }}"
-                   class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold
-                          bg-red-600 hover:bg-red-500 text-white transition-colors">
-                    Lihat Stok
-                </a>
-
-                @auth
-                    @if(auth()->user()->is_admin)
-                        <a href="/admin"
-                           class="flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-medium
-                                  border border-white/20 text-white/70 hover:text-white transition-colors">
-                            Admin
+        <div id="mobile-menu" class="rmi-mobile-menu hidden md:hidden">
+            <div class="container mx-auto px-4">
+                <div class="rmi-mobile-menu-panel">
+                    @foreach($navLinks as $link)
+                        @php $active = request()->routeIs($link['route']); @endphp
+                        <a href="{{ route($link['route']) }}" class="rmi-mobile-link {{ $active ? 'is-active' : '' }}">
+                            {{ $link['label'] }}
+                            <span>{{ str_pad((string) ($loop->iteration), 2, '0', STR_PAD_LEFT) }}</span>
                         </a>
-                    @endif
-                @else
-                    <a href="/admin/login"
-                       class="flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-medium
-                              border border-white/20 text-white/70 hover:text-white transition-colors">
-                        Login
-                    </a>
-                @endauth
+                    @endforeach
+
+                    <div class="rmi-mobile-actions">
+                        <a href="{{ route('inventory') }}" class="rmi-header-cta">Lihat Stok</a>
+                        @auth
+                            @if(auth()->user()->is_admin)
+                                <a href="/admin" class="rmi-header-ghost">Admin</a>
+                            @endif
+                        @else
+                            <a href="/admin/login" class="rmi-header-ghost">Login</a>
+                        @endauth
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -502,7 +712,6 @@
         btn.setAttribute('aria-expanded', String(!isOpen));
     }
 
-    // Close on outside click
     document.addEventListener('click', function(e) {
         const header = document.getElementById('site-header');
         if (!header.contains(e.target)) {

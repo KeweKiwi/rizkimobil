@@ -33,12 +33,12 @@ class ContactController extends Controller
         try {
             Contact::create($validator->validated());
 
-            return redirect()->back()->with('success', 'Thank you for contacting us! We will get back to you soon.');
+            return redirect()->back()->with('success', 'Pesan berhasil dikirim. Tim Rizki Mobil akan menghubungi Anda secepatnya.');
         } catch (\Exception $e) {
             Log::error('Contact form submission failed: ' . $e->getMessage());
 
             return redirect()->back()
-                ->with('error', 'Sorry, something went wrong. Please try again later.')
+                ->with('error', 'Maaf, pesan belum bisa dikirim. Silakan coba lagi atau hubungi kami melalui WhatsApp.')
                 ->withInput();
         }
     }

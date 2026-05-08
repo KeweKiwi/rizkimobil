@@ -12,7 +12,7 @@ class StatsOverview extends StatsOverviewWidget
 
     protected ?string $heading = 'Snapshot Penjualan';
 
-    protected ?string $description = 'Ringkasan unit terjual, estimasi omzet, dan stok siap jual berdasarkan data listing saat ini.';
+    protected ?string $description = 'Ringkasan omzet, performa 12 bulan, dan stok siap jual berdasarkan data listing saat ini.';
 
     protected int | array | null $columns = [
         'md' => 2,
@@ -32,10 +32,17 @@ class StatsOverview extends StatsOverviewWidget
             ->where('sold_at', '>=', now()->startOfMonth())
             ->count();
 
-        $previousMonthSold = Car::where('sold', true)
+        $soldLast12Months = Car::where('sold', true)
             ->whereBetween('sold_at', [
-                now()->subMonthNoOverflow()->startOfMonth(),
-                now()->subMonthNoOverflow()->endOfMonth(),
+                now()->subMonths(11)->startOfMonth(),
+                now()->endOfDay(),
+            ])
+            ->count();
+
+        $previous12MonthsSold = Car::where('sold', true)
+            ->whereBetween('sold_at', [
+                now()->subMonths(23)->startOfMonth(),
+                now()->subMonths(12)->endOfMonth(),
             ])
             ->count();
 
@@ -44,7 +51,7 @@ class StatsOverview extends StatsOverviewWidget
             ->where('stnk_valid_until', '<=', now()->addDays(30))
             ->count();
 
-        $soldTrend = collect(range(5, 0))
+        $soldTrend = collect(range(11, 0))
             ->map(fn (int $monthOffset) => Car::where('sold', true)->whereBetween('sold_at', [
                 now()->subMonths($monthOffset)->startOfMonth(),
                 now()->subMonths($monthOffset)->endOfMonth(),
@@ -52,7 +59,7 @@ class StatsOverview extends StatsOverviewWidget
             ->values()
             ->all();
 
-        $revenueTrend = collect(range(5, 0))
+        $revenueTrend = collect(range(11, 0))
             ->map(fn (int $monthOffset) => (int) Car::where('sold', true)->whereBetween('sold_at', [
                 now()->subMonths($monthOffset)->startOfMonth(),
                 now()->subMonths($monthOffset)->endOfMonth(),
@@ -60,7 +67,7 @@ class StatsOverview extends StatsOverviewWidget
             ->values()
             ->all();
 
-        $availableTrend = collect(range(5, 0))
+        $availableTrend = collect(range(11, 0))
             ->map(fn (int $monthOffset) => Car::where('sold', false)->whereBetween('created_at', [
                 now()->subMonths($monthOffset)->startOfMonth(),
                 now()->subMonths($monthOffset)->endOfMonth(),
@@ -68,7 +75,7 @@ class StatsOverview extends StatsOverviewWidget
             ->values()
             ->all();
 
-        $sellThroughTrend = collect(range(5, 0))
+        $sellThroughTrend = collect(range(11, 0))
             ->map(fn (int $monthOffset) => Car::where('sold', true)->where('sold_at', '<=', now()->subMonths($monthOffset)->endOfMonth())->count())
             ->values()
             ->all();
@@ -84,8 +91,8 @@ class StatsOverview extends StatsOverviewWidget
                 ->color('success')
                 ->chart($revenueTrend),
 
-            Stat::make('Terjual Bulan Ini', $soldThisMonth)
-                ->description($this->formatSoldComparison($soldThisMonth, $previousMonthSold))
+            Stat::make('Terjual 12 Bulan', $soldLast12Months)
+                ->description($soldThisMonth . ' unit bulan ini · ' . $this->formatPeriodComparison($soldLast12Months, $previous12MonthsSold))
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('warning')
                 ->chart($soldTrend),
@@ -107,24 +114,24 @@ class StatsOverview extends StatsOverviewWidget
         ];
     }
 
-    private function formatSoldComparison(int $current, int $previous): string
+    private function formatPeriodComparison(int $current, int $previous): string
     {
         if ($previous === 0) {
             return $current > 0
-                ? 'Mulai bergerak bulan ini'
-                : 'Belum ada unit ditandai terjual bulan ini';
+                ? 'mulai tercatat dibanding periode sebelumnya'
+                : 'belum ada unit terjual dalam periode ini';
         }
 
         $difference = $current - $previous;
         $change = round((abs($difference) / $previous) * 100);
 
         if ($difference === 0) {
-            return 'Stabil dibanding bulan lalu';
+            return 'stabil dibanding 12 bulan sebelumnya';
         }
 
         $direction = $difference > 0 ? 'naik' : 'turun';
 
-        return $change . '% ' . $direction . ' dibanding bulan lalu';
+        return $change . '% ' . $direction . ' dibanding 12 bulan sebelumnya';
     }
 
     private function formatRupiahCompact(int $amount): string

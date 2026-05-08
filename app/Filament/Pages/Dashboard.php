@@ -17,7 +17,7 @@ class Dashboard extends BaseDashboard
 
     public function getSubheading(): string | Htmlable | null
     {
-        return 'Pantau unit terjual, estimasi omzet, dan stok siap jual dalam satu tampilan yang lebih relevan untuk admin showroom.';
+        return 'Pantau performa penjualan jangka pendek dan jangka panjang, estimasi omzet, serta stok siap jual dalam satu tampilan admin showroom.';
     }
 
     public function getColumns(): int | array

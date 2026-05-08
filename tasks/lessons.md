@@ -30,3 +30,12 @@
 - For search UX, do not force one global pattern across all pages when the user wants different behavior per route; keep homepage discovery search and inventory search as distinct experiences when requested.
 - When two light-brand homepage sections like About and FAQ should feel continuous, merge them under one shared wrapper background instead of trying to match them with separate section backgrounds.
 - For admin theme refinements, keep Filament colors aligned with the storefront identity: black or white surfaces with red gradients, not amber/orange or slate-blue dashboard styling.
+- For footer revisions, keep the content intentionally small and action-oriented; prioritize the few useful buyer actions over many directory-style links.
+- For dashboard sales-performance feedback, avoid framing the main view around only the current month; provide long-range filters and make the default useful for trend reading across at least 12 months.
+- When the user says a homepage section still feels kurang bagus after a polish pass, change the section composition and component model, not just colors/shadows on the same card grid.
+- For FAQ sections on this storefront, avoid generic three-card layouts; use a stronger consultative or decision-support structure that matches the showroom dossier mood.
+- For closing CTA sections on this storefront, avoid flat red banners; build a decisive handover/showroom moment with imagery, proof, and clear primary/secondary action hierarchy.
+- When adjacent homepage sections are called redundant, redesign their combined rhythm so each one has a distinct background role and container model instead of repeating the same card-and-panel vocabulary.
+- When the contact page is called boring, make it feel like a guided buying concierge with clear action paths and a purchase brief, not just a larger hero plus a standard form card.
+- Do not reuse the same hero/vehicle photo across adjacent premium sections; assign each image a distinct narrative role such as dossier, handover, or concierge before shipping.
+- Header and footer chrome should be treated as designed brand surfaces, not thin utility bars; give them clear hierarchy, action rhythm, responsive states, and check fixed floating CTAs against footer content before shipping.
