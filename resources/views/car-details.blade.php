@@ -348,16 +348,35 @@
                                 Hubungi via WhatsApp
                             </a>
 
+                            @if(session('favorite_status'))
+                                <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+                                    {{ session('favorite_status') }}
+                                </div>
+                            @endif
+
                             <div class="flex gap-3">
-                                <button type="button"
-                                    class="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 text-sm font-medium text-gray-700 transition-all hover:border-red-600 hover:bg-red-50 hover:text-red-600"
-                                    onclick="alert('Fitur simpan/login segera hadir 🙂')">
-                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                    </svg>
-                                    Simpan
-                                </button>
+                                @auth
+                                    <form method="POST" action="{{ route('favorites.toggle', $car) }}" class="flex-1">
+                                        @csrf
+                                        <button type="submit"
+                                            class="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg border px-4 text-sm font-semibold transition-all {{ $isFavorite ? 'border-red-600 bg-red-50 text-red-600 hover:bg-red-100' : 'border-gray-300 bg-white text-gray-700 hover:border-red-600 hover:bg-red-50 hover:text-red-600' }}">
+                                            <svg class="h-5 w-5 {{ $isFavorite ? 'fill-current' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                            </svg>
+                                            {{ $isFavorite ? 'Tersimpan' : 'Simpan' }}
+                                        </button>
+                                    </form>
+                                @else
+                                    <a href="{{ route('login') }}"
+                                        class="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 transition-all hover:border-red-600 hover:bg-red-50 hover:text-red-600">
+                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                        </svg>
+                                        Masuk untuk simpan
+                                    </a>
+                                @endauth
 
                                 <button onclick="shareVehicle()"
                                     class="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 text-sm font-medium text-gray-700 transition-all hover:border-red-600 hover:bg-red-50 hover:text-red-600">

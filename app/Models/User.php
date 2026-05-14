@@ -17,6 +17,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
         'is_admin',
     ];
@@ -48,7 +49,7 @@ class User extends Authenticatable
      */
     public function favoriteCars()
     {
-        return $this->belongsToMany(Car::class, 'favorites');
+        return $this->belongsToMany(Car::class, 'favorites')->withTimestamps();
     }
 
     /**

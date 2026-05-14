@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use Illuminate\Support\Facades\Auth;
 
 class CarController extends Controller
 {
@@ -16,7 +17,9 @@ class CarController extends Controller
         'primaryImage'
     ])->findOrFail($id);
 
-    return view('car-details', compact('car'));
+    $isFavorite = Auth::check() && Auth::user()->hasFavorited($car->id);
+
+    return view('car-details', compact('car', 'isFavorite'));
 }
 
 }

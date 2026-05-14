@@ -2,6 +2,7 @@
     $navLinks = [
         ['route' => 'home', 'label' => 'Beranda'],
         ['route' => 'inventory', 'label' => 'Inventori'],
+        ['route' => 'favorites.index', 'label' => 'Tersimpan'],
         ['route' => 'contact', 'label' => 'Kontak'],
     ];
 
@@ -152,6 +153,9 @@
     }
     .rmi-header-cta,
     .rmi-header-ghost {
+        appearance: none;
+        border: 0;
+        cursor: pointer;
         display: inline-flex;
         min-height: 44px;
         align-items: center;
@@ -160,6 +164,7 @@
         border-radius: 999px;
         padding: 0 18px;
         font-size: 13px;
+        font-family: inherit;
         font-weight: 900;
         letter-spacing: 0.02em;
         text-decoration: none;
@@ -189,6 +194,18 @@
     .rmi-header-ghost svg {
         width: 16px;
         height: 16px;
+    }
+    .rmi-header-auth-form {
+        display: inline-flex;
+        margin: 0;
+    }
+    .rmi-header-account {
+        max-width: 190px;
+    }
+    .rmi-header-account span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .rmi-mobile-toggle {
         display: inline-flex;
@@ -384,9 +401,16 @@
     }
     .rmi-mobile-actions {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
         gap: 10px;
         padding-top: 8px;
+    }
+    .rmi-mobile-actions form {
+        display: contents;
+    }
+    .rmi-mobile-actions .rmi-header-cta,
+    .rmi-mobile-actions .rmi-header-ghost {
+        width: 100%;
     }
     @media (max-width: 767px) {
         .rmi-header-nav {
@@ -454,12 +478,35 @@
                             Admin
                         </a>
                     @endif
+                    <form method="POST" action="{{ route('logout') }}" class="rmi-header-auth-form">
+                        @csrf
+                        <button type="submit" class="rmi-header-ghost">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H9m9 0-3-3m3 3-3 3"/>
+                            </svg>
+                            Keluar
+                        </button>
+                    </form>
+                    <a href="{{ route('account.show') }}" class="rmi-header-ghost rmi-header-account" title="Akun {{ auth()->user()->name }}">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0zM4.5 20.25a8.25 8.25 0 0 1 15 0"/>
+                        </svg>
+                        <span>{{ auth()->user()->name }}</span>
+                    </a>
                 @else
-                    <a href="/admin/login" class="rmi-header-ghost">
+                    <a href="{{ route('register') }}" class="rmi-header-ghost">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 21a6 6 0 0 0-12 0M9 10.5a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5z"/>
+                        </svg>
+                        Daftar
+                    </a>
+                    <a href="{{ route('login') }}" class="rmi-header-ghost">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7z"/>
                         </svg>
-                        Login
+                        Masuk
                     </a>
                 @endauth
             </div>
@@ -543,8 +590,14 @@
                             @if(auth()->user()->is_admin)
                                 <a href="/admin" class="rmi-header-ghost">Admin</a>
                             @endif
+                            <a href="{{ route('account.show') }}" class="rmi-header-ghost">Akun: {{ auth()->user()->name }}</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="rmi-header-ghost">Keluar</button>
+                            </form>
                         @else
-                            <a href="/admin/login" class="rmi-header-ghost">Login</a>
+                            <a href="{{ route('register') }}" class="rmi-header-ghost">Daftar</a>
+                            <a href="{{ route('login') }}" class="rmi-header-ghost">Masuk</a>
                         @endauth
                     </div>
                 </div>

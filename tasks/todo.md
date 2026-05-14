@@ -206,11 +206,53 @@
 - [x] Preserve existing copy/data/routes while improving hierarchy, spacing, and responsive behavior
 - [x] Verify Blade/build/tests and inspect the rendered section on desktop/mobile
 
+## Current Task: Add User And Admin Account Creation
+- [x] Review current auth routes, `User` model/admin gate, header login behavior, and Filament resource patterns
+- [x] Add public customer registration/login/logout routes and Blade views
+- [x] Update storefront header so visitors can register/login and authenticated users can logout or access admin when eligible
+- [x] Add a Filament `Users` resource so admins can create/edit customer or admin accounts safely
+- [x] Add feature coverage for registration/login/admin protection and verify syntax/build/tests
+
+## Current Task: Implement Saved Cars Flow
+- [x] Review existing favorite model/table/API, car detail save placeholder, and header navigation
+- [x] Add authenticated web routes for saving/unsaving cars and viewing saved cars
+- [x] Replace the detail-page alert with a real save/login-gated action
+- [x] Add a clean saved-cars page and header access point
+- [x] Add feature coverage and verify syntax/build/browser behavior
+
+## Current Task: Add Account Info And Password Management
+- [x] Review current auth/register/header account surfaces
+- [x] Add phone storage and require phone during public registration
+- [x] Add authenticated account page for viewing account info and changing password
+- [x] Update header so the current account is visible and clickable from the right side
+- [x] Add tests for phone/password validation and password update, then verify build/browser behavior
+
+## Current Task: Improve Account Settings Best Practice
+- [x] Review the current account page and identify why it feels read-only/landing-like
+- [x] Add editable profile information for the signed-in user
+- [x] Redesign account page into a compact settings layout with profile, security, and saved-car access
+- [x] Add tests for profile update and validation
+- [x] Verify syntax, routes, Blade, build, tests, and browser behavior
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.
 - Added a create-only `Foto Mobil` upload section so new car listings can include images before the first save.
 - The create page now removes uploaded image paths from the car payload, then creates ordered `CarImage` records after the `Car` record exists.
+- Added public customer auth at `/register` and `/login`, plus logout, while keeping admin access separated behind `is_admin`.
+- Added the Filament `/admin/users` resource so authorized admins can create/edit customer accounts or admin accounts without exposing admin creation publicly.
+- Verified account creation with PHP syntax checks, Blade cache, route registration, Vite build, full PHPUnit suite, and Browser desktop/mobile smoke checks.
+- Replaced the car-detail save placeholder alert with a real favorite toggle for authenticated users and a login-gated save link for guests.
+- Added the `/saved` page behind auth, plus `Tersimpan` navigation in desktop/mobile header so users can return to saved cars.
+- Added `SavedCarsTest` coverage for guest login gates, save, saved-list rendering, and unsave; full PHPUnit, Vite build, Blade cache, route checks, diff checks, and Browser guest/mobile smoke checks passed.
+- Added `phone` to users with a local migration, required phone on public registration, and added explicit password minimum hints/HTML constraints.
+- Added `/account` for viewing current account details and changing password, with the current user name shown as the rightmost authenticated header action.
+- Added account/password tests covering page visibility, successful password change, current-password validation, phone-required registration, and password minimum validation.
+- `php artisan migrate`, `php artisan view:cache`, `php artisan test`, `npm run build`, and `git diff --check` passed; Browser DOM smoke confirmed register shows phone, password rule, and `Tersimpan` without console errors. Screenshot capture timed out in the Browser runtime, so visual proof relied on DOM/browser health plus automated tests.
+- Reworked `/account` into a compact account settings page rather than a marketing-style hero: summary rail, editable profile form, security/password form, saved-car count, and quick actions.
+- Added `account.profile.update` so signed-in users can edit their own name, email, and WhatsApp number; email uniqueness and phone length are validated.
+- Added profile update tests for successful save and invalid/duplicate contact data; `php -l`, route list, Blade cache, targeted account tests, full PHPUnit suite, Vite build, and `git diff --check` passed.
+- Browser smoke confirmed unauthenticated `/account` still redirects to `/login` without console errors; logged-in account rendering and updates are covered by server-side feature tests because the Browser runtime has unreliable email-input filling in this environment.
 - Refined the create-page uploader placement and behavior so the photo section sits at the bottom of the form and is optimized for batch uploads instead of single-image editing.
 - Syntax checks passed for `app/Filament/Resources/Cars/Schemas/CarForm.php` and `app/Filament/Resources/Cars/Pages/CreateCar.php`.
 - Added a `Kembali ke Daftar` header action on the create and edit car admin pages so it is easy to return to the index after making changes.

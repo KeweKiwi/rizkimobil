@@ -43,3 +43,7 @@
 - When hiding shared floating CTAs on a specific page, verify the real HTTP response after Blade caching; template syntax that compiles can still fail at render-time if variables are scoped incorrectly.
 - A footer should close the page, not compete with the final CTA or read like another hero section; keep footer headings, proof points, CTA panels, and vertical padding deliberately smaller than page sections.
 - For benefit/proof cards, avoid grid child placement that mixes icon, title, and body across implicit rows unless each item is explicitly placed; stacked card anatomy is more robust for varied title lengths and responsive widths.
+- When a storefront introduces login/admin affordances, check the complete account lifecycle: public customer registration, customer login/logout, admin-only access, and an admin surface for creating elevated accounts.
+- Do not leave "segera hadir" alerts on flows that now have backing models or auth; connect the UI to the existing data path and add the missing user-facing index page.
+- Authenticated headers should expose who is currently signed in and provide a clear account-management path; registration forms should collect the contact fields needed for the sales flow upfront.
+- Customer account pages should behave like settings, not landing pages: compact summary, editable profile data, separated security actions, and clear links back to saved/customer workflows.
