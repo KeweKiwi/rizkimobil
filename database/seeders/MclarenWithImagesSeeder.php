@@ -33,7 +33,7 @@ class MclarenWithImagesSeeder extends Seeder
             'stnk_valid_until' => '2027-01-12',
 
             // Bisnis
-            'price' => 8200000000,
+            'price' => 1200000000,
             'description' => 'McLaren 720S supercar ringan dengan handling presisi, akselerasi ekstrem, kondisi sangat terawat.',
 
             // Identitas
