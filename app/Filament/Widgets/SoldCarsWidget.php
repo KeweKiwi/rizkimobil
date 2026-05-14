@@ -25,7 +25,7 @@ class SoldCarsWidget extends TableWidget
             ->description('Daftar mobil yang sudah terjual untuk membaca performa closing terbaru.')
             ->query(
                 Car::query()
-                    ->with(['location', 'primaryImage', 'images'])
+                    ->with(['location', 'primaryImage', 'fallbackImage'])
                     ->where('sold', true)
                     ->latest('sold_at')
                     ->limit(8)

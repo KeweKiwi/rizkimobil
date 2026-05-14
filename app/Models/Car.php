@@ -75,21 +75,42 @@ class Car extends Model
     }
 
     /**
+     * Fallback listing image when no explicit primary image is set.
+     */
+    public function fallbackImage()
+    {
+        return $this->hasOne(CarImage::class)->ofMany([
+            'sort_order' => 'min',
+            'id' => 'min',
+        ]);
+    }
+
+    /**
      * Get main image URL (primary -> first -> placeholder)
      * NOTE: image_path sebaiknya disimpan relatif ke public/ (mis: "images/cars/1.jpg")
      */
     public function getMainImageAttribute()
     {
-        // coba pakai primary image dulu
-        $img = $this->relationLoaded('primaryImage')
-            ? $this->primaryImage
-            : $this->primaryImage()->first();
+        $img = null;
 
-        if (!$img) {
-            // fallback: gambar pertama
-            $img = $this->relationLoaded('images')
-                ? $this->images->first()
-                : $this->images()->first();
+        if ($this->relationLoaded('primaryImage')) {
+            $img = $this->primaryImage;
+        }
+
+        if (! $img && $this->relationLoaded('fallbackImage')) {
+            $img = $this->fallbackImage;
+        }
+
+        if (! $img && $this->relationLoaded('images')) {
+            $img = $this->images->first();
+        }
+
+        if (! $img && ! $this->relationLoaded('primaryImage')) {
+            $img = $this->primaryImage()->first();
+        }
+
+        if (! $img && ! $this->relationLoaded('fallbackImage')) {
+            $img = $this->fallbackImage()->first();
         }
 
         return $img ? asset($img->image_path) : 'https://via.placeholder.com/800x600?text=No+Image';

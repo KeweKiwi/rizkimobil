@@ -12,8 +12,24 @@ class HomeController extends Controller
     {
         // Get featured cars that are not sold
         $featuredCars = Car::where('featured', true)
+            ->select([
+                'id',
+                'title',
+                'make',
+                'model',
+                'variant',
+                'year',
+                'mileage_km',
+                'transmission',
+                'fuel_type',
+                'body_type',
+                'price',
+                'featured',
+                'sold',
+                'created_at',
+            ])
             ->where('sold', false)
-            ->with('primaryImage')
+            ->with(['primaryImage', 'fallbackImage'])
             ->take(4)
             ->get();
 

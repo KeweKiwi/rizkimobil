@@ -460,8 +460,8 @@
                     </div>
                     <div class="filter-body">
                         <form action="{{ route('inventory') }}" method="GET" id="filter-form">
-                            @if(request()->filled('search'))
-                                <input type="hidden" name="search" value="{{ request('search') }}" />
+                            @if($searchQuery !== '')
+                                <input type="hidden" name="search" value="{{ $searchQuery }}" />
                             @endif
 
                             <!-- Location -->
@@ -488,9 +488,9 @@
                                     class="filter-select"
                                 >
                                     <option value="">Semua Merek</option>
-                                    @foreach($carMakes as $make)
-                                        <option value="{{ $make }}" {{ request('make') == $make ? 'selected' : '' }}>
-                                            {{ $make }}
+                                    @foreach($carMakes as $carMake)
+                                        <option value="{{ $carMake }}" {{ $selectedMake === $carMake ? 'selected' : '' }}>
+                                            {{ $carMake }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -518,7 +518,7 @@
                                     @foreach($bodyTypes as $type)
                                         <label class="filter-btn">
                                             <input type="checkbox" name="body_type[]" value="{{ $type }}"
-                                                {{ in_array($type, request('body_type', [])) ? 'checked' : '' }} />
+                                                {{ in_array($type, $selectedBodyTypes, true) ? 'checked' : '' }} />
                                             {{ ucfirst($type) }}
                                         </label>
                                     @endforeach
@@ -532,7 +532,7 @@
                                     @foreach($fuelTypes as $type)
                                         <label class="filter-btn">
                                             <input type="checkbox" name="fuel_type[]" value="{{ $type }}"
-                                                {{ in_array($type, request('fuel_type', [])) ? 'checked' : '' }} />
+                                                {{ in_array($type, $selectedFuelTypes, true) ? 'checked' : '' }} />
                                             {{ ucfirst($type) }}
                                         </label>
                                     @endforeach
@@ -546,7 +546,7 @@
                                     @foreach($transmissions as $type)
                                         <label class="filter-btn">
                                             <input type="checkbox" name="transmission[]" value="{{ $type }}"
-                                                {{ in_array($type, request('transmission', [])) ? 'checked' : '' }} />
+                                                {{ in_array($type, $selectedTransmissions, true) ? 'checked' : '' }} />
                                             {{ ucfirst($type) }}
                                         </label>
                                     @endforeach
@@ -632,10 +632,10 @@
                         <div id="car-count-display" class="hidden sm:flex items-center gap-2 text-sm">
                             <span class="font-medium text-gray-700">
                                 Menampilkan {{ $cars->total() }} Mobil
-                                @if(request('make'))
-                                    <span class="text-red-600">"{{ request('make') }}"</span>
-                                @elseif(request('search'))
-                                    <span class="text-red-600">"{{ request('search') }}"</span>
+                                @if($selectedMake !== '')
+                                    <span class="text-red-600">"{{ $selectedMake }}"</span>
+                                @elseif($searchQuery !== '')
+                                    <span class="text-red-600">"{{ $searchQuery }}"</span>
                                 @endif
                             </span>
                         </div>
@@ -646,11 +646,11 @@
                         name="sort" 
                         class="sort-select"
                     >
-                        <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Terbaru</option>
-                        <option value="price-low" {{ request('sort') == 'price-low' ? 'selected' : '' }}>Harga: Rendah ke Tinggi</option>
-                        <option value="price-high" {{ request('sort') == 'price-high' ? 'selected' : '' }}>Harga: Tinggi ke Rendah</option>
-                        <option value="mileage-low" {{ request('sort') == 'mileage-low' ? 'selected' : '' }}>Kilometer Terendah</option>
-                        <option value="year-new" {{ request('sort') == 'year-new' ? 'selected' : '' }}>Tahun Terbaru</option>
+                        <option value="newest" {{ $sort === 'newest' ? 'selected' : '' }}>Terbaru</option>
+                        <option value="price-low" {{ $sort === 'price-low' ? 'selected' : '' }}>Harga: Rendah ke Tinggi</option>
+                        <option value="price-high" {{ $sort === 'price-high' ? 'selected' : '' }}>Harga: Tinggi ke Rendah</option>
+                        <option value="mileage-low" {{ $sort === 'mileage-low' ? 'selected' : '' }}>Kilometer Terendah</option>
+                        <option value="year-new" {{ $sort === 'year-new' ? 'selected' : '' }}>Tahun Terbaru</option>
                     </select>
                 </div>
 
@@ -691,8 +691,8 @@
         </div>
         
         <form action="{{ route('inventory') }}" method="GET">
-            @if(request()->filled('search'))
-                <input type="hidden" name="search" value="{{ request('search') }}" />
+            @if($searchQuery !== '')
+                <input type="hidden" name="search" value="{{ $searchQuery }}" />
             @endif
 
             <!-- Location -->
@@ -711,8 +711,8 @@
                 <label class="filter-label">Merek</label>
                 <select name="make" class="filter-select">
                     <option value="">Semua Merek</option>
-                    @foreach($carMakes as $make)
-                        <option value="{{ $make }}" {{ request('make') == $make ? 'selected' : '' }}>{{ $make }}</option>
+                    @foreach($carMakes as $carMake)
+                        <option value="{{ $carMake }}" {{ $selectedMake === $carMake ? 'selected' : '' }}>{{ $carMake }}</option>
                     @endforeach
                 </select>
             </div>
@@ -736,7 +736,7 @@
                     @foreach($bodyTypes as $type)
                         <label class="filter-btn">
                             <input type="checkbox" name="body_type[]" value="{{ $type }}"
-                                {{ in_array($type, request('body_type', [])) ? 'checked' : '' }} />
+                                {{ in_array($type, $selectedBodyTypes, true) ? 'checked' : '' }} />
                             {{ ucfirst($type) }}
                         </label>
                     @endforeach
@@ -750,7 +750,7 @@
                     @foreach($fuelTypes as $type)
                         <label class="filter-btn">
                             <input type="checkbox" name="fuel_type[]" value="{{ $type }}"
-                                {{ in_array($type, request('fuel_type', [])) ? 'checked' : '' }} />
+                                {{ in_array($type, $selectedFuelTypes, true) ? 'checked' : '' }} />
                             {{ ucfirst($type) }}
                         </label>
                     @endforeach
@@ -764,7 +764,7 @@
                     @foreach($transmissions as $type)
                         <label class="filter-btn">
                             <input type="checkbox" name="transmission[]" value="{{ $type }}"
-                                {{ in_array($type, request('transmission', [])) ? 'checked' : '' }} />
+                                {{ in_array($type, $selectedTransmissions, true) ? 'checked' : '' }} />
                             {{ ucfirst($type) }}
                         </label>
                     @endforeach

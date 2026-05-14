@@ -39,3 +39,7 @@
 - When the contact page is called boring, make it feel like a guided buying concierge with clear action paths and a purchase brief, not just a larger hero plus a standard form card.
 - Do not reuse the same hero/vehicle photo across adjacent premium sections; assign each image a distinct narrative role such as dossier, handover, or concierge before shipping.
 - Header and footer chrome should be treated as designed brand surfaces, not thin utility bars; give them clear hierarchy, action rhythm, responsive states, and check fixed floating CTAs against footer content before shipping.
+- For contact pages, default to simple and action-focused: avoid large cinematic imagery, overlay cards, repeated CTAs, and stacked explanations when the user wants a clean way to ask or send a brief.
+- When hiding shared floating CTAs on a specific page, verify the real HTTP response after Blade caching; template syntax that compiles can still fail at render-time if variables are scoped incorrectly.
+- A footer should close the page, not compete with the final CTA or read like another hero section; keep footer headings, proof points, CTA panels, and vertical padding deliberately smaller than page sections.
+- For benefit/proof cards, avoid grid child placement that mixes icon, title, and body across implicit rows unless each item is explicitly placed; stacked card anatomy is more robust for varied title lengths and responsive widths.

@@ -13,68 +13,127 @@ class InventoryController extends Controller
      */
     public function index(Request $request)
     {
-        // Base query: hanya yang belum sold + eager load gambar utama
-        $query = Car::query()
-            ->available()
-            ->with(['primaryImage']);
-
-        // Filter search (make or model)
-        $query->textSearch($request->search);
-
-        // Filter make
-        if ($request->filled('make')) {
-            $query->where('make', $request->make);
+        if ($request->filled('model') && ! $request->filled('search')) {
+            return redirect()->route('inventory', array_merge(
+                $request->except('model'),
+                ['search' => $this->cleanString($request->input('model'))],
+            ));
         }
 
-        // Filter model (contains)
-        if ($request->filled('model')) {
-            $query->where('model', 'like', '%' . $request->model . '%');
+        $carMakes = Car::query()
+            ->available()
+            ->whereNotNull('make')
+            ->distinct()
+            ->orderBy('make')
+            ->pluck('make')
+            ->filter()
+            ->values()
+            ->all();
+
+        if ($carMakes === []) {
+            $carMakes = [
+                'Toyota', 'Honda', 'Ford', 'Chevrolet', 'BMW',
+                'Mercedes-Benz', 'Audi', 'Nissan', 'Hyundai',
+                'Volkswagen', 'Mazda', 'Subaru', 'Lexus', 'Kia',
+                'Jeep', 'Ram', 'GMC', 'Tesla', 'Porsche', 'Volvo',
+            ];
+        }
+
+        $bodyTypes = ['suv', 'sedan', 'hatchback', 'mpv', 'pickup', 'van', 'coupe', 'convertible', 'wagon'];
+        $fuelTypes = ['bensin', 'diesel', 'electric', 'hybrid'];
+        $transmissions = ['manual', 'automatic'];
+        $mileagePresets = [
+            ['label' => '< 10k KM', 'min' => null, 'max' => 10000],
+            ['label' => '10 - 30k KM', 'min' => 10000, 'max' => 30000],
+            ['label' => '30 - 50k KM', 'min' => 30000, 'max' => 50000],
+            ['label' => '> 50k KM', 'min' => 50000, 'max' => null],
+        ];
+
+        $searchQuery = $this->cleanString($request->input('search'));
+        $selectedMake = $this->cleanString($request->input('make'));
+        $priceRange = $this->priceRange($request->input('price_range'));
+        $locationId = $this->integerValue($request->input('location'));
+        $selectedBodyTypes = $this->validArray($request->input('body_type'), $bodyTypes);
+        $selectedFuelTypes = $this->validArray($request->input('fuel_type'), $fuelTypes);
+        $selectedTransmissions = $this->validArray($request->input('transmission'), $transmissions);
+        $yearMin = $this->integerValue($request->input('year_min'));
+        $yearMax = $this->integerValue($request->input('year_max'));
+        $mileageMin = $this->integerValue($request->input('mileage_min'));
+        $mileageMax = $this->integerValue($request->input('mileage_max'));
+
+        // Base query: hanya yang belum sold + eager load gambar utama
+        $query = Car::query()
+            ->select([
+                'id',
+                'title',
+                'make',
+                'model',
+                'variant',
+                'year',
+                'mileage_km',
+                'transmission',
+                'fuel_type',
+                'body_type',
+                'price',
+                'featured',
+                'sold',
+                'location_id',
+                'created_at',
+            ])
+            ->available()
+            ->with(['primaryImage', 'fallbackImage']);
+
+        // Filter search (title, make, model, or variant)
+        $query->textSearch($searchQuery);
+
+        // Filter make
+        if ($selectedMake !== '') {
+            $query->where('make', $selectedMake);
         }
 
         // Filter price range (format: "100000000-200000000")
-        if ($request->filled('price_range')) {
-            [$min, $max] = explode('-', $request->price_range);
-            $query->whereBetween('price', [(int) $min, (int) $max]);
+        if ($priceRange !== null) {
+            $query->whereBetween('price', $priceRange);
         }
 
         // Filter location
-        if ($request->filled('location')) {
-            $query->where('location_id', $request->location);
+        if ($locationId !== null) {
+            $query->where('location_id', $locationId);
         }
 
         // Filter body type
-        if ($request->filled('body_type')) {
-            $query->whereIn('body_type', $request->body_type);
+        if ($selectedBodyTypes !== []) {
+            $query->whereIn('body_type', $selectedBodyTypes);
         }
 
         // Filter fuel type
-        if ($request->filled('fuel_type')) {
-            $query->whereIn('fuel_type', $request->fuel_type);
+        if ($selectedFuelTypes !== []) {
+            $query->whereIn('fuel_type', $selectedFuelTypes);
         }
 
         // Filter transmission (array of values)
-        if ($request->filled('transmission')) {
-            $query->whereIn('transmission', $request->transmission);
+        if ($selectedTransmissions !== []) {
+            $query->whereIn('transmission', $selectedTransmissions);
         }
 
         // Filter year range
-        if ($request->filled('year_min')) {
-            $query->where('year', '>=', (int) $request->year_min);
+        if ($yearMin !== null) {
+            $query->where('year', '>=', $yearMin);
         }
-        if ($request->filled('year_max')) {
-            $query->where('year', '<=', (int) $request->year_max);
+        if ($yearMax !== null) {
+            $query->where('year', '<=', $yearMax);
         }
 
         // Filter mileage range
-        if ($request->filled('mileage_min')) {
-            $query->where('mileage_km', '>=', (int) $request->mileage_min);
+        if ($mileageMin !== null) {
+            $query->where('mileage_km', '>=', $mileageMin);
         }
-        if ($request->filled('mileage_max')) {
-            $query->where('mileage_km', '<=', (int) $request->mileage_max);
+        if ($mileageMax !== null) {
+            $query->where('mileage_km', '<=', $mileageMax);
         }
 
         // Sorting
-        $sort = $request->get('sort', 'newest');
+        $sort = $this->sortValue($request->input('sort'));
         switch ($sort) {
             case 'price-low':
                 $query->orderBy('price', 'asc');
@@ -97,30 +156,6 @@ class InventoryController extends Controller
         // Pagination
         $cars = $query->paginate(12)->withQueryString();
 
-        // Dropdown makes (bisa nanti dari DB kalau mau)
-        $carMakes = [
-            'Toyota', 'Honda', 'Ford', 'Chevrolet', 'BMW',
-            'Mercedes-Benz', 'Audi', 'Nissan', 'Hyundai',
-            'Volkswagen', 'Mazda', 'Subaru', 'Lexus', 'Kia',
-            'Jeep', 'Ram', 'GMC', 'Tesla', 'Porsche', 'Volvo'
-        ];
-
-        // Body types (from enum)
-        $bodyTypes = ['suv', 'sedan', 'hatchback', 'mpv', 'pickup', 'van', 'coupe', 'convertible', 'wagon'];
-
-        // Fuel types (from enum)
-        $fuelTypes = ['bensin', 'diesel', 'electric', 'hybrid'];
-
-        // Transmissions (from enum)
-        $transmissions = ['manual', 'automatic'];
-
-        $mileagePresets = [
-            ['label' => '< 10k KM', 'min' => null, 'max' => 10000],
-            ['label' => '10 - 30k KM', 'min' => 10000, 'max' => 30000],
-            ['label' => '30 - 50k KM', 'min' => 30000, 'max' => 50000],
-            ['label' => '> 50k KM', 'min' => 50000, 'max' => null],
-        ];
-
         // Get active locations
         $locations = Location::where('is_active', true)->pluck('name', 'id');
 
@@ -136,16 +171,43 @@ class InventoryController extends Controller
             ]);
         }
 
-        return view('inventory', compact('cars', 'carMakes', 'bodyTypes', 'fuelTypes', 'transmissions', 'mileagePresets', 'locations', 'favorites'));
+        return view('inventory', compact(
+            'cars',
+            'carMakes',
+            'bodyTypes',
+            'fuelTypes',
+            'transmissions',
+            'mileagePresets',
+            'locations',
+            'favorites',
+            'searchQuery',
+            'selectedMake',
+            'sort',
+            'selectedBodyTypes',
+            'selectedFuelTypes',
+            'selectedTransmissions',
+        ));
     }
 
     public function suggestions(Request $request)
     {
-        $search = trim((string) $request->get('q', ''));
+        $search = $this->cleanString($request->get('q', ''));
 
         $cars = Car::query()
+            ->select([
+                'id',
+                'title',
+                'make',
+                'model',
+                'variant',
+                'year',
+                'price',
+                'featured',
+                'sold',
+                'created_at',
+            ])
             ->available()
-            ->with('primaryImage')
+            ->with(['primaryImage', 'fallbackImage'])
             ->textSearch($search)
             ->orderByDesc('featured')
             ->orderByDesc('created_at')
@@ -166,5 +228,55 @@ class InventoryController extends Controller
                 'url' => route('car.show', $car->id),
             ]),
         ]);
+    }
+
+    private function cleanString(mixed $value, int $limit = 80): string
+    {
+        $value = trim(strip_tags((string) $value));
+
+        return mb_substr($value, 0, $limit);
+    }
+
+    private function integerValue(mixed $value): ?int
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        $integer = filter_var($value, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 0],
+        ]);
+
+        return $integer === false ? null : $integer;
+    }
+
+    private function priceRange(mixed $value): ?array
+    {
+        if (! is_string($value) || ! preg_match('/^\d+-\d+$/', $value)) {
+            return null;
+        }
+
+        [$min, $max] = array_map('intval', explode('-', $value, 2));
+
+        return $max >= $min ? [$min, $max] : null;
+    }
+
+    private function validArray(mixed $value, array $allowed): array
+    {
+        $values = is_array($value) ? $value : [$value];
+
+        return array_values(array_intersect(
+            array_map(fn ($item) => (string) $item, $values),
+            $allowed,
+        ));
+    }
+
+    private function sortValue(mixed $value): string
+    {
+        $value = (string) $value;
+
+        return in_array($value, ['newest', 'price-low', 'price-high', 'mileage-low', 'year-new'], true)
+            ? $value
+            : 'newest';
     }
 }

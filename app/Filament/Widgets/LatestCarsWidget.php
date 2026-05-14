@@ -22,7 +22,7 @@ class LatestCarsWidget extends TableWidget
             ->description('Unit aktif bernilai tinggi dan listing unggulan yang paling layak diprioritaskan untuk penjualan.')
             ->query(
                 Car::query()
-                    ->with(['location', 'primaryImage', 'images'])
+                    ->with(['location', 'primaryImage', 'fallbackImage'])
                     ->where('sold', false)
                     ->orderByDesc('featured')
                     ->orderByDesc('price')

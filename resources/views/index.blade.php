@@ -109,8 +109,8 @@
 
                 <input
                     type="text"
-                    name="model"
-                    placeholder="Model (mis. Avanza)"
+                    name="search"
+                    placeholder="Model, varian, atau kata kunci"
                     class="s-input"
                 />
 
@@ -304,107 +304,171 @@
 <!-- Why Choose Us -->
 <style>
     .trust-story-section {
+        position: relative;
+        overflow: hidden;
         background:
-            radial-gradient(circle at top left, rgba(229, 62, 62, 0.16), transparent 32%),
-            radial-gradient(circle at bottom right, rgba(229, 62, 62, 0.12), transparent 28%),
-            linear-gradient(180deg, #111214 0%, #09090b 100%);
+            radial-gradient(circle at 9% 0%, rgba(229, 62, 62, 0.18), transparent 30%),
+            radial-gradient(circle at 94% 82%, rgba(229, 62, 62, 0.12), transparent 28%),
+            linear-gradient(180deg, #101114 0%, #07080b 100%);
         border-top: 1px solid rgba(255, 255, 255, 0.05);
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
-    /* Why Choose Us Dark Theme with Red Glow */
+    .trust-story-section::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.038) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.038) 1px, transparent 1px);
+        background-size: 72px 72px;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.42), transparent 74%);
+        pointer-events: none;
+    }
     .why-choose-section {
+        position: relative;
         background: transparent;
-        padding: clamp(40px, 10vw, 64px) 0 clamp(28px, 7vw, 40px);
+        padding: clamp(56px, 10vw, 84px) 0 clamp(30px, 6vw, 48px);
+    }
+    .why-choose-head {
+        display: grid;
+        gap: 18px;
+        align-items: end;
+        margin-bottom: clamp(30px, 5vw, 44px);
+    }
+    @media (min-width: 900px) {
+        .why-choose-head {
+            grid-template-columns: minmax(0, 0.95fr) minmax(340px, 0.62fr);
+        }
     }
     .why-choose-title {
         font-family: var(--font-display);
-        font-size: clamp(24px, 5vw, 32px);
-        font-weight: 700;
+        font-size: clamp(32px, 5vw, 56px);
+        font-weight: 900;
+        line-height: 0.98;
         text-transform: uppercase;
-        letter-spacing: 0.12em;
+        letter-spacing: 0;
         color: #ffffff;
-        text-align: center;
-        margin-bottom: 12px;
+        max-width: 760px;
     }
     .why-choose-subtitle {
-        text-align: center;
-        color: rgba(255, 255, 255, 0.65);
+        color: rgba(255, 255, 255, 0.62);
         font-size: clamp(14px, 3vw, 15px);
-        max-width: 600px;
-        margin: 0 auto 48px;
-        padding: 0 16px;
+        line-height: 1.8;
+        max-width: 460px;
     }
     .why-choose-grid {
         display: grid;
-        grid-template-columns: 1fr;
-        gap: 32px;
+        gap: 14px;
     }
     @media (min-width: 768px) {
         .why-choose-grid {
             grid-template-columns: repeat(3, 1fr);
         }
-        .why-choose-title {
-            font-size: 32px;
-        }
     }
     .why-choose-card {
-        background: rgba(18, 18, 22, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        min-height: 210px;
+        background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.018));
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 8px;
-        padding: clamp(24px, 6vw, 40px) clamp(20px, 5vw, 32px);
-        text-align: center;
-        transition: all 0.3s ease;
+        padding: clamp(20px, 4vw, 28px);
+        transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
+    }
+    .why-choose-card::before {
+        content: '01';
+        position: absolute;
+        right: 22px;
+        bottom: 18px;
+        color: rgba(255, 255, 255, 0.08);
+        font-family: var(--font-display);
+        font-size: 58px;
+        font-weight: 900;
+        line-height: 1;
+    }
+    .why-choose-card:nth-child(2)::before {
+        content: '02';
+    }
+    .why-choose-card:nth-child(3)::before {
+        content: '03';
+    }
+    .why-choose-card::after {
+        content: '';
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 3px;
+        background: linear-gradient(180deg, #ef4444, rgba(239, 68, 68, 0));
+        opacity: 0.4;
     }
     .why-choose-card:hover {
-        border-color: rgba(239, 68, 68, 0.4);
-        background: rgba(18, 18, 22, 0.8);
+        transform: translateY(-3px);
+        border-color: rgba(239, 68, 68, 0.34);
+        background:
+            linear-gradient(180deg, rgba(239, 68, 68, 0.1), rgba(255, 255, 255, 0.024));
     }
     .why-icon-wrapper {
-        width: 80px;
-        height: 80px;
-        margin: 0 auto 24px;
+        width: 54px;
+        height: 54px;
+        margin: 0;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 6px;
-        border: 1px solid rgba(239, 68, 68, 0.25);
-        background: rgba(239, 68, 68, 0.08);
+        border: 1px solid rgba(239, 68, 68, 0.28);
+        background: rgba(239, 68, 68, 0.1);
         transition: all 0.3s ease;
     }
     .why-choose-card:hover .why-icon-wrapper {
-        box-shadow: 0 0 20px 4px rgba(239, 68, 68, 0.5), 0 0 40px 8px rgba(239, 68, 68, 0.3);
+        box-shadow: 0 0 22px rgba(239, 68, 68, 0.34);
         border-color: rgba(239, 68, 68, 0.5);
         background: rgba(239, 68, 68, 0.12);
     }
     .why-icon-wrapper svg {
-        width: 36px;
-        height: 36px;
+        width: 26px;
+        height: 26px;
         color: #e53e3e;
         stroke-width: 2;
     }
     .why-card-title {
         font-family: var(--font-display);
         font-size: 16px;
-        font-weight: 700;
+        font-weight: 900;
         text-transform: uppercase;
         letter-spacing: 0.1em;
         color: #ffffff;
-        margin-bottom: 12px;
+        max-width: 18rem;
+        margin-bottom: -4px;
+        line-height: 1.45;
     }
     .why-card-description {
         color: rgba(255, 255, 255, 0.6);
         font-size: 14px;
-        line-height: 1.6;
+        line-height: 1.75;
+        max-width: 29rem;
+    }
+    @media (max-width: 640px) {
+        .why-choose-card {
+            min-height: auto;
+        }
+        .why-choose-card::before {
+            font-size: 44px;
+        }
     }
 </style>
 
-<div class="trust-story-section">
+<div class="trust-story-section" id="trust-story">
 <section class="why-choose-section">
     <div class="container mx-auto px-4">
-        <h2 class="why-choose-title">Mengapa Memilih Rizki Mobil?</h2>
-        <p class="why-choose-subtitle">
-            Kami lebih dari sekedar menjual mobil. Setiap kendaraan hadir dengan jaminan kualitas dan transparansi.
-        </p>
+        <div class="why-choose-head">
+            <h2 class="why-choose-title">Mengapa Memilih Rizki Mobil?</h2>
+            <p class="why-choose-subtitle">
+                Kami lebih dari sekedar menjual mobil. Setiap kendaraan hadir dengan jaminan kualitas dan transparansi.
+            </p>
+        </div>
 
         <div class="why-choose-grid">
             <!-- Card 1: 150-Point Inspection -->
@@ -452,37 +516,34 @@
 <!-- Customer Testimonials -->
 <style>
     .testimonials-section {
+        position: relative;
         background: transparent;
-        padding: clamp(20px, 5vw, 28px) 0 clamp(56px, 11vw, 88px);
+        padding: clamp(26px, 5vw, 40px) 0 clamp(62px, 11vw, 92px);
     }
     .testimonials-shell {
         display: grid;
-        gap: 24px;
+        gap: 26px;
         align-items: start;
     }
     @media (min-width: 1024px) {
         .testimonials-shell {
-            grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
-            gap: 32px;
+            grid-template-columns: minmax(0, 0.74fr) minmax(0, 1.26fr);
+            gap: clamp(38px, 5vw, 76px);
         }
     }
     .testimonials-intro {
         position: relative;
         overflow: hidden;
-        border-radius: 18px;
-        padding: clamp(28px, 5vw, 36px);
-        background: linear-gradient(160deg, rgba(24, 24, 27, 0.94), rgba(10, 10, 11, 0.88));
-        border: 1px solid rgba(239, 68, 68, 0.18);
-        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.32);
+        padding: clamp(26px, 5vw, 34px) 0;
     }
     .testimonials-kicker {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        margin-bottom: 18px;
+        margin-bottom: 16px;
         color: rgba(255, 255, 255, 0.72);
         font-size: 12px;
-        font-weight: 700;
+        font-weight: 900;
         text-transform: uppercase;
         letter-spacing: 0.18em;
     }
@@ -494,37 +555,40 @@
     }
     .testimonials-title {
         font-family: var(--font-display);
-        font-size: clamp(28px, 6vw, 40px);
-        font-weight: 700;
-        line-height: 1.08;
+        font-size: clamp(34px, 6vw, 58px);
+        font-weight: 900;
+        line-height: 0.98;
         color: #fff;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 14px;
+        letter-spacing: 0;
+        margin-bottom: 18px;
     }
     .testimonials-description {
         color: rgba(255, 255, 255, 0.68);
         font-size: 15px;
         line-height: 1.8;
-        max-width: 34rem;
+        max-width: 38rem;
     }
     .testimonials-highlight {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 16px;
-        margin-top: 28px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-width: 430px;
+        margin-top: 30px;
+        border-block: 1px solid rgba(255, 255, 255, 0.12);
     }
     .testimonials-highlight-card {
-        min-width: 140px;
-        border-radius: 14px;
-        padding: 16px 18px;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 16px 18px 16px 0;
+        background: transparent;
+        border: 0;
+    }
+    .testimonials-highlight-card + .testimonials-highlight-card {
+        padding-left: 18px;
+        border-left: 1px solid rgba(255, 255, 255, 0.12);
     }
     .testimonials-highlight-number {
         font-family: var(--font-display);
-        font-size: 28px;
-        font-weight: 700;
+        font-size: clamp(26px, 4vw, 34px);
+        font-weight: 900;
         color: #fff;
         line-height: 1;
     }
@@ -537,7 +601,7 @@
     }
     .testimonials-grid {
         display: grid;
-        gap: 18px;
+        gap: 14px;
     }
     @media (min-width: 768px) {
         .testimonials-grid {
@@ -550,39 +614,52 @@
     .testimonial-card {
         position: relative;
         overflow: hidden;
-        border-radius: 18px;
-        padding: 24px;
-        background: linear-gradient(180deg, rgba(19, 19, 23, 0.96), rgba(10, 10, 11, 0.92));
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24);
+        border-radius: 8px;
+        padding: clamp(20px, 3vw, 26px);
+        background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0.048), rgba(255, 255, 255, 0.018));
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: none;
         transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+    }
+    @media (min-width: 768px) {
+        .testimonials-grid .testimonial-card:first-child {
+            display: grid;
+            grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
+            gap: 24px;
+            align-items: center;
+            padding: clamp(24px, 4vw, 32px);
+            background:
+                linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(255, 255, 255, 0.032) 42%, rgba(255, 255, 255, 0.018));
+            border-color: rgba(239, 68, 68, 0.22);
+        }
     }
     .testimonial-card::after {
         content: '';
         position: absolute;
-        inset: auto -24% -42% auto;
-        width: 160px;
-        height: 160px;
+        inset: auto -16% -44% auto;
+        width: 150px;
+        height: 150px;
         border-radius: 999px;
-        background: radial-gradient(circle, rgba(229, 62, 62, 0.16), transparent 70%);
+        background: radial-gradient(circle, rgba(229, 62, 62, 0.14), transparent 70%);
         pointer-events: none;
     }
     .testimonial-card:hover {
-        transform: translateY(-4px);
+        transform: translateY(-2px);
         border-color: rgba(239, 68, 68, 0.28);
-        box-shadow: 0 24px 54px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(239, 68, 68, 0.06);
+        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.24);
     }
     .testimonial-topline {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 16px;
-        margin-bottom: 18px;
+        margin-bottom: 16px;
     }
     .testimonial-name {
         font-family: var(--font-display);
         font-size: 19px;
-        font-weight: 700;
+        font-weight: 900;
         color: #fff;
     }
     .testimonial-purchase {
@@ -596,10 +673,10 @@
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        padding: 8px 12px;
+        padding: 7px 11px;
         border-radius: 999px;
-        background: rgba(229, 62, 62, 0.12);
-        border: 1px solid rgba(239, 68, 68, 0.16);
+        background: rgba(229, 62, 62, 0.14);
+        border: 1px solid rgba(239, 68, 68, 0.2);
         color: #ffd166;
         flex-shrink: 0;
     }
@@ -619,16 +696,39 @@
     }
     .testimonial-headline {
         font-family: var(--font-display);
-        font-size: 18px;
-        font-weight: 700;
+        font-size: clamp(17px, 2vw, 20px);
+        font-weight: 900;
         color: rgba(255, 255, 255, 0.94);
-        line-height: 1.5;
-        margin-bottom: 14px;
+        line-height: 1.42;
+        margin-bottom: 12px;
+    }
+    @media (min-width: 768px) {
+        .testimonials-grid .testimonial-card:first-child .testimonial-headline {
+            font-size: clamp(22px, 2.6vw, 28px);
+            line-height: 1.18;
+        }
     }
     .testimonial-quote {
         color: rgba(255, 255, 255, 0.68);
         font-size: 14px;
         line-height: 1.8;
+    }
+    @media (max-width: 640px) {
+        .testimonials-intro {
+            padding-top: 16px;
+        }
+        .testimonials-highlight {
+            grid-template-columns: 1fr;
+        }
+        .testimonials-highlight-card + .testimonials-highlight-card {
+            padding-left: 0;
+            border-left: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .testimonial-topline {
+            align-items: flex-start;
+            flex-direction: column;
+        }
     }
     
     /* === ABOUT RIZKI MOBIL - EDITORIAL DOSSIER === */

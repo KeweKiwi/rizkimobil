@@ -8,178 +8,154 @@
     .rmi-footer {
         position: relative;
         overflow: hidden;
-        background:
-            radial-gradient(circle at 10% 0%, rgba(239, 68, 68, 0.22), transparent 32%),
-            radial-gradient(circle at 88% 18%, rgba(239, 68, 68, 0.12), transparent 28%),
-            linear-gradient(135deg, #090d15 0%, #05070c 58%, #120306 100%);
         color: #ffffff;
+        background:
+            radial-gradient(circle at 8% 0%, rgba(239, 68, 68, 0.18), transparent 30%),
+            radial-gradient(circle at 92% 100%, rgba(239, 68, 68, 0.12), transparent 30%),
+            linear-gradient(135deg, #090d15 0%, #05070c 62%, #120306 100%);
     }
     .rmi-footer::before {
         content: '';
         position: absolute;
         inset: 0;
         background-image:
-            linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
-        background-size: 76px 76px;
-        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.38), transparent 72%);
+            linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        background-size: 72px 72px;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.35), transparent 78%);
         pointer-events: none;
     }
     .rmi-footer::after {
         content: '';
         position: absolute;
-        left: 0;
-        right: 0;
         top: 0;
+        right: 0;
+        left: 0;
         height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.9), transparent);
+        background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.8), transparent);
     }
     .rmi-footer-inner {
         position: relative;
         z-index: 1;
-        padding-top: clamp(56px, 7vw, 86px);
-        padding-bottom: 26px;
+        padding-top: clamp(30px, 3.2vw, 40px);
+        padding-bottom: 22px;
     }
     .rmi-footer-main {
         display: grid;
-        gap: clamp(34px, 5vw, 72px);
-        align-items: start;
+        gap: clamp(26px, 4vw, 48px);
+        align-items: end;
     }
     @media (min-width: 1024px) {
         .rmi-footer-main {
-            grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+            grid-template-columns: minmax(0, 1fr) minmax(420px, 0.78fr);
         }
     }
     .rmi-footer-logo {
-        width: 150px;
+        width: 118px;
         height: auto;
-        filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.34));
+        filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.28));
     }
     .rmi-footer-title {
-        margin-top: 26px;
         max-width: 760px;
+        margin-top: 16px;
+        color: #ffffff;
         font-family: var(--font-display);
-        font-size: clamp(34px, 5vw, 64px);
+        font-size: clamp(26px, 2.9vw, 36px);
         font-weight: 900;
-        line-height: 0.98;
+        line-height: 1.02;
         letter-spacing: 0;
     }
     .rmi-footer-title span {
         color: #ff4747;
     }
     .rmi-footer-copy {
-        margin-top: 20px;
-        max-width: 640px;
-        color: rgba(255, 255, 255, 0.62);
-        font-size: 15px;
-        line-height: 1.85;
-    }
-    .rmi-footer-proof {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        max-width: 760px;
-        margin-top: 34px;
-        border-block: 1px solid rgba(255, 255, 255, 0.14);
-    }
-    .rmi-footer-proof span {
-        display: block;
-        padding: 16px 18px 16px 0;
+        max-width: 650px;
+        margin-top: 12px;
         color: rgba(255, 255, 255, 0.58);
-        font-size: 12px;
-        font-weight: 800;
-        line-height: 1.45;
+        font-size: 13px;
+        line-height: 1.75;
     }
-    .rmi-footer-proof span + span {
-        border-left: 1px solid rgba(255, 255, 255, 0.14);
-        padding-left: 18px;
-    }
-    .rmi-footer-actions {
+    .rmi-footer-command {
         display: grid;
-        gap: 18px;
-        padding: clamp(22px, 4vw, 34px);
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        background:
-            linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035));
-        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.24);
-        backdrop-filter: blur(14px);
+        gap: 14px;
+        padding: 20px 0 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.14);
     }
-    .rmi-footer-actions-label {
-        color: rgba(255, 255, 255, 0.52);
-        font-size: 12px;
-        font-weight: 900;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
+    @media (min-width: 1024px) {
+        .rmi-footer-command {
+            padding: 6px 0 6px 34px;
+            border-top: 0;
+            border-left: 1px solid rgba(255, 255, 255, 0.14);
+        }
     }
-    .rmi-footer-actions-title {
+    .rmi-footer-command-title {
+        max-width: 460px;
         color: #ffffff;
         font-family: var(--font-display);
-        font-size: clamp(24px, 3vw, 36px);
+        font-size: clamp(20px, 2.1vw, 26px);
         font-weight: 900;
-        line-height: 1.06;
+        line-height: 1.08;
         letter-spacing: 0;
     }
     .rmi-footer-buttons {
         display: flex;
         flex-wrap: wrap;
-        gap: 12px;
-        margin-top: 6px;
+        gap: 10px;
     }
     .rmi-footer-button {
         display: inline-flex;
-        min-height: 50px;
+        min-height: 44px;
         align-items: center;
         justify-content: center;
-        gap: 10px;
+        gap: 9px;
         border-radius: 999px;
-        padding: 0 20px;
-        font-size: 13px;
+        padding: 0 17px;
+        font-size: 12px;
         font-weight: 900;
         letter-spacing: 0.04em;
         text-transform: uppercase;
         text-decoration: none;
-        transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+        transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .rmi-footer-button svg {
-        width: 17px;
-        height: 17px;
+        width: 16px;
+        height: 16px;
     }
     .rmi-footer-button-primary {
         background: #ef3333;
         color: #ffffff;
-        box-shadow: 0 18px 38px rgba(239, 51, 51, 0.3);
+        box-shadow: 0 14px 30px rgba(239, 51, 51, 0.28);
     }
     .rmi-footer-button-secondary {
         color: #ffffff;
         border: 1px solid rgba(255, 255, 255, 0.2);
-        background: rgba(255, 255, 255, 0.04);
+        background: rgba(255, 255, 255, 0.035);
     }
     .rmi-footer-button:hover {
-        transform: translateY(-2px);
+        transform: translateY(-1px);
     }
     .rmi-footer-button-primary:hover {
         background: #dc2626;
-        box-shadow: 0 22px 44px rgba(220, 38, 38, 0.34);
+        box-shadow: 0 18px 34px rgba(220, 38, 38, 0.32);
     }
     .rmi-footer-button-secondary:hover {
-        border-color: rgba(239, 68, 68, 0.5);
+        border-color: rgba(239, 68, 68, 0.48);
         background: rgba(239, 68, 68, 0.1);
     }
     .rmi-footer-nav {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
-        padding-top: 16px;
-        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        gap: 6px;
     }
     .rmi-footer-nav a {
         display: inline-flex;
+        min-height: 32px;
         align-items: center;
-        min-height: 36px;
         border-radius: 999px;
-        padding: 0 13px;
-        color: rgba(255, 255, 255, 0.58);
-        font-size: 13px;
-        font-weight: 700;
+        padding: 0 11px;
+        color: rgba(255, 255, 255, 0.52);
+        font-size: 12px;
+        font-weight: 800;
         text-decoration: none;
         transition: color 0.2s ease, background 0.2s ease;
     }
@@ -190,12 +166,12 @@
     .rmi-footer-bottom {
         display: flex;
         flex-direction: column;
-        gap: 14px;
-        margin-top: clamp(36px, 5vw, 62px);
-        padding-top: 20px;
-        border-top: 1px solid rgba(255, 255, 255, 0.12);
-        color: rgba(255, 255, 255, 0.44);
-        font-size: 13px;
+        gap: 10px;
+        margin-top: clamp(20px, 2.5vw, 28px);
+        padding-top: 14px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 12px;
         line-height: 1.6;
     }
     @media (min-width: 768px) {
@@ -206,57 +182,47 @@
         }
     }
     .rmi-footer-code {
-        color: rgba(255, 255, 255, 0.4);
-        font-size: 11px;
+        color: rgba(255, 255, 255, 0.38);
+        font-size: 10px;
         font-weight: 900;
         letter-spacing: 0.18em;
         text-transform: uppercase;
     }
+    @media (min-width: 1024px) {
+        .rmi-footer-code {
+            padding-right: 180px;
+        }
+    }
     @media (max-width: 640px) {
         .rmi-footer-inner {
-            padding-top: 42px;
-            padding-bottom: 132px;
+            padding-top: 34px;
+            padding-bottom: 118px;
         }
         .rmi-footer-logo {
-            width: 132px;
+            width: 122px;
         }
         .rmi-footer-title {
-            margin-top: 22px;
-            max-width: 22rem;
-            font-size: 32px;
+            max-width: 24rem;
+            margin-top: 18px;
+            font-size: 30px;
             line-height: 1.04;
         }
         .rmi-footer-copy {
-            font-size: 14px;
-            line-height: 1.75;
+            font-size: 13px;
+            line-height: 1.72;
         }
-        .rmi-footer-proof {
-            grid-template-columns: 1fr;
-            margin-top: 28px;
-        }
-        .rmi-footer-proof span {
-            padding: 14px 0;
-        }
-        .rmi-footer-proof span + span {
-            border-left: 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.14);
-            padding-left: 0;
-        }
-        .rmi-footer-actions {
-            padding: 22px;
-        }
-        .rmi-footer-actions-title {
-            font-size: 28px;
+        .rmi-footer-command-title {
+            font-size: 24px;
             line-height: 1.12;
         }
         .rmi-footer-button {
             width: 100%;
         }
         .rmi-footer-nav {
-            gap: 8px;
+            gap: 4px;
         }
-        .rmi-footer-bottom {
-            margin-top: 34px;
+        .rmi-footer-nav a {
+            padding-inline: 10px;
         }
     }
 </style>
@@ -277,17 +243,10 @@
                 <p class="rmi-footer-copy">
                     Untuk stok, kondisi unit, opsi tukar tambah, dan jadwal lihat mobil, mulai dari percakapan singkat dengan admin Rizki Mobil.
                 </p>
-
-                <div class="rmi-footer-proof" aria-label="Prinsip layanan Rizki Mobil">
-                    <span>Informasi unit dijelaskan sebelum visit.</span>
-                    <span>Stok dan harga dikonfirmasi ulang.</span>
-                    <span>Jadwal lihat mobil dibuat lebih terarah.</span>
-                </div>
             </div>
 
-            <div class="rmi-footer-actions">
-                <p class="rmi-footer-actions-label">Next move</p>
-                <p class="rmi-footer-actions-title">Tanya unit yang sedang Anda incar, atau langsung lihat stok tersedia.</p>
+            <div class="rmi-footer-command">
+                <p class="rmi-footer-command-title">Tanya unit incaran, atau cek stok yang tersedia.</p>
 
                 <div class="rmi-footer-buttons">
                     <a

@@ -176,6 +176,36 @@
 - [ ] Render admin login/dashboard routes and verify Filament surfaces for visible/runtime errors
 - [ ] Document findings, fixes if needed, and remaining risk
 
+## Current Task: Optimize Inventory Scalability
+- [x] Review inventory, car image accessors, admin car table, and database indexes for 200+ stock readiness
+- [x] Add focused eager-loading/image-query improvements so user and admin lists avoid avoidable N+1 queries
+- [x] Add practical database indexes for common stock filters and sort paths
+- [x] Verify syntax, migrations, view/build/test behavior, and document the performance result
+
+## Current Task: Harden Inventory Filter Contract
+- [x] Review current homepage/header/inventory filter parameters and identify inconsistent query names
+- [x] Unify keyword search around `search` while keeping legacy `model` links compatible
+- [x] Harden filter parsing for price range, arrays, numeric ranges, and sort values
+- [x] Verify filter behavior with syntax, view cache, build/tests, and targeted query checks
+
+## Current Task: Simplify Contact Page UI
+- [x] Review the current contact page structure and identify stacked/overdesigned areas
+- [x] Redesign the contact page into a simpler clean layout while preserving form fields, WhatsApp CTA, and routes
+- [x] Remove visual clutter and tighten responsive behavior
+- [x] Verify Blade/build/tests and inspect the rendered contact page on desktop/mobile
+
+## Current Task: Right-Size Footer
+- [x] Review current footer hierarchy and identify why it feels like an oversized section
+- [x] Refactor footer into a compact premium closing band while preserving brand, nav, WhatsApp, stock CTA, and legal copy
+- [x] Tighten desktop/mobile spacing so the footer feels useful without dominating the page
+- [x] Verify Blade/build/tests and inspect the rendered footer on desktop/mobile
+
+## Current Task: Improve Trust And Testimonials Section
+- [x] Review the current `Mengapa Memilih Rizki Mobil` and testimonial section structure
+- [x] Redesign benefit cards and testimonial layout so the section feels more premium and less repetitive
+- [x] Preserve existing copy/data/routes while improving hierarchy, spacing, and responsive behavior
+- [x] Verify Blade/build/tests and inspect the rendered section on desktop/mobile
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.
@@ -200,6 +230,14 @@
 - Added an introduction section for Rizki Mobil below testimonials with a refined two-column layout, warm light background, brand-led copy, and a visual panel built from local brand assets.
 - Syntax checks passed for `app/Http/Controllers/HomeController.php` after adding the homepage introduction data.
 - `php artisan view:cache` completed successfully after the section reorder and the new company-introduction block.
+- Simplified the contact page from an image-heavy concierge hero into a direct two-column contact surface with concise copy, primary WhatsApp action, secondary stock action, two short guidance notes, and a single clean form.
+- Hid the floating WhatsApp CTA on the contact page only, because the page already has a primary WhatsApp action and the floating button was visually competing with the form.
+- Fixed the Blade variable setup after HTTP verification exposed a contact-page 500, then re-ran view compilation, asset build, tests, HTTP checks, and desktop/mobile browser QA successfully.
+- Right-sized the footer from a large hero-like closing section into a compact premium footer band with smaller type, shorter vertical spacing, no proof strip, no oversized CTA card, and a cleaner command block for WhatsApp/stock actions.
+- Verified the compact footer with Blade syntax, view cache, Vite build, PHPUnit, and desktop/mobile browser screenshots with no console errors.
+- Improved the homepage trust/testimonial section by replacing centered empty benefit cards with compact dossier-style proof cards, adding section texture/anchoring, and reshaping testimonials into a lighter review-ledger layout.
+- Fixed a desktop QA issue where benefit card titles were clipped by the first grid layout; final card anatomy now stacks icon, title, and copy reliably.
+- Verified the section with Blade syntax, view cache, Vite build, PHPUnit, server-rendered HTML checks, and Browser desktop/mobile DOM checks; desktop visual QA confirmed the corrected benefit cards.
 - Refined the Rizki Mobil introduction section by shortening the headline and supporting copy so the composition feels lighter and more controlled.
 - Reworked the right-side visual into a calmer brand card with restrained hierarchy and cleaner stat presentation, replacing the heavier oversized layout.
 - Syntax checks passed for `app/Http/Controllers/HomeController.php` after refining the homepage introduction content.
@@ -295,3 +333,14 @@
 - Added a dedicated `handover_image` key to the homepage about data so future CTA imagery does not accidentally reuse the About dossier image.
 - `php -l` passed for the changed controller and Blade files, and `php artisan view:cache`, `npm run build`, `php artisan test`, and `git diff --check` completed successfully after separating the images.
 - Visual QA verified the rendered image sources and desktop screenshots for About, closing CTA, and Contact; desktop and mobile metrics confirmed no horizontal overflow (`1440/1440` and `390/390`).
+- Added a `fallbackImage` one-of-many relation so public/admin listing views can load a single fallback image without eager-loading every gallery image.
+- Updated public inventory, header suggestions, homepage featured cars, admin car table, and dashboard stock/sold widgets to eager-load `primaryImage` plus `fallbackImage`, avoiding per-card image queries while keeping the first-image fallback behavior.
+- Limited public inventory, search suggestions, and homepage featured car queries to the listing columns actually rendered in cards/hero areas, reducing payload per result.
+- Added database indexes for common available-stock filters/sorts on `cars` and image lookup indexes on `car_images`, then applied the migration locally.
+- Query verification confirmed accessing `main_image` after eager loading added `0` extra image queries for the current inventory page.
+- `php -l`, `php artisan view:cache`, `php artisan migrate`, `php artisan migrate:status`, `npm run build`, `php artisan test`, and `git diff --check` completed successfully after the optimization.
+- Unified inventory keyword search so homepage, header, and inventory filtering now use the canonical `search` parameter, with old `model` URLs redirected to `search` for compatibility.
+- Hardened inventory filter parsing for search strings, price range format, positive numeric ranges, allowed checkbox arrays, and supported sort values so malformed query parameters no longer affect the query shape.
+- Changed inventory make options to come from available stock first, with the old static brand list kept only as a fallback when the database has no stock.
+- Added targeted feature tests covering legacy `model` redirect, search filtering, and malformed filter parameters.
+- `php -l`, `php artisan view:cache`, `npm run build`, `php artisan test --filter=InventoryFilterTest`, full `php artisan test`, and `git diff --check` completed successfully after hardening the filter contract.
