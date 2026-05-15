@@ -44,9 +44,9 @@
                     </div>
                 </div>
             @else
-                <div class="mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                <div class="mt-12 grid min-w-0 gap-5 sm:grid-cols-2 xl:grid-cols-3">
                     @foreach($cars as $car)
-                        <article class="group overflow-hidden rounded-lg border border-slate-200 bg-white shadow-[0_22px_70px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:border-red-200 hover:shadow-[0_28px_80px_rgba(220,38,38,0.12)]">
+                        <article class="group min-w-0 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-[0_22px_70px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:border-red-200 hover:shadow-[0_28px_80px_rgba(220,38,38,0.12)]">
                             <a href="{{ route('car.show', $car) }}" class="block">
                                 <div class="aspect-[4/3] overflow-hidden bg-slate-100">
                                     <img
@@ -61,7 +61,7 @@
 
                             <div class="p-5">
                                 <div class="flex items-start justify-between gap-4">
-                                    <div>
+                                    <div class="min-w-0">
                                         <p class="text-xs font-black uppercase tracking-[0.18em] text-slate-400">{{ $car->year }} / {{ $car->make }}</p>
                                         <h2 class="mt-2 font-display text-xl font-black leading-tight text-slate-950">
                                             {{ $car->model }}{{ $car->variant ? ' ' . $car->variant : '' }}
@@ -77,15 +77,15 @@
                                     </form>
                                 </div>
 
-                                <div class="mt-5 grid grid-cols-3 gap-2 border-y border-slate-100 py-4 text-xs text-slate-500">
-                                    <span>{{ number_format($car->mileage_km ?? 0) }} km</span>
-                                    <span>{{ ucfirst($car->transmission ?? '-') }}</span>
-                                    <span>{{ strtoupper($car->body_type ?? '-') }}</span>
+                                <div class="mt-5 grid grid-cols-1 gap-2 border-y border-slate-100 py-4 text-xs text-slate-500 min-[420px]:grid-cols-3">
+                                    <span class="min-w-0 break-words">{{ number_format($car->mileage_km ?? 0) }} km</span>
+                                    <span class="min-w-0 break-words">{{ ucfirst($car->transmission ?? '-') }}</span>
+                                    <span class="min-w-0 break-words">{{ strtoupper($car->body_type ?? '-') }}</span>
                                 </div>
 
-                                <div class="mt-5 flex items-center justify-between gap-4">
-                                    <p class="font-display text-xl font-black text-red-600">Rp {{ number_format($car->price ?? 0, 0, ',', '.') }}</p>
-                                    <a href="{{ route('car.show', $car) }}" class="text-sm font-black text-slate-950 transition hover:text-red-600">
+                                <div class="mt-5 flex min-w-0 flex-wrap items-center justify-between gap-4">
+                                    <p class="min-w-0 break-words font-display text-xl font-black leading-tight text-red-600">Rp {{ number_format($car->price ?? 0, 0, ',', '.') }}</p>
+                                    <a href="{{ route('car.show', $car) }}" class="shrink-0 text-sm font-black text-slate-950 transition hover:text-red-600">
                                         Lihat detail
                                     </a>
                                 </div>

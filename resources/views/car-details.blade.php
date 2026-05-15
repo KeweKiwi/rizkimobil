@@ -23,7 +23,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
         </button>
-        <div id="lightbox-indicators" class="absolute bottom-4 flex gap-2">
+        <div id="lightbox-indicators" class="absolute bottom-4 flex max-w-[calc(100vw-2rem)] gap-2 overflow-x-auto px-1">
             @foreach ($car->images as $index => $image)
                 <button
                     class="h-2 w-2 rounded-full transition-all {{ $index === 0 ? 'w-8 bg-red-600' : 'bg-white/50 hover:bg-white/80' }}"
@@ -32,9 +32,9 @@
         </div>
     </div>
 
-    <div class="container mx-auto px-4 py-6 sm:py-8">
+    <div class="container mx-auto max-w-7xl overflow-hidden px-4 py-5 sm:py-8">
         <!-- Breadcrumb -->
-        <nav class="mb-6 flex items-center gap-2 text-xs sm:text-sm text-gray-500 overflow-x-auto pb-2">
+        <nav class="mb-5 flex min-w-0 items-center gap-2 overflow-x-auto pb-2 text-xs text-gray-500 sm:mb-6 sm:text-sm">
             <a href="{{ route('home') }}" class="hover:text-red-600 transition-colors whitespace-nowrap">Beranda</a>
             <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -43,12 +43,12 @@
             <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
-            <span class="text-foreground truncate">{{ $car->year }} {{ $car->make }} {{ $car->model }}</span>
+            <span class="min-w-0 truncate text-foreground">{{ $car->year }} {{ $car->make }} {{ $car->model }}</span>
         </nav>
 
-        <div class="grid gap-6 lg:grid-cols-5">
+        <div class="grid min-w-0 gap-5 lg:grid-cols-5 lg:gap-6">
             <!-- Left Column - Images & Description -->
-            <div class="lg:col-span-3">
+            <div class="min-w-0 lg:col-span-3">
                 @php
                     $mainImage = $car->primaryImage
                         ? asset($car->primaryImage->image_path)
@@ -56,10 +56,10 @@
                 @endphp
 
                 <!-- Main Image -->
-                <div class="relative aspect-[4/3] sm:aspect-[16/10] cursor-pointer overflow-hidden rounded-xl border border-red-600/20 shadow-[0_0_20px_rgba(220,38,38,0.1)] bg-muted"
+                <div class="relative aspect-[4/3] w-full max-w-full cursor-pointer overflow-hidden rounded-xl border border-red-600/20 bg-muted shadow-[0_0_20px_rgba(220,38,38,0.1)] sm:aspect-[16/10]"
                     onclick="openLightbox()">
                     <img id="main-image" src="{{ $mainImage }}" alt="{{ $car->make }} {{ $car->model }}"
-                        class="h-full w-full object-cover transition-transform duration-300 hover:scale-105" />
+                        class="block h-full w-full object-cover transition-transform duration-300 hover:scale-105" />
                     @if (count($car->images) > 1)
                         <button onclick="event.stopPropagation(); prevImage()"
                             class="absolute left-3 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-lg border border-red-600/30 bg-black/60 backdrop-blur-sm text-white transition-all hover:border-red-600 hover:bg-red-600/80">
@@ -86,10 +86,10 @@
 
                 <!-- Thumbnails -->
                 @if (count($car->images) > 1)
-                    <div class="mt-3 sm:mt-4 flex gap-2 sm:gap-3 overflow-x-auto pb-2">
+                    <div class="mt-3 flex max-w-full snap-x gap-2 overflow-x-auto overscroll-x-contain pb-2 [-webkit-overflow-scrolling:touch] sm:mt-4 sm:gap-3">
                         @foreach ($car->images as $index => $img)
                             <button
-                                class="relative h-16 w-20 sm:h-20 sm:w-28 shrink-0 overflow-hidden rounded-lg border transition-all {{ $index === 0 ? 'border-red-600 ring-2 ring-red-600/30' : 'border-gray-700 hover:border-red-600/50 opacity-60 hover:opacity-100' }}"
+                                class="relative h-14 w-20 shrink-0 snap-start overflow-hidden rounded-lg border transition-all sm:h-20 sm:w-28 {{ $index === 0 ? 'border-red-600 ring-2 ring-red-600/30' : 'border-gray-700 hover:border-red-600/50 opacity-60 hover:opacity-100' }}"
                                 onclick="setMainImage({{ $index }})" data-thumbnail="{{ $index }}">
                                 <img src="{{ asset($img->image_path) }}" alt=""
                                     loading="lazy" decoding="async"
@@ -100,7 +100,7 @@
                 @endif
 
                 <!-- Description -->
-                <div class="mt-6 sm:mt-8 rounded-xl border border-red-600/20 bg-card shadow-[0_0_20px_rgba(220,38,38,0.05)]">
+                <div class="mt-6 min-w-0 rounded-xl border border-red-600/20 bg-card shadow-[0_0_20px_rgba(220,38,38,0.05)] sm:mt-8">
                     <div class="p-4 sm:p-6 pb-3 sm:pb-4 border-b border-red-600/10">
                         <h3 class="font-display text-lg sm:text-xl font-bold text-foreground flex items-center gap-2">
                             <span class="h-1 w-6 sm:w-8 bg-gradient-to-r from-red-600 to-transparent rounded-full"></span>
@@ -117,7 +117,7 @@
                                 <div class="flex flex-wrap gap-2">
                                     @foreach ($car->features as $feature)
                                         <span
-                                            class="inline-flex items-center gap-1.5 rounded-lg border border-red-600/20 bg-red-600/5 px-2.5 sm:px-3 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:border-red-600/40 hover:bg-red-600/10">
+                                            class="inline-flex max-w-full items-center gap-1.5 rounded-lg border border-red-600/20 bg-red-600/5 px-2.5 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:border-red-600/40 hover:bg-red-600/10 sm:px-3">
                                             <svg class="h-3 w-3 text-red-600 shrink-0" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -134,10 +134,10 @@
             </div>
 
             <!-- Right Column - Specifications & Price -->
-            <div class="lg:col-span-2 space-y-6">
+            <div class="min-w-0 space-y-5 lg:col-span-2 lg:space-y-6">
                 
                 <!-- Vehicle Information -->
-                <div class="rounded-xl border border-red-600/20 bg-card shadow-[0_0_20px_rgba(220,38,38,0.05)]">
+                <div class="min-w-0 rounded-xl border border-red-600/20 bg-card shadow-[0_0_20px_rgba(220,38,38,0.05)]">
                     <div class="p-4 sm:p-6 pb-3 sm:pb-4 border-b border-red-600/10">
                         <h3 class="font-display text-lg sm:text-xl font-bold text-foreground flex items-center gap-2">
                             <span class="h-1 w-6 sm:w-8 bg-gradient-to-r from-red-600 to-transparent rounded-full"></span>
@@ -145,7 +145,7 @@
                         </h3>
                     </div>
                     <div class="p-4 sm:p-6">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
                             <!-- Kilometer -->
                             <div class="flex items-center gap-3">
                                 <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-red-600 text-white">
@@ -153,7 +153,7 @@
                                 </div>
                                 <div class="min-w-0">
                                     <p class="text-xs text-gray-500 mb-0.5">Kilometer</p>
-                                    <p class="font-bold text-foreground text-base">{{ number_format($car->mileage_km, 0, ',', '.') }}</p>
+                                    <p class="break-words text-base font-bold text-foreground">{{ number_format($car->mileage_km, 0, ',', '.') }}</p>
                                 </div>
                             </div>
 
@@ -164,7 +164,7 @@
                                 </div>
                                 <div class="min-w-0">
                                     <p class="text-xs text-gray-500 mb-0.5">Tahun Perakitan</p>
-                                    <p class="font-bold text-foreground text-base">{{ $car->year }}</p>
+                                    <p class="break-words text-base font-bold text-foreground">{{ $car->year }}</p>
                                 </div>
                             </div>
 
@@ -177,7 +177,7 @@
                                 </div>
                                 <div class="min-w-0">
                                     <p class="text-xs text-gray-500 mb-0.5">Plat Nomor</p>
-                                    <p class="font-bold text-foreground text-base">{{ ucfirst($car->plate_parity) }}</p>
+                                    <p class="break-words text-base font-bold text-foreground">{{ ucfirst($car->plate_parity) }}</p>
                                 </div>
                             </div>
 
@@ -188,7 +188,7 @@
                                 </div>
                                 <div class="min-w-0">
                                     <p class="text-xs text-gray-500 mb-0.5">Transmisi</p>
-                                    <p class="font-bold text-foreground text-base">{{ $car->transmission }}</p>
+                                    <p class="break-words text-base font-bold text-foreground">{{ $car->transmission }}</p>
                                 </div>
                             </div>
 
@@ -201,7 +201,7 @@
                                 </div>
                                 <div class="min-w-0">
                                     <p class="text-xs text-gray-500 mb-0.5">Warna</p>
-                                    <p class="font-bold text-foreground text-base">{{ strtoupper($car->color) }}</p>
+                                    <p class="break-words text-base font-bold text-foreground">{{ strtoupper($car->color) }}</p>
                                 </div>
                             </div>
 
@@ -214,7 +214,7 @@
                                 </div>
                                 <div class="min-w-0">
                                     <p class="text-xs text-gray-500 mb-0.5">Seater</p>
-                                    <p class="font-bold text-foreground text-base">{{ $car->seats }} Seater</p>
+                                    <p class="break-words text-base font-bold text-foreground">{{ $car->seats }} Seater</p>
                                 </div>
                             </div>
 
@@ -225,7 +225,7 @@
                                 </div>
                                 <div class="min-w-0">
                                     <p class="text-xs text-gray-500 mb-0.5">Bahan Bakar</p>
-                                    <p class="font-bold text-foreground text-base">{{ $car->fuel_type }}</p>
+                                    <p class="break-words text-base font-bold text-foreground">{{ $car->fuel_type }}</p>
                                 </div>
                             </div>
 
@@ -238,7 +238,7 @@
                                 </div>
                                 <div class="min-w-0">
                                     <p class="text-xs text-gray-500 mb-0.5">Masa Berlaku STNK</p>
-                                    <p class="font-bold text-foreground text-base">{{ $car->stnk_valid_until ? $car->stnk_valid_until->format('M Y') : '-' }}</p>
+                                    <p class="break-words text-base font-bold text-foreground">{{ $car->stnk_valid_until ? $car->stnk_valid_until->format('M Y') : '-' }}</p>
                                 </div>
                             </div>
 
@@ -249,7 +249,7 @@
                                 </div>
                                 <div class="min-w-0">
                                     <p class="text-xs text-gray-500 mb-0.5">Type</p>
-                                    <p class="font-bold text-foreground text-base">{{ $car->body_type }}</p>
+                                    <p class="break-words text-base font-bold text-foreground">{{ $car->body_type }}</p>
                                 </div>
                             </div>
                         </div>
@@ -257,7 +257,7 @@
                 </div>
 
                 <!-- Price Card -->
-                <div class="rounded-xl border border-red-600/20 bg-white shadow-[0_0_30px_rgba(220,38,38,0.1)]">
+                <div class="min-w-0 rounded-xl border border-red-600/20 bg-white shadow-[0_0_30px_rgba(220,38,38,0.1)]">
                     <div class="p-4 sm:p-6">
                         <div class="mb-4">
                             <p class="text-xs sm:text-sm text-gray-500">{{ $car->year }} {{ $car->make }}</p>
@@ -272,7 +272,7 @@
                                 class="absolute -top-3 left-4 bg-white px-3 py-1 rounded-full border border-red-600/30 shadow-sm">
                                 <p class="text-xs font-semibold text-red-600 uppercase tracking-wider">Harga Terbaik</p>
                             </div>
-                            <p class="font-display text-2xl sm:text-4xl font-bold text-red-600 mt-2">
+                            <p class="mt-2 break-words font-display text-[clamp(1.55rem,7vw,2.25rem)] font-bold leading-tight text-red-600">
                                 Rp {{ number_format($car->price, 0, ',', '.') }}
                             </p>
                             <p class="text-xs text-gray-500 mt-2">Harga dapat berubah sewaktu-waktu</p>
@@ -354,9 +354,9 @@
                                 </div>
                             @endif
 
-                            <div class="flex gap-3">
+                            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                 @auth
-                                    <form method="POST" action="{{ route('favorites.toggle', $car) }}" class="flex-1">
+                                    <form method="POST" action="{{ route('favorites.toggle', $car) }}" class="min-w-0">
                                         @csrf
                                         <button type="submit"
                                             class="inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg border px-4 text-sm font-semibold transition-all {{ $isFavorite ? 'border-red-600 bg-red-50 text-red-600 hover:bg-red-100' : 'border-gray-300 bg-white text-gray-700 hover:border-red-600 hover:bg-red-50 hover:text-red-600' }}">
@@ -369,7 +369,7 @@
                                     </form>
                                 @else
                                     <a href="{{ route('login') }}"
-                                        class="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 transition-all hover:border-red-600 hover:bg-red-50 hover:text-red-600">
+                                        class="inline-flex h-11 min-w-0 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 transition-all hover:border-red-600 hover:bg-red-50 hover:text-red-600">
                                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -379,7 +379,7 @@
                                 @endauth
 
                                 <button onclick="shareVehicle()"
-                                    class="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 text-sm font-medium text-gray-700 transition-all hover:border-red-600 hover:bg-red-50 hover:text-red-600">
+                                    class="inline-flex h-11 min-w-0 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 text-sm font-medium text-gray-700 transition-all hover:border-red-600 hover:bg-red-50 hover:text-red-600">
                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />

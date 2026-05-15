@@ -89,6 +89,7 @@
     .account-grid {
         display: grid;
         gap: 18px;
+        min-width: 0;
     }
     @media (min-width: 1100px) {
         .account-grid {
@@ -98,6 +99,7 @@
     }
     .account-summary,
     .account-card {
+        min-width: 0;
         border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 8px;
         background: rgba(255, 255, 255, 0.94);
@@ -210,6 +212,7 @@
     }
     .account-input {
         width: 100%;
+        min-width: 0;
         height: 50px;
         border: 1px solid #d7dce4;
         border-radius: 8px;
@@ -256,6 +259,20 @@
         color: #b91c1c;
         font-size: 13px;
         font-weight: 800;
+    }
+    @media (max-width: 520px) {
+        .account-action,
+        .account-submit {
+            width: 100%;
+        }
+        .account-stat {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .account-stat strong {
+            text-align: left;
+        }
     }
 </style>
 

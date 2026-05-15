@@ -234,10 +234,19 @@
 - [x] Add tests for profile update and validation
 - [x] Verify syntax, routes, Blade, build, tests, and browser behavior
 
+## Current Task: Fix Responsive Layout Across Pages
+- [x] Review the mobile overflow shown on the car detail page and identify reusable layout risks
+- [x] Patch global and page-level responsive constraints without changing unrelated behavior
+- [x] Check adjacent public pages for obvious mobile overflow hotspots
+- [x] Verify Blade/build/test behavior and run mobile browser smoke checks
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.
 - Added a create-only `Foto Mobil` upload section so new car listings can include images before the first save.
+- Fixed the responsive overflow pattern on the car detail page by constraining grid/flex children, thumbnail rails, price text, CTA rows, and shared page wrappers.
+- Extended the same responsive guardrails to inventory cards, saved cars, contact, auth, account, and the app shell so public pages are less likely to exceed mobile viewport width.
+- Verification passed: `php artisan view:clear`, `php artisan view:cache`, `npm run build`, `php artisan test`, `git diff --check`, plus Browser mobile/desktop smoke checks on home, inventory, car detail, contact, login, register, and guest saved redirect.
 - The create page now removes uploaded image paths from the car payload, then creates ordered `CarImage` records after the `Car` record exists.
 - Added public customer auth at `/register` and `/login`, plus logout, while keeping admin access separated behind `is_admin`.
 - Added the Filament `/admin/users` resource so authorized admins can create/edit customer accounts or admin accounts without exposing admin creation publicly.

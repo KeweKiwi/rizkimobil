@@ -26,6 +26,7 @@
         display: grid;
         gap: clamp(28px, 5vw, 68px);
         align-items: start;
+        min-width: 0;
     }
     @media (min-width: 1024px) {
         .contact-layout {
@@ -33,6 +34,7 @@
         }
     }
     .contact-copy {
+        min-width: 0;
         max-width: 620px;
     }
     .contact-title {
@@ -131,6 +133,7 @@
         line-height: 1.4;
     }
     .contact-card {
+        min-width: 0;
         border: 1px solid #e1e5ec;
         border-radius: 8px;
         background: #ffffff;
@@ -177,6 +180,7 @@
     .contact-input,
     .contact-textarea {
         width: 100%;
+        min-width: 0;
         border: 1px solid #d7dce4;
         border-radius: 8px;
         background: #ffffff;

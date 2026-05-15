@@ -1,5 +1,5 @@
-<a href="{{ route('car.show', $car->id) }}" class="block">
-    <div class="group overflow-hidden transition-all duration-300 hover:shadow-card-hover rounded-lg border border-red-600/20 hover:border-red-600/40 shadow-[0_0_15px_rgba(220,38,38,0.15)] hover:shadow-[0_0_25px_rgba(220,38,38,0.3)] bg-card text-card-foreground {{ $className ?? '' }}">
+<a href="{{ route('car.show', $car->id) }}" class="block min-w-0">
+    <div class="group min-w-0 overflow-hidden rounded-lg border border-red-600/20 bg-card text-card-foreground shadow-[0_0_15px_rgba(220,38,38,0.15)] transition-all duration-300 hover:border-red-600/40 hover:shadow-card-hover hover:shadow-[0_0_25px_rgba(220,38,38,0.3)] {{ $className ?? '' }}">
         <div class="relative aspect-[4/3] overflow-hidden">
             @php
                 $primaryImage = $car->primaryImage ?? null;
@@ -86,12 +86,12 @@
                 </div>
             </div>
 
-            <div class="flex items-center justify-between border-t pt-3">
-                <p class="font-display text-lg sm:text-xl font-bold text-red-600">
+            <div class="flex min-w-0 items-center justify-between gap-3 border-t pt-3">
+                <p class="min-w-0 break-words font-display text-lg font-bold leading-tight text-red-600 sm:text-xl">
                     Rp {{ number_format($car->price ?? 0, 0, ',', '.') }}
                 </p>
 
-                <span class="inline-flex items-center rounded-full border px-2 sm:px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                <span class="inline-flex shrink-0 items-center rounded-full border border-transparent bg-secondary px-2 py-0.5 text-xs font-semibold text-secondary-foreground transition-colors hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 sm:px-2.5">
                     {{ strtoupper($bodyType ?? '-') }}
                 </span>
             </div>

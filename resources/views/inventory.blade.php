@@ -262,6 +262,17 @@
         gap: 16px;
         margin-bottom: 32px;
     }
+    @media (max-width: 639px) {
+        .inventory-toolbar {
+            align-items: stretch;
+        }
+        .inventory-toolbar > * {
+            width: 100%;
+        }
+        .sort-select {
+            width: 100%;
+        }
+    }
     .mobile-filter-btn {
         display: inline-flex;
         align-items: center;
@@ -446,7 +457,7 @@
 
 <div class="bg-background py-12">
     <div class="container mx-auto px-4">
-        <div class="flex gap-8">
+        <div class="flex min-w-0 gap-8">
             <!-- Desktop Sidebar Filters -->
             <aside class="hidden w-80 shrink-0 lg:block">
                 <div class="filter-sidebar">
@@ -616,10 +627,10 @@
             </aside>
 
             <!-- Main Content -->
-            <div class="flex-1">
+            <div class="min-w-0 flex-1">
                 <!-- Toolbar -->
                 <div id="inventory-toolbar" class="inventory-toolbar scroll-mt-24">
-                    <div class="flex items-center gap-3">
+                    <div class="flex min-w-0 items-center gap-3">
                         <!-- Mobile Filter Button -->
                         <button onclick="toggleMobileFilters()" class="mobile-filter-btn lg:hidden">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -663,7 +674,7 @@
                 </div>
 
                 <!-- Cars Grid -->
-                <div id="cars-container" class="scroll-mt-48 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                <div id="cars-container" class="scroll-mt-48 grid min-w-0 gap-6 sm:grid-cols-2 xl:grid-cols-3">
                     @include('partials.cars-grid', ['cars' => $cars])
                 </div>
 

@@ -47,3 +47,4 @@
 - Do not leave "segera hadir" alerts on flows that now have backing models or auth; connect the UI to the existing data path and add the missing user-facing index page.
 - Authenticated headers should expose who is currently signed in and provide a clear account-management path; registration forms should collect the contact fields needed for the sales flow upfront.
 - Customer account pages should behave like settings, not landing pages: compact summary, editable profile data, separated security actions, and clear links back to saved/customer workflows.
+- For responsive fixes, look for root-cause horizontal overflow from grid/flex children (`min-width:auto`), carousels, long prices, and action rows before only hiding overflow globally.

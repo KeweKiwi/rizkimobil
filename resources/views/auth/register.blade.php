@@ -18,6 +18,7 @@
         display: grid;
         align-items: center;
         gap: clamp(28px, 5vw, 64px);
+        min-width: 0;
         padding: clamp(56px, 8vw, 96px) 0;
     }
     @media (min-width: 1024px) {
@@ -44,6 +45,7 @@
         line-height: 1.85;
     }
     .auth-card {
+        min-width: 0;
         border: 1px solid rgba(255, 255, 255, 0.14);
         border-radius: 8px;
         background: rgba(255, 255, 255, 0.94);
@@ -82,6 +84,7 @@
     }
     .auth-input {
         width: 100%;
+        min-width: 0;
         height: 52px;
         border: 1px solid #d7dce4;
         border-radius: 8px;
@@ -128,6 +131,11 @@
         color: #dc2626;
         font-size: 12px;
         line-height: 1.5;
+    }
+    @media (max-width: 520px) {
+        .auth-submit {
+            width: 100%;
+        }
     }
 </style>
 

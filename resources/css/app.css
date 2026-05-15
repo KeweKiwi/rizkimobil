@@ -21,5 +21,25 @@
 @layer base {
   html {
     font-family: var(--font-body);
+    overflow-x: clip;
+  }
+
+  body {
+    min-width: 0;
+    overflow-x: clip;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
+}
+
+@supports not (overflow: clip) {
+  html,
+  body {
+    overflow-x: hidden;
   }
 }

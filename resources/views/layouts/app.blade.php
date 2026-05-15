@@ -19,10 +19,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="antialiased font-body">
-    <div class="flex min-h-screen flex-col">
+    <div class="flex min-h-screen min-w-0 flex-col overflow-x-clip">
         @include('layouts.header')
 
-        <main class="flex-1">
+        <main class="min-w-0 flex-1">
             @yield('content')
         </main>
 
