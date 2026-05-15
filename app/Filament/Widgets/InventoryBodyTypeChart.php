@@ -10,6 +10,8 @@ class InventoryBodyTypeChart extends ChartWidget
 {
     protected static ?int $sort = 3;
 
+    protected static bool $isLazy = false;
+
     protected int | string | array $columnSpan = [
         'md' => 4,
         'xl' => 4,

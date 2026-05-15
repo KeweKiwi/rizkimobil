@@ -12,6 +12,8 @@ class SalesTrendChart extends ChartWidget
 {
     protected static ?int $sort = 2;
 
+    protected static bool $isLazy = false;
+
     protected int | string | array $columnSpan = [
         'md' => 8,
         'xl' => 8,

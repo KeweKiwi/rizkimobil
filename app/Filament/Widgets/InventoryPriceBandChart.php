@@ -9,6 +9,8 @@ class InventoryPriceBandChart extends ChartWidget
 {
     protected static ?int $sort = 4;
 
+    protected static bool $isLazy = false;
+
     protected int | string | array $columnSpan = [
         'md' => 4,
         'xl' => 4,

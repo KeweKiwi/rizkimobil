@@ -85,6 +85,20 @@ class AuthFlowTest extends TestCase
         $response->assertOk();
     }
 
+    public function test_admin_dashboard_renders_widget_content_without_lazy_placeholder_only(): void
+    {
+        $user = User::factory()->admin()->create();
+
+        $response = $this->actingAs($user)->get('/admin');
+
+        $response
+            ->assertOk()
+            ->assertSee('Snapshot Penjualan')
+            ->assertSee('Performa Penjualan')
+            ->assertSee('Mix Stok Siap Jual')
+            ->assertSee('Stok Siap Didorong');
+    }
+
     public function test_user_admin_command_can_grant_and_revoke_admin_access(): void
     {
         $user = User::factory()->create([

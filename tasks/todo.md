@@ -247,6 +247,12 @@
 - [x] Add tests for admin access, non-admin rejection, and the production admin command
 - [x] Verify syntax, route behavior, and test suite
 
+## Current Task: Fix Hosted Admin Dashboard Blank Widgets
+- [x] Inspect the dashboard widget rendering path shown as empty skeleton cards in production
+- [x] Disable lazy widget loading for dashboard widgets so content is server-rendered on first response
+- [x] Add regression coverage that an admin dashboard response contains real widget copy
+- [x] Verify syntax, Blade cache, and tests
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.
@@ -257,6 +263,9 @@
 - Fixed deployed admin 403 by moving panel authorization into the `FilamentUser` contract on `User`, keeping the custom middleware aligned to `$request->user()->isAdmin()`, and adding `php artisan user:admin {email}` for production role repair.
 - Preserved existing production admin passwords in `AdminUserSeeder` while still ensuring `admin@rizkimobil.com` is promoted when seeded.
 - Verification passed: PHP syntax checks, `php artisan test tests/Feature/AuthFlowTest.php`, full `php artisan test`, `php artisan view:cache`, `php artisan route:list --path=admin`, `php artisan list user`, and `git diff --check`.
+- Fixed hosted admin dashboard blank skeletons by disabling lazy loading for all dashboard widgets so stats, charts, and tables are present in the initial server response.
+- Added regression coverage that `/admin` renders real widget copy (`Snapshot Penjualan`, `Performa Penjualan`, `Mix Stok Siap Jual`, `Stok Siap Didorong`) for admin users.
+- Verification passed: widget PHP syntax checks, `php artisan test tests/Feature/AuthFlowTest.php`, `php artisan test --filter=dashboard`, full `php artisan test`, `php artisan view:cache`, and Livewire route listing.
 - The create page now removes uploaded image paths from the car payload, then creates ordered `CarImage` records after the `Car` record exists.
 - Added public customer auth at `/register` and `/login`, plus logout, while keeping admin access separated behind `is_admin`.
 - Added the Filament `/admin/users` resource so authorized admins can create/edit customer accounts or admin accounts without exposing admin creation publicly.

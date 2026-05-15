@@ -10,6 +10,8 @@ class StatsOverview extends StatsOverviewWidget
 {
     protected static ?int $sort = 1;
 
+    protected static bool $isLazy = false;
+
     protected ?string $heading = 'Snapshot Penjualan';
 
     protected ?string $description = 'Ringkasan omzet, performa 12 bulan, dan stok siap jual berdasarkan data listing saat ini.';

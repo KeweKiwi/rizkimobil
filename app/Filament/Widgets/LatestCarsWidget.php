@@ -13,6 +13,8 @@ class LatestCarsWidget extends TableWidget
 {
     protected static ?int $sort = 6;
 
+    protected static bool $isLazy = false;
+
     protected int | string | array $columnSpan = 'full';
 
     public function table(Table $table): Table

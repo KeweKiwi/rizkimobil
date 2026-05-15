@@ -13,6 +13,8 @@ class SoldCarsWidget extends TableWidget
 {
     protected static ?int $sort = 5;
 
+    protected static bool $isLazy = false;
+
     protected int | string | array $columnSpan = [
         'md' => 8,
         'xl' => 8,

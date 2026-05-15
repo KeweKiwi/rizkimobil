@@ -49,3 +49,4 @@
 - Customer account pages should behave like settings, not landing pages: compact summary, editable profile data, separated security actions, and clear links back to saved/customer workflows.
 - For responsive fixes, look for root-cause horizontal overflow from grid/flex children (`min-width:auto`), carousels, long prices, and action rows before only hiding overflow globally.
 - For deployed admin-access bugs, verify both the authorization code path and the production user role data; provide a safe CLI repair path so access can be restored without already being inside the admin panel.
+- If Filament dashboard widgets appear as empty skeleton cards in hosting while the admin shell renders, suspect lazy widget hydration/Livewire requests first; server-render critical dashboard widgets when reliability matters more than deferred loading.
