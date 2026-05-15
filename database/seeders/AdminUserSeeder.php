@@ -10,13 +10,19 @@ class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::firstOrCreate(
-            ['email' => 'admin@rizkimobil.com'],
-            [
+        $user = User::firstOrNew([
+            'email' => 'admin@rizkimobil.com',
+        ]);
+
+        if (!$user->exists) {
+            $user->fill([
                 'name' => 'Admin',
                 'password' => Hash::make('RizkiMobil2024!'),
-                'is_admin' => true,
-            ]
-        );
+            ]);
+        }
+
+        $user->forceFill([
+            'is_admin' => true,
+        ])->save();
     }
 }

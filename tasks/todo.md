@@ -240,6 +240,13 @@
 - [x] Check adjacent public pages for obvious mobile overflow hotspots
 - [x] Verify Blade/build/test behavior and run mobile browser smoke checks
 
+## Current Task: Fix Deployed Admin 403
+- [x] Trace the admin authorization path that can produce 403 after login
+- [x] Move admin access to the Filament user contract and keep middleware aligned with the authenticated request user
+- [x] Add a safe CLI command to promote/demote admin users in production
+- [x] Add tests for admin access, non-admin rejection, and the production admin command
+- [x] Verify syntax, route behavior, and test suite
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.
@@ -247,6 +254,9 @@
 - Fixed the responsive overflow pattern on the car detail page by constraining grid/flex children, thumbnail rails, price text, CTA rows, and shared page wrappers.
 - Extended the same responsive guardrails to inventory cards, saved cars, contact, auth, account, and the app shell so public pages are less likely to exceed mobile viewport width.
 - Verification passed: `php artisan view:clear`, `php artisan view:cache`, `npm run build`, `php artisan test`, `git diff --check`, plus Browser mobile/desktop smoke checks on home, inventory, car detail, contact, login, register, and guest saved redirect.
+- Fixed deployed admin 403 by moving panel authorization into the `FilamentUser` contract on `User`, keeping the custom middleware aligned to `$request->user()->isAdmin()`, and adding `php artisan user:admin {email}` for production role repair.
+- Preserved existing production admin passwords in `AdminUserSeeder` while still ensuring `admin@rizkimobil.com` is promoted when seeded.
+- Verification passed: PHP syntax checks, `php artisan test tests/Feature/AuthFlowTest.php`, full `php artisan test`, `php artisan view:cache`, `php artisan route:list --path=admin`, `php artisan list user`, and `git diff --check`.
 - The create page now removes uploaded image paths from the car payload, then creates ordered `CarImage` records after the `Car` record exists.
 - Added public customer auth at `/register` and `/login`, plus logout, while keeping admin access separated behind `is_admin`.
 - Added the Filament `/admin/users` resource so authorized admins can create/edit customer accounts or admin accounts without exposing admin creation publicly.

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -73,5 +74,37 @@ class AuthFlowTest extends TestCase
         $response = $this->actingAs($user)->get('/admin');
 
         $response->assertForbidden();
+    }
+
+    public function test_admin_user_can_access_admin_panel(): void
+    {
+        $user = User::factory()->admin()->create();
+
+        $response = $this->actingAs($user)->get('/admin');
+
+        $response->assertOk();
+    }
+
+    public function test_user_admin_command_can_grant_and_revoke_admin_access(): void
+    {
+        $user = User::factory()->create([
+            'email' => 'manager@example.com',
+            'is_admin' => false,
+        ]);
+
+        $grantExitCode = Artisan::call('user:admin', [
+            'email' => $user->email,
+        ]);
+
+        $this->assertSame(0, $grantExitCode);
+        $this->assertTrue($user->fresh()->isAdmin());
+
+        $revokeExitCode = Artisan::call('user:admin', [
+            'email' => $user->email,
+            '--revoke' => true,
+        ]);
+
+        $this->assertSame(0, $revokeExitCode);
+        $this->assertFalse($user->fresh()->isAdmin());
     }
 }
