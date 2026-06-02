@@ -302,6 +302,18 @@
 - Route checks show both the new admin-scoped update route and the default Livewire routes are available; Livewire chooses the admin-scoped route for page actions.
 - `php -l`, `php artisan view:cache`, `php artisan route:cache`, `php artisan test`, and `git diff --check` passed; local caches were cleared afterward with `php artisan optimize:clear`.
 
+## Current Task: Verify Admin Location And User CRUD
+- [x] Review current Filament location and user create/edit/delete surfaces
+- [x] Tighten location and user forms for operational best practice
+- [x] Add Filament Livewire regression coverage for location create/update and user create/update
+- [x] Verify syntax, route behavior, view cache, tests, and document deployment notes
+
+### Review: Verify Admin Location And User CRUD
+- Location admin CRUD is now covered through Filament Livewire create/update flows; the active toggle defaults to true and can be saved as inactive.
+- User admin CRUD is now covered through Filament Livewire create/update flows; phone/WhatsApp is required for admin-created accounts, password remains required only on create, and blank edit-password does not overwrite the existing password.
+- Location form fields now have clearer labels and practical validation for URL, phone, and max lengths.
+- `php -l`, `php artisan view:cache`, `php artisan route:cache`, `php artisan test`, and `git diff --check` passed; local caches were cleared afterward with `php artisan optimize:clear`.
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.

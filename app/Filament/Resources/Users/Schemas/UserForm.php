@@ -29,7 +29,9 @@ class UserForm
                         TextInput::make('phone')
                             ->label('Telepon / WhatsApp')
                             ->tel()
-                            ->maxLength(30),
+                            ->required()
+                            ->maxLength(30)
+                            ->helperText('Dipakai untuk follow-up pelanggan atau koordinasi akun admin.'),
                         Toggle::make('is_admin')
                             ->label('Akun admin')
                             ->helperText('Aktifkan agar akun ini bisa masuk ke panel admin.')

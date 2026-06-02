@@ -5,10 +5,15 @@ namespace Tests\Feature;
 use App\Filament\Resources\Cars\Pages\CreateCar;
 use App\Filament\Resources\Cars\Pages\EditCar;
 use App\Filament\Resources\Cars\RelationManagers\ImagesRelationManager;
+use App\Filament\Resources\Locations\Pages\CreateLocation;
+use App\Filament\Resources\Locations\Pages\EditLocation;
+use App\Filament\Resources\Users\Pages\CreateUser;
+use App\Filament\Resources\Users\Pages\EditUser;
 use App\Models\Car;
 use App\Models\Location;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -118,6 +123,96 @@ class AdminCrudTest extends TestCase
         $this->actingAs($admin)
             ->get("/admin/cars/{$car->getKey()}/edit")
             ->assertOk();
+    }
+
+    public function test_admin_can_create_and_update_location_from_filament(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        Livewire::actingAs($admin)
+            ->test(CreateLocation::class)
+            ->fillForm([
+                'name' => 'Rizki Mobil BSD',
+                'address' => 'Jl. Showroom No. 10',
+                'city' => 'Tangerang Selatan',
+                'province' => 'Banten',
+                'postal_code' => '15310',
+                'google_maps_url' => 'https://maps.google.com/?q=Rizki+Mobil+BSD',
+                'phone' => '0215551234',
+                'whatsapp' => '081234567890',
+                'is_active' => true,
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $location = Location::where('name', 'Rizki Mobil BSD')->firstOrFail();
+
+        $this->assertSame('Tangerang Selatan', $location->city);
+        $this->assertTrue((bool) $location->is_active);
+
+        Livewire::actingAs($admin)
+            ->test(EditLocation::class, [
+                'record' => $location->getKey(),
+            ])
+            ->fillForm([
+                'name' => 'Rizki Mobil BSD Update',
+                'city' => 'Jakarta Selatan',
+                'is_active' => false,
+            ])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->assertDatabaseHas('locations', [
+            'id' => $location->id,
+            'name' => 'Rizki Mobil BSD Update',
+            'city' => 'Jakarta Selatan',
+            'is_active' => false,
+        ]);
+    }
+
+    public function test_admin_can_create_and_update_user_from_filament(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        Livewire::actingAs($admin)
+            ->test(CreateUser::class)
+            ->fillForm([
+                'name' => 'Sales Admin',
+                'email' => 'sales-admin@example.com',
+                'phone' => '081111222233',
+                'is_admin' => true,
+                'password' => 'password123',
+            ])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $createdUser = User::where('email', 'sales-admin@example.com')->firstOrFail();
+
+        $this->assertTrue($createdUser->isAdmin());
+        $this->assertSame('081111222233', $createdUser->phone);
+        $this->assertTrue(Hash::check('password123', $createdUser->password));
+
+        Livewire::actingAs($admin)
+            ->test(EditUser::class, [
+                'record' => $createdUser->getKey(),
+            ])
+            ->fillForm([
+                'name' => 'Sales Customer Care',
+                'email' => 'customer-care@example.com',
+                'phone' => '082222333344',
+                'is_admin' => false,
+                'password' => '',
+            ])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $createdUser->refresh();
+
+        $this->assertSame('Sales Customer Care', $createdUser->name);
+        $this->assertSame('customer-care@example.com', $createdUser->email);
+        $this->assertSame('082222333344', $createdUser->phone);
+        $this->assertFalse($createdUser->isAdmin());
+        $this->assertTrue(Hash::check('password123', $createdUser->password));
     }
 
     /**
