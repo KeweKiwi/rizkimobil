@@ -9,6 +9,7 @@ use App\Models\Car;
 use App\Models\Location;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -104,6 +105,19 @@ class AdminCrudTest extends TestCase
             ->assertOk()
             ->assertSee('Foto Mobil')
             ->assertSee('Pratinjau');
+    }
+
+    public function test_admin_pages_use_admin_scoped_livewire_update_endpoint(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $car = Car::create($this->carData());
+
+        $this->assertSame('/admin/livewire/update', Livewire::getUpdateUri());
+        $this->assertSame('admin/livewire/update', Route::getRoutes()->getByName('admin.livewire.update')?->uri());
+
+        $this->actingAs($admin)
+            ->get("/admin/cars/{$car->getKey()}/edit")
+            ->assertOk();
     }
 
     /**

@@ -290,6 +290,18 @@
 - Added regression coverage that asserts the photo relation manager no longer sends the `lazy` property and that the edit page response contains the photo table copy.
 - `php -l`, `php artisan view:cache`, `php artisan route:cache`, `php artisan test`, and `git diff --check` passed; local caches were cleared afterward with `php artisan optimize:clear`.
 
+## Current Task: Fix Hosted Admin Edit Save Action
+- [x] Identify that edit-page rendering now works but the save action still depends on Livewire update requests
+- [x] Move Livewire update requests to an admin-scoped endpoint to avoid hosting/cPanel root Livewire route issues
+- [x] Add regression coverage that admin pages advertise the new update endpoint
+- [x] Verify syntax, route cache, view cache, tests, and document deployment notes
+
+### Review: Fix Hosted Admin Edit Save Action
+- Edit pages now still render normally, and Livewire update actions use `POST /admin/livewire/update` instead of relying on the root `/livewire/update` endpoint that can be blocked or mishandled in hosting.
+- Added regression coverage that confirms `Livewire::getUpdateUri()` returns `/admin/livewire/update` and the admin route is registered.
+- Route checks show both the new admin-scoped update route and the default Livewire routes are available; Livewire chooses the admin-scoped route for page actions.
+- `php -l`, `php artisan view:cache`, `php artisan route:cache`, `php artisan test`, and `git diff --check` passed; local caches were cleared afterward with `php artisan optimize:clear`.
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.
