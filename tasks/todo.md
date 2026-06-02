@@ -314,6 +314,26 @@
 - Location form fields now have clearer labels and practical validation for URL, phone, and max lengths.
 - `php -l`, `php artisan view:cache`, `php artisan route:cache`, `php artisan test`, and `git diff --check` passed; local caches were cleared afterward with `php artisan optimize:clear`.
 
+## Current Task: Balance Homepage About Selection Rail
+- [x] Review the screenshot feedback and locate the About/RMI selection system markup
+- [x] Reduce the right rail bottom whitespace while preserving the current clean visual direction
+- [x] Verify Blade compilation and basic diff hygiene
+
+### Review: Balance Homepage About Selection Rail
+- Adjusted the About section so the right-side RMI selection rail stretches with the two-column composition instead of ending too early.
+- Added a small `RMI / verified flow` closing note below the three selection steps to turn the empty lower area into a purposeful visual anchor.
+- Verification passed: `php -l app/Http/Controllers/HomeController.php`, `php artisan view:cache`, and `git diff --check`; compiled views were cleared afterward for local development.
+
+## Current Task: Balance Homepage FAQ Intro Rail
+- [x] Review the screenshot feedback and locate the active FAQ editorial CSS
+- [x] Lower the left FAQ intro on desktop so the column feels vertically balanced with the question ledger
+- [x] Verify Blade compilation and diff hygiene
+
+### Review: Balance Homepage FAQ Intro Rail
+- Added a desktop-only offset to the sticky FAQ intro rail so the left copy sits lower and balances the taller question ledger on the right.
+- Kept the mobile FAQ flow unchanged so users still see the section heading immediately on small screens.
+- Verification passed: `php artisan view:cache` and `git diff --check`; compiled views were cleared afterward for local development.
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.

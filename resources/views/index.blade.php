@@ -1116,7 +1116,7 @@
         padding: clamp(82px, 12vw, 132px) 0 clamp(64px, 8vw, 96px);
     }
     .about-rizki-shell {
-        align-items: start;
+        align-items: stretch;
     }
     @media (min-width: 1024px) {
         .about-rizki-shell {
@@ -1144,6 +1144,9 @@
     }
     .about-rizki-system {
         position: relative;
+        display: flex;
+        min-height: 100%;
+        flex-direction: column;
         padding-top: 12px;
     }
     .about-rizki-system-label {
@@ -1154,13 +1157,18 @@
         text-transform: uppercase;
     }
     .about-rizki-highlights {
+        display: grid;
+        flex: 1;
+        grid-template-rows: repeat(3, minmax(0, 1fr));
         margin-top: 28px;
         max-width: none;
         border-top-color: rgba(17, 24, 39, 0.16);
     }
     .about-rizki-highlight {
+        align-content: center;
         grid-template-columns: 50px minmax(0, 1fr);
-        padding: 28px 0;
+        min-height: clamp(118px, 11vw, 154px);
+        padding: clamp(22px, 2.6vw, 30px) 0;
     }
     .about-rizki-highlight:hover {
         transform: none;
@@ -1174,6 +1182,26 @@
     }
     .about-rizki-highlight-mark {
         display: none;
+    }
+    .about-rizki-system-note {
+        display: grid;
+        gap: 10px;
+        margin-top: clamp(20px, 3vw, 34px);
+        padding-top: clamp(18px, 2.4vw, 26px);
+        border-top: 1px solid rgba(17, 24, 39, 0.12);
+    }
+    .about-rizki-system-note span {
+        color: rgba(153, 27, 27, 0.86);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+    }
+    .about-rizki-system-note p {
+        max-width: 36rem;
+        color: #64748b;
+        font-size: clamp(14px, 1.1vw, 16px);
+        line-height: 1.75;
     }
     .about-rizki-image-band {
         position: relative;
@@ -1236,6 +1264,15 @@
         letter-spacing: -0.025em;
     }
     @media (max-width: 640px) {
+        .about-rizki-system {
+            min-height: auto;
+        }
+        .about-rizki-highlights {
+            display: block;
+        }
+        .about-rizki-highlight {
+            min-height: 0;
+        }
         .about-rizki-proof-item + .about-rizki-proof-item {
             padding-left: 0;
             border-left: 0;
@@ -1350,6 +1387,10 @@
                             </span>
                         </div>
                     @endforeach
+                </div>
+                <div class="about-rizki-system-note">
+                    <span>{{ $aboutRizki['system_note']['eyebrow'] }}</span>
+                    <p>{{ $aboutRizki['system_note']['text'] }}</p>
                 </div>
             </div>
         </div>
@@ -1675,6 +1716,12 @@
         background: transparent;
         border: 0;
         box-shadow: none;
+    }
+    @media (min-width: 1024px) {
+        .faq-command {
+            margin-top: clamp(34px, 5vw, 78px);
+            top: 124px;
+        }
     }
     .faq-command::before,
     .faq-command::after,

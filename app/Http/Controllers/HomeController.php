@@ -101,6 +101,10 @@ class HomeController extends Controller
                 ['value' => 'Transparan', 'label' => 'Informasi dijelaskan sejak awal'],
                 ['value' => 'Personal', 'label' => 'Pendampingan terasa hangat dan fokus'],
             ],
+            'system_note' => [
+                'eyebrow' => 'RMI / verified flow',
+                'text' => 'Kondisi, dokumen, dan jadwal visit dibuat terbaca sebelum Anda datang.',
+            ],
             'image' => 'images/cars/aset/logo-rmi-hitam.png',
             'vehicle_image' => 'images/cars/bmw13.jpg',
             'handover_image' => 'images/cars/bmw1.jpg',

@@ -52,3 +52,5 @@
 - If Filament dashboard widgets appear as empty skeleton cards in hosting while the admin shell renders, suspect lazy widget hydration/Livewire requests first; server-render critical dashboard widgets when reliability matters more than deferred loading.
 - If a Filament relation manager appears as an empty bordered panel in hosting while rendering correctly locally, check its default lazy loading; disable lazy loading for critical relation managers that must be visible on the initial page response.
 - If a Filament page renders in hosting but save/create/edit actions do nothing or fail, inspect the Livewire update endpoint first; use an admin-scoped update route when root `/livewire/update` is likely blocked or mishandled by hosting rules.
+- When one side of a two-column editorial section feels empty at the bottom, add a purposeful visual anchor or redistribute vertical rhythm before simply adding more padding or stretching content awkwardly.
+- For sticky editorial intro rails next to tall content lists, use desktop-only vertical offsets to center the intro against the list rhythm while keeping mobile content immediate.
