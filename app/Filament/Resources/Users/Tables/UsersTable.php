@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Users\Tables;
 
+use App\Models\User;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -46,6 +48,8 @@ class UsersTable
             ])
             ->recordActions([
                 EditAction::make(),
+                DeleteAction::make()
+                    ->hidden(fn (User $record): bool => auth()->id() === $record->id),
             ]);
     }
 }

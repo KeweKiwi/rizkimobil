@@ -12,6 +12,7 @@ class Car extends Model
 
     protected $fillable = [
         'title',
+        'location_id',
         'make',
         'model',
         'variant',

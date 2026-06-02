@@ -22,6 +22,8 @@ use Filament\Tables\Table;
 
 class ImagesRelationManager extends RelationManager
 {
+    protected static bool $isLazy = false;
+
     protected static string $relationship = 'images';
 
     protected static ?string $title = 'Foto Mobil (maks. 13)';
@@ -39,9 +41,9 @@ class ImagesRelationManager extends RelationManager
                     ->required()
                     ->imageEditor()
                     ->imageEditorAspectRatios(['16:9', '4:3', null])
-                    ->maxSize(5120)
+                    ->maxSize(2048)
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                    ->helperText('Maks. 5 MB · JPEG / PNG / WebP · Disarankan 1200×800 px')
+                    ->helperText('Maks. 2 MB · JPEG / PNG / WebP · Disarankan 1200×800 px')
                     ->columnSpanFull(),
 
                 Toggle::make('is_primary')

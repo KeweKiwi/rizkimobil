@@ -220,6 +220,16 @@
 - [x] Add a clean saved-cars page and header access point
 - [x] Add feature coverage and verify syntax/build/browser behavior
 
+## Current Task: Limit Admin Car Photo Upload Size
+- [x] Review the create-car and edit-car image upload fields
+- [x] Lower admin car photo uploads to 2 MB per file
+- [x] Verify PHP syntax, view compilation, tests, and diff hygiene
+
+### Review: Limit Admin Car Photo Upload Size
+- Create-car bulk photo upload now rejects images above 2 MB per file.
+- Edit-car `Tambah Foto` upload now uses the same 2 MB limit and helper text.
+- `php -l`, `php artisan view:cache`, `php artisan test`, and `git diff --check` passed.
+
 ## Current Task: Add Account Info And Password Management
 - [x] Review current auth/register/header account surfaces
 - [x] Add phone storage and require phone during public registration
@@ -252,6 +262,33 @@
 - [x] Disable lazy widget loading for dashboard widgets so content is server-rendered on first response
 - [x] Add regression coverage that an admin dashboard response contains real widget copy
 - [x] Verify syntax, Blade cache, and tests
+
+## Current Task: Diagnose Hosted Admin CRUD Failure
+- [x] Review repo workflow, previous admin-access lessons, and current dirty worktree
+- [x] Trace Filament resource CRUD authorization and hosting-sensitive request paths
+- [x] Reproduce or add regression coverage for admin create/edit/delete access
+- [x] Apply the minimal root-cause fix if local evidence confirms one
+- [x] Verify syntax, route behavior, test suite, and document deployment notes
+
+### Review: Diagnose Hosted Admin CRUD Failure
+- Local Filament CRUD regression coverage now proves admins can create and update cars through the actual Filament Livewire pages.
+- Added hosting hardening for proxy/HTTPS handling so Filament and Livewire admin actions behave correctly behind shared hosting, reverse proxies, or SSL termination.
+- Added `location_id` to the car model fillable contract so branch/location data from the admin form is explicitly persisted.
+- Added user-account delete actions while preventing admins from deleting their currently signed-in account.
+- `php -l`, `php artisan view:cache`, `php artisan route:cache`, `php artisan test`, and `git diff --check` passed; local caches were cleared afterward with `php artisan optimize:clear`.
+- Browser smoke fallback was attempted, but the Browser skill cache path was unavailable and the local Node environment does not have Playwright installed; verification relied on Laravel/Livewire regression tests instead.
+
+## Current Task: Fix Hosted Edit Car Photo Relation
+- [x] Compare local vs hosted symptom and inspect Filament relation manager loading behavior
+- [x] Disable lazy loading for the car photos relation manager so rows render on initial edit response
+- [x] Add regression coverage for the non-lazy relation manager behavior
+- [x] Verify syntax, Blade cache, route behavior, tests, and document deployment notes
+
+### Review: Fix Hosted Edit Car Photo Relation
+- Root cause is consistent with Filament relation managers being lazy by default; hosting was rendering the placeholder but not hydrating the relation manager table.
+- `ImagesRelationManager` now has `protected static bool $isLazy = false`, so the photo table renders directly in the edit car response like the local screenshot.
+- Added regression coverage that asserts the photo relation manager no longer sends the `lazy` property and that the edit page response contains the photo table copy.
+- `php -l`, `php artisan view:cache`, `php artisan route:cache`, `php artisan test`, and `git diff --check` passed; local caches were cleared afterward with `php artisan optimize:clear`.
 
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.

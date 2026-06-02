@@ -253,9 +253,9 @@ class CarForm
                             ->disk('public_root')
                             ->directory('images/cars')
                             ->visibility('public')
-                            ->maxSize(5120)
+                            ->maxSize(2048)
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                            ->helperText('Bisa upload sampai 13 foto sekaligus. Foto pertama akan dijadikan foto utama, lalu urutan dan foto utama bisa diatur lagi setelah listing dibuat.')
+                            ->helperText('Maks. 2 MB per foto. Bisa upload sampai 13 foto sekaligus. Foto pertama akan dijadikan foto utama, lalu urutan dan foto utama bisa diatur lagi setelah listing dibuat.')
                             ->columnSpanFull(),
                     ]),
 
