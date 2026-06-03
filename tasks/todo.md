@@ -345,6 +345,12 @@
 - Verified old hardcoded WhatsApp numbers no longer appear in `app`, `config`, `database`, `resources`, `routes`, or `tests`.
 - Verification passed: PHP syntax checks for the new config and seeder, `php artisan view:cache`, `php artisan config:cache`, and `git diff --check`; Blade/config caches were cleared afterward.
 
+## Current Task: Harden Admin User CRUD
+- [x] Audit current Filament user create/edit form, table, pages, model, and tests
+- [ ] Add safer create/edit UX: password confirmation, edit context, and reset-password action
+- [ ] Add server-side guards for self/last-admin demotion or deletion
+- [ ] Add regression coverage and run hosting-safe verification
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.
