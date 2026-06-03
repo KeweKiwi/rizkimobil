@@ -54,3 +54,4 @@
 - If a Filament page renders in hosting but save/create/edit actions do nothing or fail, inspect the Livewire update endpoint first; use an admin-scoped update route when root `/livewire/update` is likely blocked or mishandled by hosting rules.
 - When one side of a two-column editorial section feels empty at the bottom, add a purposeful visual anchor or redistribute vertical rhythm before simply adding more padding or stretching content awkwardly.
 - For sticky editorial intro rails next to tall content lists, use desktop-only vertical offsets to center the intro against the list rhythm while keeping mobile content immediate.
+- For shared public contact channels like WhatsApp, centralize the number in config and make all CTAs read from it instead of scattering hardcoded `wa.me` links across Blade files.

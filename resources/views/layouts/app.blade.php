@@ -31,8 +31,14 @@
         @endif
 
         @if(empty($hideFloatingWhatsApp))
+            @php
+                $floatingWhatsAppNumber = config('rizki.whatsapp.wa_number');
+                $floatingWhatsAppMessage = urlencode('Halo Rizki Mobil, saya tertarik dengan mobil di website Anda');
+                $floatingWhatsAppUrl = "https://wa.me/{$floatingWhatsAppNumber}?text={$floatingWhatsAppMessage}";
+            @endphp
+
             <!-- WhatsApp Floating Button -->
-            <a href="https://wa.me/6281359359069?text=Halo%20Rizki%20Mobil%2C%20saya%20tertarik%20dengan%20mobil%20di%20website%20Anda"
+            <a href="{{ $floatingWhatsAppUrl }}"
                target="_blank"
                rel="noopener noreferrer"
                class="fixed bottom-4 right-4 z-50 group sm:bottom-6 sm:right-6"

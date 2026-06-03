@@ -9,12 +9,14 @@ class LocationsSeeder extends Seeder
 {
     public function run(): void
     {
+        $whatsappNumber = config('rizki.whatsapp.wa_number');
+
         Location::create([
             'name' => 'Jakarta',
             'address' => 'Jl. Contoh No. 1',
             'city' => 'Jakarta',
             'province' => 'DKI Jakarta',
-            'whatsapp' => '6281359359069',
+            'whatsapp' => $whatsappNumber,
             'google_maps_url' => 'https://maps.google.com',
             'is_active' => true,
         ]);
@@ -24,7 +26,7 @@ class LocationsSeeder extends Seeder
             'address' => 'Jl. Contoh No. 2',
             'city' => 'Surabaya',
             'province' => 'Jawa Timur',
-            'whatsapp' => '6281111111111',
+            'whatsapp' => $whatsappNumber,
             'google_maps_url' => 'https://maps.google.com',
             'is_active' => true,
         ]);

@@ -334,6 +334,17 @@
 - Kept the mobile FAQ flow unchanged so users still see the section heading immediately on small screens.
 - Verification passed: `php artisan view:cache` and `git diff --check`; compiled views were cleared afterward for local development.
 
+## Current Task: Update WhatsApp Contact Number
+- [x] Search source files for hardcoded WhatsApp/contact numbers
+- [x] Centralize the public WhatsApp number and point all public WhatsApp CTAs to `081555307307`
+- [x] Verify Blade/config compilation and diff hygiene
+
+### Review: Update WhatsApp Contact Number
+- Added `config/rizki.php` so the public WhatsApp number is centralized as `081555307307` and the `wa.me` number as `6281555307307`.
+- Updated contact page, car detail CTA, footer CTA, floating WhatsApp button, and default location seeder WhatsApp fields to use the centralized number.
+- Verified old hardcoded WhatsApp numbers no longer appear in `app`, `config`, `database`, `resources`, `routes`, or `tests`.
+- Verification passed: PHP syntax checks for the new config and seeder, `php artisan view:cache`, `php artisan config:cache`, and `git diff --check`; Blade/config caches were cleared afterward.
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.

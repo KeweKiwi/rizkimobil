@@ -1,6 +1,6 @@
 @php
     $hideFloatingWhatsApp = true;
-    $whatsappNumber = '6281359359069';
+    $whatsappNumber = config('rizki.whatsapp.wa_number');
     $whatsappMessage = urlencode('Halo Rizki Mobil, saya ingin konsultasi tentang stok mobil yang tersedia.');
     $whatsappUrl = "https://wa.me/{$whatsappNumber}?text={$whatsappMessage}";
     $quickPrompts = [

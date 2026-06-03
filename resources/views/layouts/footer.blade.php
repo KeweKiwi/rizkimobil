@@ -1,5 +1,5 @@
 @php
-    $whatsappNumber = '6281359359069';
+    $whatsappNumber = config('rizki.whatsapp.wa_number');
     $whatsappMessage = urlencode('Halo Rizki Mobil, saya ingin tanya stok mobil yang tersedia.');
     $whatsappUrl = "https://wa.me/{$whatsappNumber}?text={$whatsappMessage}";
 @endphp
