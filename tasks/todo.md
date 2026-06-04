@@ -362,6 +362,18 @@
 - Added regression coverage that `Mini` appears on the homepage search and inventory make filter.
 - Verification passed: PHP syntax checks, targeted homepage/inventory tests, full `php artisan test` (`28 passed`), `php artisan view:cache`, `php artisan config:cache`, and `git diff --check`; Blade/config caches were cleared afterward.
 
+## Current Task: Add Car Detail Location Card
+- [x] Review car detail layout, `Car` location relation, and available `locations` fields
+- [x] Eager-load the car location and render a clean right-column location card from database data
+- [x] Add regression coverage and run hosting-safe verification
+
+### Review: Add Car Detail Location Card
+- Eager-loaded `location` on the car detail controller so outlet data is available without extra lazy-loading surprises.
+- Added a right-column `Lokasi Unit` card that shows outlet name, address, city/province, maps link, and outlet WhatsApp when the car has a location.
+- Added a fallback location note when a car has no assigned outlet yet, so the right column still answers the user flow honestly.
+- Added regression coverage for rendering location data from the database on the car detail page.
+- Verification passed: PHP syntax checks, targeted `CarDetailTest`, full `php artisan test` (`29 passed`), `php artisan view:cache`, and `git diff --check`; Blade cache was cleared afterward.
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.

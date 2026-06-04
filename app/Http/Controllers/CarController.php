@@ -14,7 +14,8 @@ class CarController extends Controller
 {
     $car = Car::with([
         'images' => fn ($q) => $q->orderBy('sort_order'),
-        'primaryImage'
+        'primaryImage',
+        'location',
     ])->findOrFail($id);
 
     $isFavorite = Auth::check() && Auth::user()->hasFavorited($car->id);
