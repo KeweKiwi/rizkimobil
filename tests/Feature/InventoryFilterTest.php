@@ -39,6 +39,14 @@ class InventoryFilterTest extends TestCase
         $response->assertSee('Avanza');
     }
 
+    public function test_inventory_make_filter_includes_mini_from_supported_make_list(): void
+    {
+        $response = $this->get('/inventory');
+
+        $response->assertOk();
+        $response->assertSee('Mini');
+    }
+
     private function insertCar(string $make, string $model): void
     {
         DB::table('cars')->insert([

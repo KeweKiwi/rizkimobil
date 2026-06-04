@@ -351,6 +351,17 @@
 - [ ] Add server-side guards for self/last-admin demotion or deletion
 - [ ] Add regression coverage and run hosting-safe verification
 
+## Current Task: Add Mini To Car Make Options
+- [x] Locate all car make option sources for admin, inventory, and homepage search
+- [x] Centralize car make options and add `Mini`
+- [x] Verify syntax, Blade/config compilation, and diff hygiene
+
+### Review: Add Mini To Car Make Options
+- Added centralized `car_makes` config in `config/rizki.php`, including `Mini`.
+- Updated homepage search options, public inventory make filter, admin car create/edit make select, and admin car table make filter to read from the centralized list.
+- Added regression coverage that `Mini` appears on the homepage search and inventory make filter.
+- Verification passed: PHP syntax checks, targeted homepage/inventory tests, full `php artisan test` (`28 passed`), `php artisan view:cache`, `php artisan config:cache`, and `git diff --check`; Blade/config caches were cleared afterward.
+
 ## Review
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.

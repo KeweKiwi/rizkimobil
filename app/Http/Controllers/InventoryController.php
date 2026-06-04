@@ -20,7 +20,7 @@ class InventoryController extends Controller
             ));
         }
 
-        $carMakes = Car::query()
+        $stockMakes = Car::query()
             ->available()
             ->whereNotNull('make')
             ->distinct()
@@ -30,14 +30,13 @@ class InventoryController extends Controller
             ->values()
             ->all();
 
-        if ($carMakes === []) {
-            $carMakes = [
-                'Toyota', 'Honda', 'Ford', 'Chevrolet', 'BMW',
-                'Mercedes-Benz', 'Audi', 'Nissan', 'Hyundai',
-                'Volkswagen', 'Mazda', 'Subaru', 'Lexus', 'Kia',
-                'Jeep', 'Ram', 'GMC', 'Tesla', 'Porsche', 'Volvo',
-            ];
-        }
+        $carMakes = collect(config('rizki.car_makes'))
+            ->values()
+            ->merge($stockMakes)
+            ->unique()
+            ->sort()
+            ->values()
+            ->all();
 
         $bodyTypes = ['suv', 'sedan', 'hatchback', 'mpv', 'pickup', 'van', 'coupe', 'convertible', 'wagon'];
         $fuelTypes = ['bensin', 'diesel', 'electric', 'hybrid'];

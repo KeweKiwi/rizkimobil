@@ -55,3 +55,4 @@
 - When one side of a two-column editorial section feels empty at the bottom, add a purposeful visual anchor or redistribute vertical rhythm before simply adding more padding or stretching content awkwardly.
 - For sticky editorial intro rails next to tall content lists, use desktop-only vertical offsets to center the intro against the list rhythm while keeping mobile content immediate.
 - For shared public contact channels like WhatsApp, centralize the number in config and make all CTAs read from it instead of scattering hardcoded `wa.me` links across Blade files.
+- For repeated option catalogs like car makes, keep the source in one config and have public filters, homepage search, and admin forms read from it so future additions do not drift.

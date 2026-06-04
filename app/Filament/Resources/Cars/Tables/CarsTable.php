@@ -117,18 +117,7 @@ class CarsTable
             ->filters([
                 SelectFilter::make('make')
                     ->label('Merek')
-                    ->options([
-                        'Toyota'        => 'Toyota',
-                        'Honda'         => 'Honda',
-                        'Daihatsu'      => 'Daihatsu',
-                        'Suzuki'        => 'Suzuki',
-                        'Mitsubishi'    => 'Mitsubishi',
-                        'Nissan'        => 'Nissan',
-                        'BMW'           => 'BMW',
-                        'Mercedes-Benz' => 'Mercedes-Benz',
-                        'Hyundai'       => 'Hyundai',
-                        'Kia'           => 'Kia',
-                    ])
+                    ->options(fn (): array => config('rizki.car_makes'))
                     ->multiple(),
 
                 SelectFilter::make('transmission')

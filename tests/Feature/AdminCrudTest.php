@@ -182,6 +182,7 @@ class AdminCrudTest extends TestCase
                 'phone' => '081111222233',
                 'is_admin' => true,
                 'password' => 'password123',
+                'password_confirmation' => 'password123',
             ])
             ->call('create')
             ->assertHasNoFormErrors();

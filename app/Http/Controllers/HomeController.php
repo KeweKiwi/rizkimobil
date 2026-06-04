@@ -33,28 +33,7 @@ class HomeController extends Controller
             ->take(4)
             ->get();
 
-        $carMakes = [
-            'Toyota',
-            'Honda',
-            'Ford',
-            'Chevrolet',
-            'BMW',
-            'Mercedes-Benz',
-            'Audi',
-            'Nissan',
-            'Hyundai',
-            'Volkswagen',
-            'Mazda',
-            'Subaru',
-            'Lexus',
-            'Kia',
-            'Jeep',
-            'Ram',
-            'GMC',
-            'Tesla',
-            'Porsche',
-            'Volvo',
-        ];
+        $carMakes = array_values(config('rizki.car_makes'));
 
         // Statistics
         $stats = [

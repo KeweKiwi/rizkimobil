@@ -35,27 +35,7 @@ class CarForm
                             ->label('Merek')
                             ->required()
                             ->searchable()
-                            ->options([
-                                'BMW'           => 'BMW',
-                                'BYD'           => 'BYD',
-                                'Chevrolet'     => 'Chevrolet',
-                                'Daihatsu'      => 'Daihatsu',
-                                'DFSK'          => 'DFSK',
-                                'Ford'          => 'Ford',
-                                'Honda'         => 'Honda',
-                                'Hyundai'       => 'Hyundai',
-                                'Isuzu'         => 'Isuzu',
-                                'Kia'           => 'Kia',
-                                'Mazda'         => 'Mazda',
-                                'Mercedes-Benz' => 'Mercedes-Benz',
-                                'Mitsubishi'    => 'Mitsubishi',
-                                'Nissan'        => 'Nissan',
-                                'Subaru'        => 'Subaru',
-                                'Suzuki'        => 'Suzuki',
-                                'Toyota'        => 'Toyota',
-                                'Volkswagen'    => 'Volkswagen',
-                                'Wuling'        => 'Wuling',
-                            ]),
+                            ->options(fn (): array => config('rizki.car_makes')),
 
                         TextInput::make('model')
                             ->label('Model')
