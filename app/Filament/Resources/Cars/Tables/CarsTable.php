@@ -138,14 +138,7 @@ class CarsTable
 
                 SelectFilter::make('body_type')
                     ->label('Tipe Bodi')
-                    ->options([
-                        'suv'       => 'SUV',
-                        'mpv'       => 'MPV',
-                        'sedan'     => 'Sedan',
-                        'hatchback' => 'Hatchback',
-                        'pickup'    => 'Pickup',
-                        'van'       => 'Van',
-                    ]),
+                    ->options(fn (): array => config('rizki.car_body_types')),
 
                 TernaryFilter::make('featured')
                     ->placeholder('Semua listing')

@@ -47,6 +47,15 @@ class InventoryFilterTest extends TestCase
         $response->assertSee('Mini');
     }
 
+    public function test_inventory_body_type_filter_includes_city_and_lcgc(): void
+    {
+        $response = $this->get('/inventory');
+
+        $response->assertOk();
+        $response->assertSee('City');
+        $response->assertSee('LCGC');
+    }
+
     private function insertCar(string $make, string $model): void
     {
         DB::table('cars')->insert([

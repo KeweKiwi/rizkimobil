@@ -38,7 +38,8 @@ class InventoryController extends Controller
             ->values()
             ->all();
 
-        $bodyTypes = ['suv', 'sedan', 'hatchback', 'mpv', 'pickup', 'van', 'coupe', 'convertible', 'wagon'];
+        $bodyTypeLabels = config('rizki.car_body_types');
+        $bodyTypes = array_keys($bodyTypeLabels);
         $fuelTypes = ['bensin', 'diesel', 'electric', 'hybrid'];
         $transmissions = ['manual', 'automatic'];
         $mileagePresets = [
@@ -174,6 +175,7 @@ class InventoryController extends Controller
             'cars',
             'carMakes',
             'bodyTypes',
+            'bodyTypeLabels',
             'fuelTypes',
             'transmissions',
             'mileagePresets',

@@ -29,7 +29,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('seats')->nullable(); // 5
 
             $table->enum('body_type', [
-                'suv', 'sedan', 'hatchback', 'mpv', 'pickup', 'van', 'coupe', 'convertible', 'wagon'
+                'suv', 'sedan', 'hatchback', 'city', 'lcgc', 'mpv', 'pickup', 'van', 'coupe', 'convertible', 'wagon'
             ])->nullable();
 
             $table->enum('plate_parity', ['ganjil', 'genap'])->nullable(); // Plat Nomor

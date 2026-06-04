@@ -92,17 +92,7 @@ class CarForm
                         Select::make('body_type')
                             ->label('Tipe Bodi')
                             ->required()
-                            ->options([
-                                'suv'         => 'SUV',
-                                'mpv'         => 'MPV',
-                                'sedan'       => 'Sedan',
-                                'hatchback'   => 'Hatchback',
-                                'pickup'      => 'Pickup Truck',
-                                'van'         => 'Van',
-                                'coupe'       => 'Coupe',
-                                'convertible' => 'Convertible',
-                                'wagon'       => 'Wagon',
-                            ]),
+                            ->options(fn (): array => config('rizki.car_body_types')),
 
                         TextInput::make('color')
                             ->label('Warna Eksterior')

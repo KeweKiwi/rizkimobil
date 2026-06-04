@@ -57,3 +57,4 @@
 - For shared public contact channels like WhatsApp, centralize the number in config and make all CTAs read from it instead of scattering hardcoded `wa.me` links across Blade files.
 - For repeated option catalogs like car makes, keep the source in one config and have public filters, homepage search, and admin forms read from it so future additions do not drift.
 - On vehicle detail pages, use spare sidebar space for high-intent context such as unit outlet/location before adding decorative or generic content.
+- For enum-backed option catalogs like car body types, update the shared config, admin form/table filters, public labels, chart labels, and a production migration together so hosted data entry does not drift from the database constraint.

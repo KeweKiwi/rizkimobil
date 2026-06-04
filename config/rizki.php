@@ -32,4 +32,18 @@ return [
         'Volvo' => 'Volvo',
         'Wuling' => 'Wuling',
     ],
+
+    'car_body_types' => [
+        'suv' => 'SUV',
+        'mpv' => 'MPV',
+        'sedan' => 'Sedan',
+        'hatchback' => 'Hatchback',
+        'city' => 'City',
+        'lcgc' => 'LCGC',
+        'pickup' => 'Pickup Truck',
+        'van' => 'Van',
+        'coupe' => 'Coupe',
+        'convertible' => 'Convertible',
+        'wagon' => 'Wagon',
+    ],
 ];

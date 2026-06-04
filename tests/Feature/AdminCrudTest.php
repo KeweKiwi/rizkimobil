@@ -42,7 +42,7 @@ class AdminCrudTest extends TestCase
                 'mileage_km' => 32000,
                 'transmission' => 'automatic',
                 'fuel_type' => 'bensin',
-                'body_type' => 'mpv',
+                'body_type' => 'lcgc',
                 'color' => 'Putih',
                 'seats' => 7,
                 'price' => 218000000,
@@ -56,6 +56,7 @@ class AdminCrudTest extends TestCase
         $this->assertDatabaseHas('cars', [
             'title' => 'Toyota Avanza Veloz 2022',
             'location_id' => $location->id,
+            'body_type' => 'lcgc',
         ]);
     }
 

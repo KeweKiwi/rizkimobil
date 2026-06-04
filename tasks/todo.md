@@ -374,7 +374,18 @@
 - Added regression coverage for rendering location data from the database on the car detail page.
 - Verification passed: PHP syntax checks, targeted `CarDetailTest`, full `php artisan test` (`29 passed`), `php artisan view:cache`, and `git diff --check`; Blade cache was cleared afterward.
 
+## Current Task: Add City And LCGC Body Types
+- [x] Locate body type sources in database schema, admin form/filter, inventory filter, and dashboard labels
+- [x] Add `city` and `lcgc` to the shared body type options and database enum
+- [x] Update public labels so `LCGC` renders correctly
+- [x] Add/adjust regression coverage and run hosting-safe verification
+
 ## Review
+- Added `city` and `lcgc` body types to the shared Rizki Mobil config so admin car forms, admin table filters, and public inventory filters use one source of truth.
+- Added a production-safe migration to expand the MySQL `cars.body_type` enum, while keeping the original create-table migration aligned for fresh installs.
+- Updated public inventory labels and dashboard chart labels so `LCGC` displays in uppercase instead of as a generic capitalized value.
+- Added regression coverage for the inventory filter options and admin car creation with the new body type.
+- Verification passed: `php artisan test`, targeted inventory/admin CRUD tests, `php artisan view:cache`, `php artisan config:cache`, and `git diff --check`.
 - `AGENTS.md` workflow is now operationalized with the required task files.
 - For non-trivial tasks, the plan will be written here before implementation and updated as work progresses.
 - Added a create-only `Foto Mobil` upload section so new car listings can include images before the first save.

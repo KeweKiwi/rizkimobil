@@ -98,6 +98,8 @@ class InventoryBodyTypeChart extends ChartWidget
             'mpv' => 'MPV',
             'sedan' => 'Sedan',
             'hatchback' => 'Hatchback',
+            'city' => 'City',
+            'lcgc' => 'LCGC',
             'pickup' => 'Pickup',
             'van' => 'Van',
             'coupe' => 'Coupe',

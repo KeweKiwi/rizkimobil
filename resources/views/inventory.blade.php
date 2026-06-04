@@ -530,7 +530,7 @@
                                         <label class="filter-btn">
                                             <input type="checkbox" name="body_type[]" value="{{ $type }}"
                                                 {{ in_array($type, $selectedBodyTypes, true) ? 'checked' : '' }} />
-                                            {{ ucfirst($type) }}
+                                            {{ $bodyTypeLabels[$type] ?? ucfirst($type) }}
                                         </label>
                                     @endforeach
                                 </div>
@@ -748,7 +748,7 @@
                         <label class="filter-btn">
                             <input type="checkbox" name="body_type[]" value="{{ $type }}"
                                 {{ in_array($type, $selectedBodyTypes, true) ? 'checked' : '' }} />
-                            {{ ucfirst($type) }}
+                            {{ $bodyTypeLabels[$type] ?? ucfirst($type) }}
                         </label>
                     @endforeach
                 </div>
