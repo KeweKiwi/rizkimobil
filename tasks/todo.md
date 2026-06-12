@@ -1,5 +1,18 @@
 # Task Plan
 
+## Current Task: Replace Budget WhatsApp CTA With Credit Simulator
+- [x] Review existing financing estimate block and car-detail scripts
+- [x] Replace `Sesuaikan Budget` WhatsApp link with an in-page credit simulator modal
+- [x] Add responsive simulator form, reset, calculate behavior, and 1-6 year result cards
+- [x] Update coverage and run deploy-safe verification
+
+### Review: Replace Budget WhatsApp CTA With Credit Simulator
+- Changed `Sesuaikan Budget` from an outbound WhatsApp link into an in-page `Simulasi Kredit` modal on the car detail page.
+- Added prefilled vehicle fields, OTR price, editable down payment in Rupiah and percent, insurance/region/protection controls, reset, calculate, BCA Finance treatment, and result cards for 1-6 year tenors.
+- Moved simulator assumptions into `config/rizki.php` so down-payment, interest, admin fee, protection, insurance, and region multipliers can be tuned without rewriting the Blade.
+- Updated car detail regression coverage to confirm the simulator UI is rendered and the old budget WhatsApp query is gone.
+- Verification passed: `php artisan view:cache`, `php artisan test tests/Feature/CarDetailTest.php`, full `php artisan test`, `npm run build`, `php artisan config:cache`, `git diff --check`, then cache clears.
+
 ## Current Task: Add Financing Estimate To Car Detail Price
 - [x] Locate the car-detail price block, formatting helpers, and current available car data
 - [x] Add a clean financing estimate UI under the price for every car detail page

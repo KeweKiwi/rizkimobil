@@ -78,5 +78,9 @@ class CarDetailTest extends TestCase
         $response->assertSee('BCA');
         $response->assertSee('finance');
         $response->assertSee('Sesuaikan Budget');
+        $response->assertSee('Simulasi Kredit');
+        $response->assertSee('Hitung Budget');
+        $response->assertSee('Hasil Perhitungan');
+        $response->assertDontSee('saya%20ingin%20sesuaikan%20budget', false);
     }
 }

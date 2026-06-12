@@ -32,6 +32,135 @@
         </div>
     </div>
 
+    <!-- Credit Simulator -->
+    <div id="credit-simulator-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/70 px-4 py-6 backdrop-blur-sm sm:py-10" aria-hidden="true">
+        <div class="mx-auto min-h-full max-w-6xl sm:flex sm:items-center">
+            <div class="relative w-full overflow-hidden rounded-2xl bg-white shadow-2xl shadow-black/30">
+                <div class="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white/95 px-4 py-4 backdrop-blur sm:px-6">
+                    <div class="min-w-0">
+                        <h2 class="font-display text-2xl font-black tracking-tight text-foreground sm:text-4xl">Simulasi Kredit</h2>
+                        <p class="mt-1 text-sm text-gray-500 sm:text-base">Solusi terbaik untuk menemukan mobil impian sesuai kemampuan Anda</p>
+                    </div>
+                    <div class="flex shrink-0 items-center gap-2">
+                        <button type="button" onclick="resetCreditSimulator()"
+                            class="hidden rounded-lg px-3 py-2 text-sm font-bold text-red-600 transition hover:bg-red-50 sm:inline-flex">
+                            Reset
+                        </button>
+                        <button type="button" onclick="closeCreditSimulator()"
+                            class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 text-gray-600 transition hover:border-red-600 hover:bg-red-50 hover:text-red-600"
+                            aria-label="Tutup simulasi kredit">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-4 sm:p-6">
+                    <div class="grid gap-5 md:grid-cols-3">
+                        <div>
+                            <label for="credit-make" class="mb-2 block text-sm font-extrabold text-foreground">Merk Mobil</label>
+                            <input id="credit-make" type="text" value="{{ $car->make }}" readonly
+                                class="h-12 w-full rounded-lg border border-gray-200 bg-gray-50 px-4 text-base font-bold text-foreground">
+                        </div>
+                        <div>
+                            <label for="credit-model" class="mb-2 block text-sm font-extrabold text-foreground">Jenis Mobil</label>
+                            <input id="credit-model" type="text" value="{{ $car->model }}{{ $car->variant ? ' ' . $car->variant : '' }}" readonly
+                                class="h-12 w-full rounded-lg border border-gray-200 bg-gray-50 px-4 text-base font-bold text-foreground">
+                        </div>
+                        <div>
+                            <label for="credit-year" class="mb-2 block text-sm font-extrabold text-foreground">Tahun Kendaraan</label>
+                            <input id="credit-year" type="text" value="{{ $car->year }}" readonly
+                                class="h-12 w-full rounded-lg border border-gray-200 bg-gray-50 px-4 text-base font-bold text-foreground">
+                        </div>
+
+                        <div>
+                            <label for="credit-price" class="mb-2 block text-sm font-extrabold text-foreground">Harga OTR</label>
+                            <div class="flex h-12 overflow-hidden rounded-lg border border-gray-200 bg-white">
+                                <span class="inline-flex items-center bg-gray-100 px-4 text-base font-bold text-gray-500">Rp</span>
+                                <input id="credit-price" type="text" inputmode="numeric"
+                                    class="min-w-0 flex-1 border-0 px-4 text-base font-bold text-foreground outline-none focus:ring-0">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="credit-down-payment" class="mb-2 block text-sm font-extrabold text-foreground">Uang Muka (Dalam Rp.)</label>
+                            <div class="flex h-12 overflow-hidden rounded-lg border border-gray-200 bg-white">
+                                <span class="inline-flex items-center bg-gray-100 px-4 text-base font-bold text-gray-500">Rp</span>
+                                <input id="credit-down-payment" type="text" inputmode="numeric"
+                                    class="min-w-0 flex-1 border-0 px-4 text-base font-bold text-foreground outline-none focus:ring-0">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="credit-down-payment-percent" class="mb-2 block text-sm font-extrabold text-foreground">Uang Muka (Dalam %)</label>
+                            <div class="flex h-12 overflow-hidden rounded-lg border border-gray-200 bg-white">
+                                <input id="credit-down-payment-percent" type="number" min="0" max="90" step="1"
+                                    class="min-w-0 flex-1 border-0 px-4 text-base font-bold text-foreground outline-none focus:ring-0">
+                                <span class="inline-flex items-center bg-gray-100 px-4 text-base font-bold text-gray-500">%</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="credit-insurance" class="mb-2 block text-sm font-extrabold text-foreground">Asuransi</label>
+                            <select id="credit-insurance" class="h-12 w-full rounded-lg border border-gray-200 bg-white px-4 text-base font-semibold text-foreground">
+                                <option value="none">Pilih Asuransi</option>
+                                <option value="comprehensive">Comprehensive</option>
+                                <option value="tlo">TLO</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="credit-region" class="mb-2 block text-sm font-extrabold text-foreground">Zona Wilayah</label>
+                            <select id="credit-region" class="h-12 w-full rounded-lg border border-gray-200 bg-white px-4 text-base font-semibold text-foreground">
+                                <option value="jabodetabek">Pilih Wilayah</option>
+                                <option value="jawa">Pulau Jawa</option>
+                                <option value="luar_jawa">Luar Jawa</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="credit-protection" class="mb-2 block text-sm font-extrabold text-foreground">Car Protection</label>
+                            <select id="credit-protection" class="h-12 w-full rounded-lg border border-gray-200 bg-white px-4 text-base font-semibold text-foreground">
+                                <option value="yes">Ya</option>
+                                <option value="no">Tidak</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+                        <div class="min-w-0">
+                            <p class="font-display text-3xl font-black leading-none text-[#0b6fb3]">
+                                BCA<span class="font-extrabold text-[#0097a7]">finance</span>
+                            </p>
+                            <p class="mt-1 text-xs font-semibold lowercase tracking-wide text-[#0b6fb3]">
+                                solusi tepat pembiayaan anda
+                            </p>
+                        </div>
+
+                        <div class="flex flex-col gap-3 sm:flex-row">
+                            <button type="button" onclick="resetCreditSimulator()"
+                                class="inline-flex h-12 items-center justify-center rounded-lg border border-gray-200 px-5 text-sm font-bold text-red-600 transition hover:bg-red-50 sm:hidden">
+                                Reset
+                            </button>
+                            <button type="button" onclick="calculateCreditSimulator()"
+                                class="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-red-600 px-6 text-sm font-bold text-white shadow-lg shadow-red-600/25 transition hover:-translate-y-0.5 hover:bg-red-700">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h.01M11 15h2M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z" />
+                                </svg>
+                                Hitung Budget
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 border-t border-gray-300 pt-6">
+                        <h3 class="font-display text-2xl font-black text-foreground sm:text-3xl">Hasil Perhitungan</h3>
+                        <div id="credit-results" class="mt-5 grid gap-4 lg:grid-cols-2"></div>
+                        <p class="mt-7 text-sm italic text-gray-400 sm:text-base">
+                            Disclaimer: Hasil di atas merupakan angka estimasi, data perhitungan dapat berbeda-beda.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container mx-auto max-w-7xl overflow-hidden px-4 py-5 sm:py-8">
         <!-- Breadcrumb -->
         <nav class="mb-5 flex min-w-0 items-center gap-2 overflow-x-auto pb-2 text-xs text-gray-500 sm:mb-6 sm:text-sm">
@@ -331,27 +460,13 @@
                                         </p>
                                     </div>
 
-                                    @php
-                                        $budgetMessage = urlencode(
-                                            "Halo Rizki Mobil, saya ingin sesuaikan budget untuk {$car->year} {$car->make} {$car->model}. Harga Rp " .
-                                                number_format($car->price, 0, ',', '.') .
-                                                ', estimasi TDP Rp ' .
-                                                number_format($financingEstimate['tdp'], 0, ',', '.') .
-                                                ' dan cicilan Rp ' .
-                                                number_format($financingEstimate['monthly_payment'], 0, ',', '.') .
-                                                ' per bulan.',
-                                        );
-                                        $budgetLink = 'https://wa.me/' . config('rizki.whatsapp.wa_number') . "?text={$budgetMessage}";
-                                    @endphp
-
-                                    <a href="{{ $budgetLink }}" target="_blank" rel="noopener noreferrer"
+                                    <button type="button" onclick="openCreditSimulator()"
                                         class="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-[#160302] px-4 text-sm font-bold text-white shadow-lg shadow-red-950/20 transition-all hover:-translate-y-0.5 hover:bg-red-700">
                                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 17l4-4 4 4m-4-4v9" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h.01M11 15h2M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z" />
                                         </svg>
                                         Sesuaikan Budget
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -562,10 +677,24 @@
     </div>
 
     @push('scripts')
+        @php
+            $creditSimulatorConfig = [
+                'price' => (int) $car->price,
+                'downPaymentRate' => (float) config('rizki.financing.simulator_down_payment_rate', 0.30),
+                'annualInterestRate' => (float) config('rizki.financing.simulator_annual_interest_rate', 0.0875),
+                'adminFeeRate' => (float) config('rizki.financing.simulator_admin_fee_rate', 0.006),
+                'protectionRate' => (float) config('rizki.financing.simulator_protection_rate', 0.01),
+                'insuranceRates' => config('rizki.financing.simulator_insurance_rates', []),
+                'regionMultipliers' => config('rizki.financing.simulator_region_multipliers', []),
+            ];
+        @endphp
+
         <script>
             // Image gallery management
             let currentImageIndex = 0;
             const images = @json($car->images->pluck('image_path'));
+            const creditSimulatorConfig = @json($creditSimulatorConfig);
+            let isSyncingCreditInputs = false;
 
             function setMainImage(index) {
                 currentImageIndex = index;
@@ -633,6 +762,171 @@
                 setLightboxImage(currentImageIndex);
             }
 
+            function formatRupiahNumber(value) {
+                return new Intl.NumberFormat('id-ID').format(Math.max(Math.round(Number(value) || 0), 0));
+            }
+
+            function formatRupiah(value) {
+                return `Rp ${formatRupiahNumber(value)}`;
+            }
+
+            function parseRupiah(value) {
+                return Number(String(value || '').replace(/[^\d]/g, '')) || 0;
+            }
+
+            function roundToThousand(value) {
+                return Math.round((Number(value) || 0) / 1000) * 1000;
+            }
+
+            function getCreditElement(id) {
+                return document.getElementById(id);
+            }
+
+            function openCreditSimulator() {
+                const modal = getCreditElement('credit-simulator-modal');
+                modal.classList.remove('hidden');
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('overflow-hidden');
+                resetCreditSimulator();
+            }
+
+            function closeCreditSimulator() {
+                const modal = getCreditElement('credit-simulator-modal');
+                modal.classList.add('hidden');
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('overflow-hidden');
+            }
+
+            function resetCreditSimulator() {
+                const price = creditSimulatorConfig.price;
+                const downPaymentPercent = Math.round(creditSimulatorConfig.downPaymentRate * 100);
+                const downPayment = roundToThousand(price * creditSimulatorConfig.downPaymentRate);
+
+                isSyncingCreditInputs = true;
+                getCreditElement('credit-price').value = formatRupiahNumber(price);
+                getCreditElement('credit-down-payment').value = formatRupiahNumber(downPayment);
+                getCreditElement('credit-down-payment-percent').value = downPaymentPercent;
+                getCreditElement('credit-insurance').value = 'none';
+                getCreditElement('credit-region').value = 'jabodetabek';
+                getCreditElement('credit-protection').value = 'yes';
+                isSyncingCreditInputs = false;
+
+                calculateCreditSimulator();
+            }
+
+            function syncCreditDownPaymentFromAmount() {
+                if (isSyncingCreditInputs) return;
+
+                const price = parseRupiah(getCreditElement('credit-price').value);
+                const downPayment = parseRupiah(getCreditElement('credit-down-payment').value);
+                const percent = price > 0 ? Math.round((downPayment / price) * 100) : 0;
+
+                isSyncingCreditInputs = true;
+                getCreditElement('credit-down-payment').value = formatRupiahNumber(downPayment);
+                getCreditElement('credit-down-payment-percent').value = Math.min(Math.max(percent, 0), 90);
+                isSyncingCreditInputs = false;
+            }
+
+            function syncCreditDownPaymentFromPercent() {
+                if (isSyncingCreditInputs) return;
+
+                const price = parseRupiah(getCreditElement('credit-price').value);
+                const percentInput = getCreditElement('credit-down-payment-percent');
+                const percent = Math.min(Math.max(Number(percentInput.value) || 0, 0), 90);
+                const downPayment = roundToThousand(price * (percent / 100));
+
+                isSyncingCreditInputs = true;
+                percentInput.value = percent;
+                getCreditElement('credit-down-payment').value = formatRupiahNumber(downPayment);
+                isSyncingCreditInputs = false;
+            }
+
+            function syncCreditPrice() {
+                if (isSyncingCreditInputs) return;
+
+                const price = parseRupiah(getCreditElement('credit-price').value);
+                getCreditElement('credit-price').value = formatRupiahNumber(price);
+                syncCreditDownPaymentFromPercent();
+            }
+
+            function calculateCreditSimulator() {
+                const price = parseRupiah(getCreditElement('credit-price').value);
+                const downPayment = Math.min(parseRupiah(getCreditElement('credit-down-payment').value), price);
+                const insuranceKey = getCreditElement('credit-insurance').value;
+                const regionKey = getCreditElement('credit-region').value;
+                const protectionEnabled = getCreditElement('credit-protection').value === 'yes';
+                const insuranceRate = Number(creditSimulatorConfig.insuranceRates[insuranceKey] || 0);
+                const regionMultiplier = Number(creditSimulatorConfig.regionMultipliers[regionKey] || 1);
+                const adminFee = price * Number(creditSimulatorConfig.adminFeeRate || 0);
+                const protectionCost = protectionEnabled ? price * Number(creditSimulatorConfig.protectionRate || 0) : 0;
+                const insuranceCost = price * insuranceRate * regionMultiplier;
+                const financedAmount = Math.max(price - downPayment, 0);
+                const annualInterestRate = Number(creditSimulatorConfig.annualInterestRate || 0);
+                const results = [];
+
+                for (let tenor = 1; tenor <= 6; tenor += 1) {
+                    const months = tenor * 12;
+                    const totalInterest = financedAmount * annualInterestRate * tenor;
+                    const monthlyPayment = months > 0 ? (financedAmount + totalInterest) / months : 0;
+                    const totalFirstPayment = downPayment + adminFee + protectionCost + insuranceCost;
+
+                    results.push({
+                        tenor,
+                        tdp: roundToThousand(totalFirstPayment),
+                        monthlyPayment: roundToThousand(monthlyPayment),
+                    });
+                }
+
+                isSyncingCreditInputs = true;
+                getCreditElement('credit-price').value = formatRupiahNumber(price);
+                getCreditElement('credit-down-payment').value = formatRupiahNumber(downPayment);
+                isSyncingCreditInputs = false;
+
+                renderCreditResults(results);
+            }
+
+            function renderCreditResults(results) {
+                const container = getCreditElement('credit-results');
+                container.innerHTML = results.map((result) => `
+                    <div class="grid gap-3 rounded-xl border border-gray-900/80 bg-white p-4 text-foreground shadow-sm sm:grid-cols-3 sm:items-center">
+                        <div class="flex items-start gap-3">
+                            <svg class="mt-1 h-5 w-5 shrink-0 text-[#160302]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M21 7H3a2 2 0 00-2 2v9a2 2 0 002 2h18a2 2 0 002-2V9a2 2 0 00-2-2zm0 4h-4a2 2 0 100 4h4v3H3V9h18v2zm-4 3a1 1 0 110-2 1 1 0 010 2zM4 4h15v2H4z" />
+                            </svg>
+                            <div>
+                                <p class="text-base font-black">Tenor</p>
+                                <p class="mt-1 text-lg font-black">${result.tenor} Tahun</p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-base font-black">TDP:</p>
+                            <p class="mt-1 break-words text-lg font-black">${formatRupiah(result.tdp)}</p>
+                        </div>
+                        <div>
+                            <p class="text-base font-black">Angsuran:</p>
+                            <p class="mt-1 break-words text-lg font-black">${formatRupiah(result.monthlyPayment)}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const priceInput = getCreditElement('credit-price');
+                const downPaymentInput = getCreditElement('credit-down-payment');
+                const downPaymentPercentInput = getCreditElement('credit-down-payment-percent');
+
+                if (priceInput && downPaymentInput && downPaymentPercentInput) {
+                    priceInput.addEventListener('blur', syncCreditPrice);
+                    downPaymentInput.addEventListener('blur', syncCreditDownPaymentFromAmount);
+                    downPaymentPercentInput.addEventListener('input', syncCreditDownPaymentFromPercent);
+                    ['credit-insurance', 'credit-region', 'credit-protection'].forEach((id) => {
+                        getCreditElement(id)?.addEventListener('change', calculateCreditSimulator);
+                    });
+
+                    resetCreditSimulator();
+                }
+            });
+
             // Share function
             function shareVehicle() {
                 const shareData = {
@@ -657,6 +951,11 @@
                     if (e.key === 'Escape') closeLightbox();
                     if (e.key === 'ArrowLeft') prevLightboxImage();
                     if (e.key === 'ArrowRight') nextLightboxImage();
+                }
+
+                const creditSimulator = document.getElementById('credit-simulator-modal');
+                if (creditSimulator && !creditSimulator.classList.contains('hidden') && e.key === 'Escape') {
+                    closeCreditSimulator();
                 }
             });
         </script>
