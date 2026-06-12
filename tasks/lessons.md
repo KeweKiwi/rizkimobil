@@ -60,3 +60,4 @@
 - For enum-backed option catalogs like car body types, update the shared config, admin form/table filters, public labels, chart labels, and a production migration together so hosted data entry does not drift from the database constraint.
 - For financing or price-estimate UI, keep rates/assumptions in config and expose a model-level computed estimate instead of embedding calculation details directly in Blade.
 - When a CTA says users can adjust budget, satisfy that intent with an in-page calculator/simulator first; keep WhatsApp as a follow-up contact path, not the primary behavior for calculation.
+- On car detail pages, avoid letting the right sidebar own too much vertical content; move contextual cards like unit location into the main content column when descriptions are short, and keep financing estimates compact, neutral, and free of specific finance-brand assumptions unless the business confirms the partner.

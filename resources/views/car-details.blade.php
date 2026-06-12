@@ -126,11 +126,11 @@
 
                     <div class="mt-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
                         <div class="min-w-0">
-                            <p class="font-display text-3xl font-black leading-none text-[#0b6fb3]">
-                                BCA<span class="font-extrabold text-[#0097a7]">finance</span>
+                            <p class="font-display text-2xl font-black leading-tight text-foreground">
+                                Simulasi pembiayaan
                             </p>
-                            <p class="mt-1 text-xs font-semibold lowercase tracking-wide text-[#0b6fb3]">
-                                solusi tepat pembiayaan anda
+                            <p class="mt-1 text-sm leading-relaxed text-gray-500">
+                                Gunakan angka ini sebagai acuan awal sebelum konfirmasi final dengan admin.
                             </p>
                         </div>
 
@@ -255,6 +255,96 @@
                                             {{ $feature }}
                                         </span>
                                     @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Location Card -->
+                <div class="mt-6 min-w-0 overflow-hidden rounded-xl border border-red-600/20 bg-white shadow-[0_0_24px_rgba(220,38,38,0.07)] sm:mt-8">
+                    <div class="border-b border-red-600/10 p-4 pb-3 sm:p-6 sm:pb-4">
+                        <h3 class="flex items-center gap-2 font-display text-lg font-bold text-foreground sm:text-xl">
+                            <span class="h-1 w-6 rounded-full bg-gradient-to-r from-red-600 to-transparent sm:w-8"></span>
+                            Lokasi Unit
+                        </h3>
+                    </div>
+
+                    <div class="p-4 sm:p-6">
+                        @if($car->location)
+                            <div class="grid gap-5 md:grid-cols-[minmax(0,1fr)_auto] md:items-start">
+                                <div class="flex gap-3">
+                                    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-red-600 text-white">
+                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+                                        </svg>
+                                    </div>
+
+                                    <div class="min-w-0 flex-1">
+                                        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-red-600">Outlet tersedia</p>
+                                        <p class="mt-1 break-words font-display text-lg font-bold leading-tight text-foreground">
+                                            {{ $car->location->name }}
+                                        </p>
+
+                                        @if($car->location->address)
+                                            <p class="mt-3 text-sm leading-relaxed text-gray-600">
+                                                {{ $car->location->address }}
+                                            </p>
+                                        @endif
+
+                                        @if($car->location->city || $car->location->province)
+                                            <p class="mt-2 text-sm font-semibold text-gray-800">
+                                                {{ collect([$car->location->city, $car->location->province])->filter()->join(', ') }}
+                                            </p>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:min-w-64 md:grid-cols-1">
+                                    @if($car->location->google_maps_url)
+                                        <a href="{{ $car->location->google_maps_url }}" target="_blank" rel="noopener noreferrer"
+                                            class="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-red-600/25 bg-red-50 px-4 text-sm font-semibold text-red-600 transition-all hover:border-red-600 hover:bg-red-600 hover:text-white">
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 18l6-6-6-6" />
+                                            </svg>
+                                            Lihat Maps
+                                        </a>
+                                    @endif
+
+                                    @if($car->location->whatsapp)
+                                        @php
+                                            $locationWhatsApp = preg_replace('/\D+/', '', (string) $car->location->whatsapp);
+                                            if (str_starts_with($locationWhatsApp, '0')) {
+                                                $locationWhatsApp = '62' . substr($locationWhatsApp, 1);
+                                            }
+
+                                            $locationMessage = urlencode(
+                                                "Halo Rizki Mobil, saya ingin tanya unit {$car->year} {$car->make} {$car->model} di outlet {$car->location->name}.",
+                                            );
+                                        @endphp
+                                        <a href="https://wa.me/{{ $locationWhatsApp }}?text={{ $locationMessage }}" target="_blank" rel="noopener noreferrer"
+                                            class="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 transition-all hover:border-red-600 hover:bg-red-50 hover:text-red-600">
+                                            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347" />
+                                            </svg>
+                                            Chat Outlet
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        @else
+                            <div class="flex gap-3">
+                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-red-50 text-red-600">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8L3 20l1.2-3.4A7.7 7.7 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                    </svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="font-display text-lg font-bold text-foreground">Lokasi dikonfirmasi admin</p>
+                                    <p class="mt-2 text-sm leading-relaxed text-gray-600">
+                                        Hubungi admin untuk memastikan outlet unit, jadwal visit, dan ketersediaan terbaru.
+                                    </p>
                                 </div>
                             </div>
                         @endif
@@ -411,63 +501,41 @@
                             <p class="text-xs text-gray-500 mt-2">Harga dapat berubah sewaktu-waktu</p>
                         </div>
 
-                        <div class="mt-4 overflow-hidden rounded-xl border border-red-600/15 bg-red-50/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
-                            <div class="flex flex-col gap-4 p-4 sm:p-5">
-                                <div class="flex items-start justify-between gap-4">
-                                    <div class="min-w-0">
-                                        <p class="text-base font-extrabold text-foreground">Estimasi Biaya</p>
-                                        <p class="mt-1 text-xs leading-relaxed text-gray-500">
-                                            Simulasi awal pembiayaan. Angka final mengikuti approval leasing.
-                                        </p>
-                                    </div>
-                                    <div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-600 text-white shadow-lg shadow-red-600/25">
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8m-8 4h8m-9 8h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 15h.01M12 15h.01M15 15h.01" />
-                                        </svg>
-                                    </div>
+                        <div class="mt-4 rounded-xl border border-red-600/15 bg-white p-4 shadow-[0_12px_28px_rgba(220,38,38,0.06)] sm:p-5">
+                            <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                                <div class="min-w-0">
+                                    <p class="text-base font-extrabold text-foreground">Estimasi Biaya</p>
+                                    <p class="mt-1 text-xs leading-relaxed text-gray-500">
+                                        Simulasi awal {{ $financingEstimate['tenor_years'] }} tahun. Angka final mengikuti approval leasing.
+                                    </p>
                                 </div>
+                                <button type="button" onclick="openCreditSimulator()"
+                                    class="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-lg bg-[#160302] px-4 text-sm font-bold text-white shadow-lg shadow-red-950/20 transition-all hover:-translate-y-0.5 hover:bg-red-700">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h.01M11 15h2M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z" />
+                                    </svg>
+                                    Sesuaikan Budget
+                                </button>
+                            </div>
 
-                                <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                                    <div class="rounded-lg border border-red-600/10 bg-white/80 p-3">
-                                        <p class="text-xs text-gray-500">Tenor</p>
-                                        <p class="mt-1 font-display text-lg font-black text-foreground">
-                                            {{ $financingEstimate['tenor_years'] }} Tahun
-                                        </p>
-                                    </div>
-                                    <div class="rounded-lg border border-red-600/10 bg-white/80 p-3">
-                                        <p class="text-xs text-gray-500">TDP</p>
-                                        <p class="mt-1 break-words font-display text-lg font-black text-foreground">
-                                            Rp {{ number_format($financingEstimate['tdp'], 0, ',', '.') }}
-                                        </p>
-                                    </div>
-                                    <div class="rounded-lg border border-red-600/10 bg-white/80 p-3">
-                                        <p class="text-xs text-gray-500">Cicilan / bulan</p>
-                                        <p class="mt-1 break-words font-display text-lg font-black text-foreground">
-                                            Rp {{ number_format($financingEstimate['monthly_payment'], 0, ',', '.') }}
-                                        </p>
-                                    </div>
+                            <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                <div class="rounded-lg bg-red-50/70 p-3">
+                                    <p class="text-xs font-semibold uppercase tracking-[0.12em] text-red-600">TDP mulai</p>
+                                    <p class="mt-1 whitespace-nowrap font-display text-xl font-black leading-tight text-foreground">
+                                        Rp {{ number_format($financingEstimate['tdp'], 0, ',', '.') }}
+                                    </p>
                                 </div>
-
-                                <div class="flex flex-col gap-3 border-t border-red-600/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
-                                    <div class="min-w-0">
-                                        <p class="text-xs font-semibold italic text-red-600">*Harga dapat berubah sewaktu-waktu</p>
-                                        <p class="mt-2 font-display text-xl font-black leading-none text-[#0b6fb3]">
-                                            BCA<span class="font-extrabold text-[#0097a7]">finance</span>
-                                        </p>
-                                        <p class="mt-1 text-[10px] font-semibold lowercase tracking-wide text-[#0b6fb3]">
-                                            solusi tepat pembiayaan anda
-                                        </p>
-                                    </div>
-
-                                    <button type="button" onclick="openCreditSimulator()"
-                                        class="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-[#160302] px-4 text-sm font-bold text-white shadow-lg shadow-red-950/20 transition-all hover:-translate-y-0.5 hover:bg-red-700">
-                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h.01M11 15h2M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z" />
-                                        </svg>
-                                        Sesuaikan Budget
-                                    </button>
+                                <div class="rounded-lg bg-gray-950 p-3 text-white">
+                                    <p class="text-xs font-semibold uppercase tracking-[0.12em] text-white/65">Cicilan / bulan</p>
+                                    <p class="mt-1 whitespace-nowrap font-display text-xl font-black leading-tight">
+                                        Rp {{ number_format($financingEstimate['monthly_payment'], 0, ',', '.') }}
+                                    </p>
                                 </div>
+                            </div>
+
+                            <div class="mt-3 flex flex-col gap-2 border-t border-gray-100 pt-3 text-xs text-gray-500 sm:flex-row sm:items-center sm:justify-between">
+                                <span>Tenor referensi {{ $financingEstimate['tenor_years'] }} tahun</span>
+                                <span class="font-semibold italic text-red-600">*Harga dapat berubah sewaktu-waktu</span>
                             </div>
                         </div>
 
@@ -581,94 +649,6 @@
                                 </button>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Location Card -->
-                <div class="min-w-0 overflow-hidden rounded-xl border border-red-600/20 bg-white shadow-[0_0_24px_rgba(220,38,38,0.07)]">
-                    <div class="border-b border-red-600/10 p-4 pb-3 sm:p-6 sm:pb-4">
-                        <h3 class="flex items-center gap-2 font-display text-lg font-bold text-foreground sm:text-xl">
-                            <span class="h-1 w-6 rounded-full bg-gradient-to-r from-red-600 to-transparent sm:w-8"></span>
-                            Lokasi Unit
-                        </h3>
-                    </div>
-
-                    <div class="p-4 sm:p-6">
-                        @if($car->location)
-                            <div class="flex gap-3">
-                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-red-600 text-white">
-                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s7-4.35 7-11a7 7 0 10-14 0c0 6.65 7 11 7 11z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
-                                    </svg>
-                                </div>
-
-                                <div class="min-w-0 flex-1">
-                                    <p class="text-xs font-semibold uppercase tracking-[0.16em] text-red-600">Outlet tersedia</p>
-                                    <p class="mt-1 break-words font-display text-lg font-bold leading-tight text-foreground">
-                                        {{ $car->location->name }}
-                                    </p>
-
-                                    @if($car->location->address)
-                                        <p class="mt-3 text-sm leading-relaxed text-gray-600">
-                                            {{ $car->location->address }}
-                                        </p>
-                                    @endif
-
-                                    @if($car->location->city || $car->location->province)
-                                        <p class="mt-2 text-sm font-semibold text-gray-800">
-                                            {{ collect([$car->location->city, $car->location->province])->filter()->join(', ') }}
-                                        </p>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                                @if($car->location->google_maps_url)
-                                    <a href="{{ $car->location->google_maps_url }}" target="_blank" rel="noopener noreferrer"
-                                        class="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-red-600/25 bg-red-50 px-4 text-sm font-semibold text-red-600 transition-all hover:border-red-600 hover:bg-red-600 hover:text-white">
-                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 18l6-6-6-6" />
-                                        </svg>
-                                        Lihat Maps
-                                    </a>
-                                @endif
-
-                                @if($car->location->whatsapp)
-                                    @php
-                                        $locationWhatsApp = preg_replace('/\D+/', '', (string) $car->location->whatsapp);
-                                        if (str_starts_with($locationWhatsApp, '0')) {
-                                            $locationWhatsApp = '62' . substr($locationWhatsApp, 1);
-                                        }
-
-                                        $locationMessage = urlencode(
-                                            "Halo Rizki Mobil, saya ingin tanya unit {$car->year} {$car->make} {$car->model} di outlet {$car->location->name}.",
-                                        );
-                                    @endphp
-                                    <a href="https://wa.me/{{ $locationWhatsApp }}?text={{ $locationMessage }}" target="_blank" rel="noopener noreferrer"
-                                        class="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 transition-all hover:border-red-600 hover:bg-red-50 hover:text-red-600">
-                                        <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347" />
-                                        </svg>
-                                        Chat Outlet
-                                    </a>
-                                @endif
-                            </div>
-                        @else
-                            <div class="flex gap-3">
-                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-red-50 text-red-600">
-                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8L3 20l1.2-3.4A7.7 7.7 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                                    </svg>
-                                </div>
-                                <div class="min-w-0">
-                                    <p class="font-display text-lg font-bold text-foreground">Lokasi dikonfirmasi admin</p>
-                                    <p class="mt-2 text-sm leading-relaxed text-gray-600">
-                                        Hubungi admin untuk memastikan outlet unit, jadwal visit, dan ketersediaan terbaru.
-                                    </p>
-                                </div>
-                            </div>
-                        @endif
                     </div>
                 </div>
 

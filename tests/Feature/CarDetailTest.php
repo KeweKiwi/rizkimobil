@@ -72,15 +72,15 @@ class CarDetailTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Estimasi Biaya');
-        $response->assertSee('5 Tahun');
+        $response->assertSee('5 tahun');
         $response->assertSee('Rp 118.026.000');
         $response->assertSee('Rp 5.468.000');
-        $response->assertSee('BCA');
-        $response->assertSee('finance');
         $response->assertSee('Sesuaikan Budget');
         $response->assertSee('Simulasi Kredit');
+        $response->assertSee('Simulasi pembiayaan');
         $response->assertSee('Hitung Budget');
         $response->assertSee('Hasil Perhitungan');
+        $response->assertDontSee('BCA');
         $response->assertDontSee('saya%20ingin%20sesuaikan%20budget', false);
     }
 }

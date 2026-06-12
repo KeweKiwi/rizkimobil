@@ -1,5 +1,17 @@
 # Task Plan
 
+## Current Task: Rebalance Car Detail Price Layout
+- [x] Move unit location content into the left detail column to reduce dead whitespace
+- [x] Redesign the price estimate block so numbers do not wrap awkwardly
+- [x] Remove BCA Finance branding from the price card and credit simulator
+- [x] Update tests and run deploy-safe verification
+
+### Review: Rebalance Car Detail Price Layout
+- Moved `Lokasi Unit` from the right sidebar to the left content column under `Tentang Kendaraan Ini`, so short descriptions no longer leave the left side feeling empty while the right side keeps stacking cards.
+- Reworked `Estimasi Biaya` into a compact two-metric summary with clear TDP and monthly installment values, avoiding the previous three narrow boxes that made currency wrap badly.
+- Removed BCA Finance branding from both the price card and credit simulator modal, replacing it with neutral financing copy.
+- Verification passed: `php artisan view:cache`, `php artisan test tests/Feature/CarDetailTest.php`, full `php artisan test`, `npm run build`, `php artisan config:cache`, `git diff --check`, then cache clears.
+
 ## Current Task: Replace Budget WhatsApp CTA With Credit Simulator
 - [x] Review existing financing estimate block and car-detail scripts
 - [x] Replace `Sesuaikan Budget` WhatsApp link with an in-page credit simulator modal
