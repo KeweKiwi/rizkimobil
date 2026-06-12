@@ -60,27 +60,31 @@
                     <div class="grid gap-5 md:grid-cols-3">
                         <div>
                             <label for="credit-make" class="mb-2 block text-sm font-extrabold text-foreground">Merk Mobil</label>
-                            <input id="credit-make" type="text" value="{{ $car->make }}" readonly
-                                class="h-12 w-full rounded-lg border border-gray-200 bg-gray-50 px-4 text-base font-bold text-foreground">
+                            <input id="credit-make" type="text" value="{{ $car->make }}" readonly aria-readonly="true" tabindex="-1"
+                                class="h-12 w-full cursor-default rounded-lg border border-gray-200 bg-gray-50 px-4 text-base font-bold text-gray-700 shadow-inner shadow-gray-200/40">
                         </div>
                         <div>
                             <label for="credit-model" class="mb-2 block text-sm font-extrabold text-foreground">Jenis Mobil</label>
-                            <input id="credit-model" type="text" value="{{ $car->model }}{{ $car->variant ? ' ' . $car->variant : '' }}" readonly
-                                class="h-12 w-full rounded-lg border border-gray-200 bg-gray-50 px-4 text-base font-bold text-foreground">
+                            <input id="credit-model" type="text" value="{{ $car->model }}{{ $car->variant ? ' ' . $car->variant : '' }}" readonly aria-readonly="true" tabindex="-1"
+                                class="h-12 w-full cursor-default rounded-lg border border-gray-200 bg-gray-50 px-4 text-base font-bold text-gray-700 shadow-inner shadow-gray-200/40">
                         </div>
                         <div>
                             <label for="credit-year" class="mb-2 block text-sm font-extrabold text-foreground">Tahun Kendaraan</label>
-                            <input id="credit-year" type="text" value="{{ $car->year }}" readonly
-                                class="h-12 w-full rounded-lg border border-gray-200 bg-gray-50 px-4 text-base font-bold text-foreground">
+                            <input id="credit-year" type="text" value="{{ $car->year }}" readonly aria-readonly="true" tabindex="-1"
+                                class="h-12 w-full cursor-default rounded-lg border border-gray-200 bg-gray-50 px-4 text-base font-bold text-gray-700 shadow-inner shadow-gray-200/40">
                         </div>
 
                         <div>
-                            <label for="credit-price" class="mb-2 block text-sm font-extrabold text-foreground">Harga OTR</label>
-                            <div class="flex h-12 overflow-hidden rounded-lg border border-gray-200 bg-white">
-                                <span class="inline-flex items-center bg-gray-100 px-4 text-base font-bold text-gray-500">Rp</span>
-                                <input id="credit-price" type="text" inputmode="numeric"
-                                    class="min-w-0 flex-1 border-0 px-4 text-base font-bold text-foreground outline-none focus:ring-0">
+                            <div class="mb-2 flex items-center justify-between gap-3">
+                                <label for="credit-price" class="block text-sm font-extrabold text-foreground">Harga OTR</label>
+                                <span class="text-[10px] font-black uppercase tracking-[0.18em] text-gray-400">Terkunci</span>
                             </div>
+                            <div class="flex h-12 overflow-hidden rounded-lg border border-gray-200 bg-gray-50 shadow-inner shadow-gray-200/40">
+                                <span class="inline-flex items-center bg-gray-100 px-4 text-base font-bold text-gray-500">Rp</span>
+                                <input id="credit-price" type="text" inputmode="numeric" readonly aria-readonly="true" tabindex="-1"
+                                    class="min-w-0 flex-1 cursor-default border-0 bg-gray-50 px-4 text-base font-bold text-gray-700 outline-none focus:ring-0">
+                            </div>
+                            <p class="mt-2 text-xs font-semibold text-gray-500">Harga OTR otomatis dari listing unit.</p>
                         </div>
                         <div>
                             <label for="credit-down-payment" class="mb-2 block text-sm font-extrabold text-foreground">Uang Muka (Dalam Rp.)</label>
@@ -874,15 +878,6 @@
                 isSyncingCreditInputs = false;
             }
 
-            function syncCreditPrice() {
-                if (isSyncingCreditInputs) return;
-
-                const price = parseRupiah(getCreditElement('credit-price').value);
-                getCreditElement('credit-price').value = formatRupiahNumber(price);
-                setCreditMinimumMessage(price);
-                syncCreditDownPaymentFromPercent();
-            }
-
             function calculateCreditSimulator() {
                 const price = parseRupiah(getCreditElement('credit-price').value);
                 const downPayment = normalizeDownPayment(parseRupiah(getCreditElement('credit-down-payment').value), price, true);
@@ -946,12 +941,10 @@
             }
 
             document.addEventListener('DOMContentLoaded', function() {
-                const priceInput = getCreditElement('credit-price');
                 const downPaymentInput = getCreditElement('credit-down-payment');
                 const downPaymentPercentInput = getCreditElement('credit-down-payment-percent');
 
-                if (priceInput && downPaymentInput && downPaymentPercentInput) {
-                    priceInput.addEventListener('blur', syncCreditPrice);
+                if (downPaymentInput && downPaymentPercentInput) {
                     downPaymentInput.addEventListener('blur', syncCreditDownPaymentFromAmount);
                     downPaymentPercentInput.addEventListener('input', syncCreditDownPaymentFromPercent);
                     ['credit-insurance', 'credit-region', 'credit-protection'].forEach((id) => {

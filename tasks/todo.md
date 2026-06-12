@@ -1,5 +1,19 @@
 # Task Plan
 
+## Current Task: Clarify Credit Simulator Readonly Fields
+- [x] Mark fixed vehicle context fields as readonly with clear visual treatment
+- [x] Keep only user-decision fields editable in the credit simulator
+- [x] Remove obsolete editable-price JavaScript behavior
+- [x] Update regression coverage and run deploy-safe verification
+
+### Review: Clarify Credit Simulator Readonly Fields
+- Changed the simulator's fixed unit context fields and OTR price to readonly, visually locked fields so customers do not think they can edit listing data.
+- Kept only the true customer inputs active: DP amount, DP percent, insurance, region, and protection.
+- Removed the obsolete editable-price JavaScript handler now that OTR comes from the listing.
+- Added regression coverage for the readonly OTR contract and removed `syncCreditPrice` from the rendered page.
+- Verification passed: `php artisan view:cache`, `php artisan test tests/Feature/CarDetailTest.php`, full `php artisan test`, `npm run build`, `php artisan config:cache`, `git diff --check`, then `php artisan optimize:clear`.
+- Browser rendered verification was attempted through the in-app Browser path, but the local app database connection is currently refused on MySQL `127.0.0.1:3306`, so no reliable local detail page could be rendered without changing environment data.
+
 ## Current Task: Fix Credit Simulator TDP And Minimum DP
 - [x] Make displayed TDP match the entered down payment amount
 - [x] Add configurable minimum down payment rules
