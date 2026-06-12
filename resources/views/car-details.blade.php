@@ -89,11 +89,13 @@
                                 <input id="credit-down-payment" type="text" inputmode="numeric"
                                     class="min-w-0 flex-1 border-0 px-4 text-base font-bold text-foreground outline-none focus:ring-0">
                             </div>
+                            <p id="credit-down-payment-help" class="mt-2 text-xs font-semibold text-gray-500"></p>
+                            <p id="credit-down-payment-error" class="mt-1 hidden text-xs font-semibold text-red-600"></p>
                         </div>
                         <div>
                             <label for="credit-down-payment-percent" class="mb-2 block text-sm font-extrabold text-foreground">Uang Muka (Dalam %)</label>
                             <div class="flex h-12 overflow-hidden rounded-lg border border-gray-200 bg-white">
-                                <input id="credit-down-payment-percent" type="number" min="0" max="90" step="1"
+                                <input id="credit-down-payment-percent" type="number" max="90" step="1"
                                     class="min-w-0 flex-1 border-0 px-4 text-base font-bold text-foreground outline-none focus:ring-0">
                                 <span class="inline-flex items-center bg-gray-100 px-4 text-base font-bold text-gray-500">%</span>
                             </div>
@@ -661,8 +663,9 @@
             $creditSimulatorConfig = [
                 'price' => (int) $car->price,
                 'downPaymentRate' => (float) config('rizki.financing.simulator_down_payment_rate', 0.30),
+                'minDownPaymentRate' => (float) config('rizki.financing.simulator_min_down_payment_rate', 0.20),
+                'minDownPaymentAmount' => (int) config('rizki.financing.simulator_min_down_payment_amount', 0),
                 'annualInterestRate' => (float) config('rizki.financing.simulator_annual_interest_rate', 0.0875),
-                'adminFeeRate' => (float) config('rizki.financing.simulator_admin_fee_rate', 0.006),
                 'protectionRate' => (float) config('rizki.financing.simulator_protection_rate', 0.01),
                 'insuranceRates' => config('rizki.financing.simulator_insurance_rates', []),
                 'regionMultipliers' => config('rizki.financing.simulator_region_multipliers', []),
@@ -758,6 +761,51 @@
                 return Math.round((Number(value) || 0) / 1000) * 1000;
             }
 
+            function getMinimumDownPayment(price = parseRupiah(getCreditElement('credit-price')?.value)) {
+                const percentageMinimum = price * Number(creditSimulatorConfig.minDownPaymentRate || 0);
+                const amountMinimum = Number(creditSimulatorConfig.minDownPaymentAmount || 0);
+
+                return Math.min(roundToThousand(Math.max(percentageMinimum, amountMinimum)), price);
+            }
+
+            function getMinimumDownPaymentPercent(price = parseRupiah(getCreditElement('credit-price')?.value)) {
+                const minimumDownPayment = getMinimumDownPayment(price);
+
+                return price > 0 ? Math.ceil((minimumDownPayment / price) * 100) : 0;
+            }
+
+            function setCreditMinimumMessage(price = parseRupiah(getCreditElement('credit-price')?.value)) {
+                const minimumDownPayment = getMinimumDownPayment(price);
+                const minimumPercent = getMinimumDownPaymentPercent(price);
+                const help = getCreditElement('credit-down-payment-help');
+
+                if (help) {
+                    help.textContent = `DP minimum ${formatRupiah(minimumDownPayment)} (${minimumPercent}% dari harga OTR).`;
+                }
+            }
+
+            function setCreditDownPaymentError(message = '') {
+                const error = getCreditElement('credit-down-payment-error');
+
+                if (!error) return;
+
+                error.textContent = message;
+                error.classList.toggle('hidden', message === '');
+            }
+
+            function normalizeDownPayment(value, price, showError = false) {
+                const minimumDownPayment = getMinimumDownPayment(price);
+                const normalizedValue = Math.min(Math.max(Number(value) || 0, minimumDownPayment), price);
+
+                if (showError && normalizedValue !== value && value < minimumDownPayment) {
+                    setCreditDownPaymentError(`Uang muka dinaikkan ke minimum ${formatRupiah(minimumDownPayment)}.`);
+                } else if (showError) {
+                    setCreditDownPaymentError();
+                }
+
+                return normalizedValue;
+            }
+
             function getCreditElement(id) {
                 return document.getElementById(id);
             }
@@ -779,17 +827,20 @@
 
             function resetCreditSimulator() {
                 const price = creditSimulatorConfig.price;
-                const downPaymentPercent = Math.round(creditSimulatorConfig.downPaymentRate * 100);
-                const downPayment = roundToThousand(price * creditSimulatorConfig.downPaymentRate);
+                const downPayment = normalizeDownPayment(roundToThousand(price * creditSimulatorConfig.downPaymentRate), price);
+                const downPaymentPercent = price > 0 ? Math.round((downPayment / price) * 100) : 0;
 
                 isSyncingCreditInputs = true;
                 getCreditElement('credit-price').value = formatRupiahNumber(price);
                 getCreditElement('credit-down-payment').value = formatRupiahNumber(downPayment);
                 getCreditElement('credit-down-payment-percent').value = downPaymentPercent;
+                getCreditElement('credit-down-payment-percent').min = getMinimumDownPaymentPercent(price);
                 getCreditElement('credit-insurance').value = 'none';
                 getCreditElement('credit-region').value = 'jabodetabek';
                 getCreditElement('credit-protection').value = 'yes';
                 isSyncingCreditInputs = false;
+                setCreditMinimumMessage(price);
+                setCreditDownPaymentError();
 
                 calculateCreditSimulator();
             }
@@ -798,7 +849,7 @@
                 if (isSyncingCreditInputs) return;
 
                 const price = parseRupiah(getCreditElement('credit-price').value);
-                const downPayment = parseRupiah(getCreditElement('credit-down-payment').value);
+                const downPayment = normalizeDownPayment(parseRupiah(getCreditElement('credit-down-payment').value), price, true);
                 const percent = price > 0 ? Math.round((downPayment / price) * 100) : 0;
 
                 isSyncingCreditInputs = true;
@@ -812,11 +863,13 @@
 
                 const price = parseRupiah(getCreditElement('credit-price').value);
                 const percentInput = getCreditElement('credit-down-payment-percent');
-                const percent = Math.min(Math.max(Number(percentInput.value) || 0, 0), 90);
-                const downPayment = roundToThousand(price * (percent / 100));
+                const minimumPercent = getMinimumDownPaymentPercent(price);
+                const percent = Math.min(Math.max(Number(percentInput.value) || 0, minimumPercent), 90);
+                const downPayment = normalizeDownPayment(roundToThousand(price * (percent / 100)), price, true);
 
                 isSyncingCreditInputs = true;
                 percentInput.value = percent;
+                percentInput.min = minimumPercent;
                 getCreditElement('credit-down-payment').value = formatRupiahNumber(downPayment);
                 isSyncingCreditInputs = false;
             }
@@ -826,21 +879,21 @@
 
                 const price = parseRupiah(getCreditElement('credit-price').value);
                 getCreditElement('credit-price').value = formatRupiahNumber(price);
+                setCreditMinimumMessage(price);
                 syncCreditDownPaymentFromPercent();
             }
 
             function calculateCreditSimulator() {
                 const price = parseRupiah(getCreditElement('credit-price').value);
-                const downPayment = Math.min(parseRupiah(getCreditElement('credit-down-payment').value), price);
+                const downPayment = normalizeDownPayment(parseRupiah(getCreditElement('credit-down-payment').value), price, true);
                 const insuranceKey = getCreditElement('credit-insurance').value;
                 const regionKey = getCreditElement('credit-region').value;
                 const protectionEnabled = getCreditElement('credit-protection').value === 'yes';
                 const insuranceRate = Number(creditSimulatorConfig.insuranceRates[insuranceKey] || 0);
                 const regionMultiplier = Number(creditSimulatorConfig.regionMultipliers[regionKey] || 1);
-                const adminFee = price * Number(creditSimulatorConfig.adminFeeRate || 0);
                 const protectionCost = protectionEnabled ? price * Number(creditSimulatorConfig.protectionRate || 0) : 0;
                 const insuranceCost = price * insuranceRate * regionMultiplier;
-                const financedAmount = Math.max(price - downPayment, 0);
+                const financedAmount = Math.max(price - downPayment + protectionCost + insuranceCost, 0);
                 const annualInterestRate = Number(creditSimulatorConfig.annualInterestRate || 0);
                 const results = [];
 
@@ -848,11 +901,10 @@
                     const months = tenor * 12;
                     const totalInterest = financedAmount * annualInterestRate * tenor;
                     const monthlyPayment = months > 0 ? (financedAmount + totalInterest) / months : 0;
-                    const totalFirstPayment = downPayment + adminFee + protectionCost + insuranceCost;
 
                     results.push({
                         tenor,
-                        tdp: roundToThousand(totalFirstPayment),
+                        tdp: downPayment,
                         monthlyPayment: roundToThousand(monthlyPayment),
                     });
                 }
@@ -860,7 +912,10 @@
                 isSyncingCreditInputs = true;
                 getCreditElement('credit-price').value = formatRupiahNumber(price);
                 getCreditElement('credit-down-payment').value = formatRupiahNumber(downPayment);
+                getCreditElement('credit-down-payment-percent').value = price > 0 ? Math.round((downPayment / price) * 100) : 0;
+                getCreditElement('credit-down-payment-percent').min = getMinimumDownPaymentPercent(price);
                 isSyncingCreditInputs = false;
+                setCreditMinimumMessage(price);
 
                 renderCreditResults(results);
             }

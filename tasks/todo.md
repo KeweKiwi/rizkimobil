@@ -1,5 +1,17 @@
 # Task Plan
 
+## Current Task: Fix Credit Simulator TDP And Minimum DP
+- [x] Make displayed TDP match the entered down payment amount
+- [x] Add configurable minimum down payment rules
+- [x] Enforce minimum DP in amount and percent inputs with clear feedback
+- [x] Update coverage and run deploy-safe verification
+
+### Review: Fix Credit Simulator TDP And Minimum DP
+- Changed simulator results so `TDP` equals the validated down payment amount entered by the user, instead of silently adding admin/protection/insurance costs and creating a confusing mismatch.
+- Added configurable minimum DP rules in `config/rizki.php`: default minimum is 20% of OTR, with optional fixed nominal override through `RIZKI_FINANCING_MIN_DP_AMOUNT`.
+- Added inline minimum-DP helper/error text; amount and percentage inputs now clamp to the allowed minimum before rendering results.
+- Verification passed: PHP syntax checks, `php artisan view:cache`, `php artisan test tests/Feature/CarDetailTest.php`, full `php artisan test`, `npm run build`, `php artisan config:cache`, `git diff --check`, then cache clears.
+
 ## Current Task: Rebalance Car Detail Price Layout
 - [x] Move unit location content into the left detail column to reduce dead whitespace
 - [x] Redesign the price estimate block so numbers do not wrap awkwardly

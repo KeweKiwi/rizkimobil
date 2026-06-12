@@ -80,7 +80,12 @@ class CarDetailTest extends TestCase
         $response->assertSee('Simulasi pembiayaan');
         $response->assertSee('Hitung Budget');
         $response->assertSee('Hasil Perhitungan');
+        $response->assertSee('credit-down-payment-help');
+        $response->assertSee('credit-down-payment-error');
+        $response->assertSee('minDownPaymentRate');
+        $response->assertSee('tdp: downPayment', false);
         $response->assertDontSee('BCA');
+        $response->assertDontSee('adminFeeRate');
         $response->assertDontSee('saya%20ingin%20sesuaikan%20budget', false);
     }
 }

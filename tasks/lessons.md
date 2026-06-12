@@ -61,3 +61,4 @@
 - For financing or price-estimate UI, keep rates/assumptions in config and expose a model-level computed estimate instead of embedding calculation details directly in Blade.
 - When a CTA says users can adjust budget, satisfy that intent with an in-page calculator/simulator first; keep WhatsApp as a follow-up contact path, not the primary behavior for calculation.
 - On car detail pages, avoid letting the right sidebar own too much vertical content; move contextual cards like unit location into the main content column when descriptions are short, and keep financing estimates compact, neutral, and free of specific finance-brand assumptions unless the business confirms the partner.
+- In credit simulators, never label a value as `TDP` if it includes hidden add-ons beyond the customer's entered down payment; show the same DP amount, enforce minimum DP clearly, and move any extra assumptions into transparent separate fields if needed.
