@@ -49,4 +49,34 @@ class CarDetailTest extends TestCase
         $response->assertSee('Tangerang Selatan, Banten');
         $response->assertSee('https://maps.google.com/?q=Rizki+Mobil+BSD');
     }
+
+    public function test_car_detail_page_shows_financing_estimate_under_price(): void
+    {
+        $car = Car::create([
+            'title' => 'Honda Brio RS 2022',
+            'make' => 'Honda',
+            'model' => 'Brio RS',
+            'year' => 2022,
+            'mileage_km' => 18000,
+            'transmission' => 'automatic',
+            'fuel_type' => 'bensin',
+            'body_type' => 'hatchback',
+            'color' => 'Merah',
+            'seats' => 5,
+            'price' => 309000000,
+            'featured' => false,
+            'sold' => false,
+        ]);
+
+        $response = $this->get(route('car.show', $car));
+
+        $response->assertOk();
+        $response->assertSee('Estimasi Biaya');
+        $response->assertSee('5 Tahun');
+        $response->assertSee('Rp 118.026.000');
+        $response->assertSee('Rp 5.468.000');
+        $response->assertSee('BCA');
+        $response->assertSee('finance');
+        $response->assertSee('Sesuaikan Budget');
+    }
 }

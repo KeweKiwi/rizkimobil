@@ -259,6 +259,10 @@
                 <!-- Price Card -->
                 <div class="min-w-0 rounded-xl border border-red-600/20 bg-white shadow-[0_0_30px_rgba(220,38,38,0.1)]">
                     <div class="p-4 sm:p-6">
+                        @php
+                            $financingEstimate = $car->financing_estimate;
+                        @endphp
+
                         <div class="mb-4">
                             <p class="text-xs sm:text-sm text-gray-500">{{ $car->year }} {{ $car->make }}</p>
                             <h1 class="font-display text-xl sm:text-2xl font-bold text-foreground">
@@ -276,6 +280,80 @@
                                 Rp {{ number_format($car->price, 0, ',', '.') }}
                             </p>
                             <p class="text-xs text-gray-500 mt-2">Harga dapat berubah sewaktu-waktu</p>
+                        </div>
+
+                        <div class="mt-4 overflow-hidden rounded-xl border border-red-600/15 bg-red-50/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
+                            <div class="flex flex-col gap-4 p-4 sm:p-5">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div class="min-w-0">
+                                        <p class="text-base font-extrabold text-foreground">Estimasi Biaya</p>
+                                        <p class="mt-1 text-xs leading-relaxed text-gray-500">
+                                            Simulasi awal pembiayaan. Angka final mengikuti approval leasing.
+                                        </p>
+                                    </div>
+                                    <div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-600 text-white shadow-lg shadow-red-600/25">
+                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8m-8 4h8m-9 8h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 15h.01M12 15h.01M15 15h.01" />
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                                    <div class="rounded-lg border border-red-600/10 bg-white/80 p-3">
+                                        <p class="text-xs text-gray-500">Tenor</p>
+                                        <p class="mt-1 font-display text-lg font-black text-foreground">
+                                            {{ $financingEstimate['tenor_years'] }} Tahun
+                                        </p>
+                                    </div>
+                                    <div class="rounded-lg border border-red-600/10 bg-white/80 p-3">
+                                        <p class="text-xs text-gray-500">TDP</p>
+                                        <p class="mt-1 break-words font-display text-lg font-black text-foreground">
+                                            Rp {{ number_format($financingEstimate['tdp'], 0, ',', '.') }}
+                                        </p>
+                                    </div>
+                                    <div class="rounded-lg border border-red-600/10 bg-white/80 p-3">
+                                        <p class="text-xs text-gray-500">Cicilan / bulan</p>
+                                        <p class="mt-1 break-words font-display text-lg font-black text-foreground">
+                                            Rp {{ number_format($financingEstimate['monthly_payment'], 0, ',', '.') }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col gap-3 border-t border-red-600/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                                    <div class="min-w-0">
+                                        <p class="text-xs font-semibold italic text-red-600">*Harga dapat berubah sewaktu-waktu</p>
+                                        <p class="mt-2 font-display text-xl font-black leading-none text-[#0b6fb3]">
+                                            BCA<span class="font-extrabold text-[#0097a7]">finance</span>
+                                        </p>
+                                        <p class="mt-1 text-[10px] font-semibold lowercase tracking-wide text-[#0b6fb3]">
+                                            solusi tepat pembiayaan anda
+                                        </p>
+                                    </div>
+
+                                    @php
+                                        $budgetMessage = urlencode(
+                                            "Halo Rizki Mobil, saya ingin sesuaikan budget untuk {$car->year} {$car->make} {$car->model}. Harga Rp " .
+                                                number_format($car->price, 0, ',', '.') .
+                                                ', estimasi TDP Rp ' .
+                                                number_format($financingEstimate['tdp'], 0, ',', '.') .
+                                                ' dan cicilan Rp ' .
+                                                number_format($financingEstimate['monthly_payment'], 0, ',', '.') .
+                                                ' per bulan.',
+                                        );
+                                        $budgetLink = 'https://wa.me/' . config('rizki.whatsapp.wa_number') . "?text={$budgetMessage}";
+                                    @endphp
+
+                                    <a href="{{ $budgetLink }}" target="_blank" rel="noopener noreferrer"
+                                        class="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-[#160302] px-4 text-sm font-bold text-white shadow-lg shadow-red-950/20 transition-all hover:-translate-y-0.5 hover:bg-red-700">
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 17l4-4 4 4m-4-4v9" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3" />
+                                        </svg>
+                                        Sesuaikan Budget
+                                    </a>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="my-6 h-px bg-gradient-to-r from-transparent via-red-600/30 to-transparent"></div>

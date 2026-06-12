@@ -1,5 +1,17 @@
 # Task Plan
 
+## Current Task: Add Financing Estimate To Car Detail Price
+- [x] Locate the car-detail price block, formatting helpers, and current available car data
+- [x] Add a clean financing estimate UI under the price for every car detail page
+- [x] Keep the estimate deterministic from car price and responsive with the current detail layout
+- [x] Add/adjust regression coverage and run deploy-safe verification
+
+### Review: Add Financing Estimate To Car Detail Price
+- Added a config-driven financing estimate to every car detail price card: 5-year tenor, TDP, monthly installment estimate, BCA Finance wordmark treatment, and a `Sesuaikan Budget` WhatsApp CTA.
+- Kept calculation logic in the `Car` model and rates in `config/rizki.php`, so the Blade stays focused on presentation and the estimate can be tuned later without changing markup.
+- Added regression coverage to confirm the car detail page renders the financing estimate under the price.
+- Verification passed: PHP syntax checks, `php artisan view:cache`, `php artisan test tests/Feature/CarDetailTest.php`, full `php artisan test`, `npm run build`, `php artisan config:cache`, `git diff --check`, then cache clears.
+
 ## Current Task
 - [x] Read the latest `AGENTS.md`
 - [x] Create `tasks/todo.md`

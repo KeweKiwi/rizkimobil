@@ -6,6 +6,12 @@ return [
         'wa_number' => env('RIZKI_WHATSAPP_WA_NUMBER', '6281555307307'),
     ],
 
+    'financing' => [
+        'tenor_years' => 5,
+        'tdp_rate' => 0.38196,
+        'monthly_payment_rate' => 0.017696,
+    ],
+
     'car_makes' => [
         'BMW' => 'BMW',
         'BYD' => 'BYD',

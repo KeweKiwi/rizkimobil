@@ -134,6 +134,25 @@ class Car extends Model
         return $parts[0] ?? $fallback;
     }
 
+    public function getFinancingEstimateAttribute(): array
+    {
+        $price = max((int) $this->price, 0);
+        $tenorYears = (int) config('rizki.financing.tenor_years', 5);
+        $tdpRate = (float) config('rizki.financing.tdp_rate', 0.38196);
+        $monthlyPaymentRate = (float) config('rizki.financing.monthly_payment_rate', 0.017696);
+
+        return [
+            'tenor_years' => $tenorYears,
+            'tdp' => $this->roundRupiahToThousand($price * $tdpRate),
+            'monthly_payment' => $this->roundRupiahToThousand($price * $monthlyPaymentRate),
+        ];
+    }
+
+    private function roundRupiahToThousand(float $value): int
+    {
+        return (int) (round($value / 1000) * 1000);
+    }
+
     /**
      * Scope: featured cars
      */
