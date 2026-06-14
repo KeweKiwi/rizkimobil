@@ -1,5 +1,19 @@
 # Task Plan
 
+## Current Task: Improve Mobile Responsiveness Across Storefront
+- [x] Audit homepage hero/search, shared header/footer, inventory, detail, saved, account, and contact responsive patterns
+- [x] Redesign the mobile hero image/text/action rhythm so the first viewport is readable and not crowded
+- [x] Make the homepage "Temukan Mobil Impian Anda" search panel larger, clearer, and touch-friendly on mobile
+- [x] Add targeted shared responsive safeguards for key storefront pages without broad layout rewrites
+- [x] Run build/tests, inspect mobile rendering where possible, and document review results
+
+### Review
+- Mobile homepage hero was trimmed and rebalanced so the photo/copy area no longer pushes the search card too far down on 390px screens.
+- Homepage search controls now use stable 58px mobile touch targets, 16px text, custom select affordances, and a larger 60px search button.
+- Browser QA confirmed no horizontal overflow on home, inventory, car detail, contact, login, register, saved, and account routes at 390px, 430px, and 768px widths.
+- Final 390px homepage metrics: `scrollWidth/clientWidth = 390/390`, search inputs `58px`, search button `60px`, and the search button remains the top clickable element instead of the floating WhatsApp CTA.
+- `php artisan view:cache`, `npm run build`, `php artisan test`, and `git diff --check` passed.
+
 ## Current Task: Clarify Credit Simulator Readonly Fields
 - [x] Mark fixed vehicle context fields as readonly with clear visual treatment
 - [x] Keep only user-decision fields editable in the credit simulator

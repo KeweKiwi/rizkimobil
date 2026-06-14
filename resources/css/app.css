@@ -35,6 +35,23 @@
   svg {
     max-width: 100%;
   }
+
+  @media (max-width: 767px) {
+    input,
+    select,
+    textarea,
+    button {
+      font-size: 16px;
+    }
+
+    a,
+    button,
+    input,
+    select,
+    textarea {
+      -webkit-tap-highlight-color: transparent;
+    }
+  }
 }
 
 @supports not (overflow: clip) {

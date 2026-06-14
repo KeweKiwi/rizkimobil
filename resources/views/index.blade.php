@@ -5,29 +5,57 @@
 @include('partials.hero-carousel')
 
 <!-- Search Bar - Floating overlap -->
-<section id="search-section" style="position: relative; margin-top: -64px; z-index: 30; padding-bottom: 32px;">
+<section id="search-section">
     <style>
+        #search-section {
+            position: relative;
+            z-index: 60;
+            margin-top: -72px;
+            padding-bottom: 44px;
+        }
+        @media (min-width: 768px) {
+            #search-section {
+                z-index: 30;
+                margin-top: -64px;
+                padding-bottom: 32px;
+            }
+        }
         #search-section .s-card {
             background: rgba(255, 255, 255, 0.985) !important;
             backdrop-filter: blur(18px) !important;
             -webkit-backdrop-filter: blur(18px) !important;
             border: 1px solid rgba(239, 68, 68, 0.18) !important;
-            border-radius: 18px !important;
-            box-shadow: 0 22px 54px rgba(15, 23, 42, 0.12), 0 0 24px rgba(239, 68, 68, 0.08) !important;
-            padding: clamp(18px, 4vw, 28px) !important;
+            border-radius: 24px !important;
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.14), 0 0 24px rgba(239, 68, 68, 0.08) !important;
+            padding: clamp(22px, 5vw, 28px) !important;
+        }
+        @media (max-width: 767px) {
+            #search-section .s-card {
+                border-radius: 24px !important;
+                padding: 24px 20px 22px !important;
+            }
         }
         #search-section .s-card h3 {
             color: #111 !important;
-            font-size: 16px !important;
+            font-size: clamp(19px, 5vw, 22px) !important;
+            line-height: 1.18 !important;
             font-weight: 800 !important;
             text-transform: uppercase !important;
-            letter-spacing: 0.14em !important;
-            margin: 0 0 18px 0 !important;
+            letter-spacing: 0.11em !important;
+            margin: 0 0 20px 0 !important;
+            text-wrap: balance !important;
+        }
+        @media (min-width: 768px) {
+            #search-section .s-card h3 {
+                font-size: 16px !important;
+                letter-spacing: 0.14em !important;
+                margin-bottom: 18px !important;
+            }
         }
         #search-section .s-form {
             display: flex !important;
             flex-direction: column !important;
-            gap: 12px !important;
+            gap: 14px !important;
         }
         @media (min-width: 1024px) {
             #search-section .s-form {
@@ -37,22 +65,50 @@
         }
         #search-section .s-input,
         #search-section .s-select {
+            display: block !important;
             flex: 1 !important;
-            height: 50px !important;
-            padding: 0 16px !important;
-            border-radius: 12px !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            height: 58px !important;
+            min-height: 58px !important;
+            padding: 0 18px !important;
+            box-sizing: border-box !important;
+            border-radius: 16px !important;
             border: 1px solid rgba(17, 17, 17, 0.14) !important;
             background: #fff !important;
             color: #111 !important;
-            font-size: 14px !important;
+            font-size: 16px !important;
+            font-weight: 650 !important;
+            line-height: 1.2 !important;
             outline: none !important;
             transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
-            -webkit-appearance: auto !important;
-            appearance: auto !important;
+            -webkit-appearance: none !important;
+            appearance: none !important;
             box-shadow: none !important;
         }
+        #search-section .s-select {
+            padding-right: 46px !important;
+            background-image:
+                linear-gradient(45deg, transparent 50%, rgba(17, 17, 17, 0.82) 50%),
+                linear-gradient(135deg, rgba(17, 17, 17, 0.82) 50%, transparent 50%) !important;
+            background-position:
+                calc(100% - 22px) 50%,
+                calc(100% - 16px) 50% !important;
+            background-size: 6px 6px, 6px 6px !important;
+            background-repeat: no-repeat !important;
+        }
+        @media (min-width: 1024px) {
+            #search-section .s-input,
+            #search-section .s-select {
+                height: 50px !important;
+                min-height: 50px !important;
+                border-radius: 12px !important;
+                font-size: 14px !important;
+                font-weight: 500 !important;
+            }
+        }
         #search-section .s-input::placeholder {
-            color: rgba(17, 17, 17, 0.42) !important;
+            color: rgba(17, 17, 17, 0.38) !important;
         }
         #search-section .s-select option {
             background: #fff !important;
@@ -67,22 +123,33 @@
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
-            gap: 8px !important;
-            height: 50px !important;
-            min-width: 148px !important;
+            gap: 10px !important;
+            height: 60px !important;
+            width: 100% !important;
+            min-width: 0 !important;
             padding: 0 28px !important;
             border: none !important;
-            border-radius: 12px !important;
+            border-radius: 18px !important;
             background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
             color: #fff !important;
-            font-size: 14px !important;
+            font-size: 16px !important;
             font-weight: 800 !important;
             text-transform: uppercase !important;
-            letter-spacing: 0.14em !important;
+            letter-spacing: 0.13em !important;
             cursor: pointer !important;
             transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease !important;
-            box-shadow: 0 16px 34px rgba(239, 68, 68, 0.22) !important;
+            box-shadow: 0 16px 34px rgba(239, 68, 68, 0.24) !important;
             white-space: nowrap !important;
+        }
+        @media (min-width: 1024px) {
+            #search-section .s-btn {
+                width: auto !important;
+                height: 50px !important;
+                min-width: 148px !important;
+                border-radius: 12px !important;
+                font-size: 14px !important;
+                letter-spacing: 0.14em !important;
+            }
         }
         #search-section .s-btn:hover {
             transform: translateY(-1px) !important;
@@ -90,13 +157,19 @@
             box-shadow: 0 20px 42px rgba(239, 68, 68, 0.26) !important;
         }
         #search-section .s-btn svg {
-            width: 16px !important;
-            height: 16px !important;
+            width: 19px !important;
+            height: 19px !important;
             color: #fff !important;
+        }
+        @media (min-width: 1024px) {
+            #search-section .s-btn svg {
+                width: 16px !important;
+                height: 16px !important;
+            }
         }
     </style>
 
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-5 sm:px-4">
         <div class="s-card">
             <h3>Temukan Mobil Impian Anda</h3>
             <form action="{{ route('inventory') }}" method="GET" class="s-form">

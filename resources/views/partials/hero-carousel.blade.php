@@ -10,18 +10,25 @@
 <section class="relative overflow-hidden bg-secondary" id="hero-carousel">
 
     <style>
-        #hero-carousel { height: clamp(450px, 70vh, 600px); }
+        #hero-carousel {
+            height: clamp(560px, 76vh, 660px);
+            height: clamp(560px, 76svh, 660px);
+        }
         @media (min-width: 1024px) { #hero-carousel { height: clamp(600px, 80vh, 700px); } }
 
         /* Slide transitions */
         .hero-slide { position: absolute; inset: 0; transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
         .hero-slide.active { opacity: 1; transform: scale(1); }
         .hero-slide.inactive { opacity: 0; transform: scale(1.05); }
+        .hero-image { width: 100%; height: 100%; object-fit: cover; object-position: 58% center; }
 
         /* Content transitions */
-        .hero-content { position: absolute; inset: 0; z-index: 20; display: flex; align-items: center; transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
+        .hero-content { position: absolute; inset: 0; z-index: 20; display: flex; align-items: flex-end; padding-bottom: clamp(128px, 22svh, 168px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
         .hero-content.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
         .hero-content.inactive { opacity: 0; transform: translateY(1rem); pointer-events: none; }
+        @media (min-width: 768px) {
+            .hero-content { align-items: center; padding-bottom: 0; }
+        }
 
         /* Grid overlay */
         .hero-grid-overlay {
@@ -57,8 +64,10 @@
             border: 1px solid rgba(239,68,68,0.2);
             background: rgba(0,0,0,0.2); backdrop-filter: blur(4px);
             color: rgba(255,255,255,0.75); font-size: clamp(13px, 2.5vw, 14px);
+            min-width: 0;
         }
         .hero-spec-pill svg { color: var(--color-primary, #e53e3e); width: 16px; height: 16px; }
+        .hero-spec-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
         /* CTA buttons */
         .hero-btn-primary {
@@ -79,6 +88,20 @@
             text-decoration: none; cursor: pointer; transition: background 0.2s;
         }
         .hero-btn-outline:hover { background: rgba(239,68,68,0.15); color: white; }
+        .hero-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+        .hero-actions .hero-btn-primary,
+        .hero-actions .hero-btn-outline {
+            width: 100%;
+            padding-inline: 14px;
+        }
+        @media (min-width: 640px) {
+            .hero-actions { display: flex; flex-wrap: wrap; gap: 16px; }
+            .hero-actions .hero-btn-primary,
+            .hero-actions .hero-btn-outline {
+                width: auto;
+                padding-inline: 32px;
+            }
+        }
 
         /* Badge */
         .hero-badge {
@@ -93,6 +116,49 @@
         /* Corner accents */
         .hero-corner-tl { position: absolute; top: 0; left: 0; width: clamp(64px, 15vw, 128px); height: clamp(64px, 15vw, 128px); border-left: 2px solid rgba(239,68,68,0.3); border-top: 2px solid rgba(239,68,68,0.3); z-index: 20; pointer-events: none; }
         .hero-corner-br { position: absolute; bottom: 0; right: 0; width: clamp(64px, 15vw, 128px); height: clamp(64px, 15vw, 128px); border-right: 2px solid rgba(239,68,68,0.3); border-bottom: 2px solid rgba(239,68,68,0.3); z-index: 20; pointer-events: none; }
+        @media (max-width: 639px) {
+            #hero-carousel {
+                height: clamp(500px, 60vh, 560px);
+                height: clamp(500px, 60svh, 560px);
+            }
+            .hero-content { padding-bottom: clamp(104px, 14vh, 124px); padding-bottom: clamp(104px, 14svh, 124px); }
+            .hero-grid-overlay { opacity: 0.07; background-size: 54px 54px; }
+            .hero-content .container { padding-left: 22px; padding-right: 22px; }
+            .hero-badge {
+                margin-bottom: 14px;
+                padding: 6px 12px;
+                font-size: 10px;
+                letter-spacing: 0.16em;
+            }
+            .hero-content h1 { margin-bottom: 4px; font-size: clamp(2.55rem, 13vw, 3.65rem) !important; line-height: 0.98 !important; letter-spacing: -0.02em; }
+            .hero-content h2 { margin-bottom: 18px; font-size: clamp(2.25rem, 12vw, 3.25rem) !important; line-height: 0.95 !important; letter-spacing: -0.02em; }
+            .hero-spec-list { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px !important; margin-bottom: 20px !important; }
+            .hero-spec-pill {
+                justify-content: center;
+                min-height: 50px;
+                padding: 8px 9px;
+                border-color: rgba(239, 68, 68, 0.28);
+                background: rgba(15, 18, 24, 0.58);
+                font-size: 13px;
+            }
+            .hero-spec-pill svg { width: 15px; height: 15px; flex-shrink: 0; }
+            .hero-price { margin-bottom: 24px !important; font-size: clamp(2.15rem, 11vw, 3rem) !important; line-height: 1.02 !important; overflow-wrap: anywhere; }
+            .hero-btn-primary,
+            .hero-btn-outline {
+                height: 54px;
+                border-radius: 12px;
+                font-size: 13px;
+                letter-spacing: 0.12em;
+            }
+            .hero-nav-btn { display: none; }
+            .hero-indicators { bottom: 26px !important; }
+            .hero-corner-tl,
+            .hero-corner-br { display: none; }
+        }
+        @media (max-width: 379px) {
+            .hero-actions { grid-template-columns: 1fr; }
+            .hero-spec-list { grid-template-columns: 1fr; }
+        }
     </style>
 
     <!-- Background Slides -->
@@ -109,7 +175,7 @@
             <!-- Overlay gelap bawah -->
             <div class="absolute inset-0 z-10 bg-[linear-gradient(to_top,rgba(15,15,20,0.8)_0%,transparent_50%,rgba(15,15,20,0.25)_100%)]"></div>
 
-            <img src="{{ $imageSrc }}" alt="{{ $car->make }} {{ $car->model }}" class="w-full h-full object-cover" />
+            <img src="{{ $imageSrc }}" alt="{{ $car->make }} {{ $car->model }}" class="hero-image" />
         </div>
     @endforeach
 
@@ -122,7 +188,7 @@
             <div class="container mx-auto px-4">
                 <div class="max-w-2xl">
 
-                    <span class="hero-badge font-body">Featured Vehicle</span>
+                    <span class="hero-badge font-body">Unit Unggulan</span>
 
                     {{-- Heading 1: Orbitron --}}
                     <h1 class="font-display mb-2 text-white font-bold tracking-wide leading-[1.15] text-[clamp(2.25rem,5vw,3.75rem)]">
@@ -135,28 +201,28 @@
                     </h2>
 
                     <!-- Specs (Body font) -->
-                    <div class="flex flex-wrap gap-3 mb-6 font-body">
+                    <div class="hero-spec-list flex flex-wrap gap-3 mb-6 font-body">
                         <div class="hero-spec-pill font-body">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                            {{ number_format($car->mileage_km) }} km
+                            <span class="hero-spec-text">{{ number_format($car->mileage_km) }} km</span>
                         </div>
                         <div class="hero-spec-pill font-body">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                            {{ ucfirst($car->fuel_type) }}
+                            <span class="hero-spec-text">{{ ucfirst($car->fuel_type) }}</span>
                         </div>
                         <div class="hero-spec-pill font-body">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                            {{ $car->year }}
+                            <span class="hero-spec-text">{{ $car->year }}</span>
                         </div>
                     </div>
 
                     <!-- Price (Orbitron biar “hero feel”) -->
-                    <p class="font-display mb-8 text-white font-bold text-[clamp(2rem,4vw,3rem)]">
+                    <p class="hero-price font-display mb-8 text-white font-bold text-[clamp(2rem,4vw,3rem)]">
                         Rp {{ number_format($car->price, 0, ',', '.') }}
                     </p>
 
                     <!-- CTA (Body font) -->
-                    <div class="flex flex-wrap gap-4 font-body">
+                    <div class="hero-actions font-body">
                         <a href="{{ route('car.show', $car->id) }}" class="hero-btn-primary font-body">View Details</a>
                         <a href="{{ route('inventory') }}" class="hero-btn-outline font-body">Browse All</a>
                     </div>
@@ -175,7 +241,7 @@
     </button>
 
     <!-- Indicators -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-3">
+    <div class="hero-indicators absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-3">
         @foreach ($heroSlides as $index => $car)
             <button class="hero-indicator {{ $index === 0 ? 'active' : 'inactive' }}" data-indicator="{{ $index }}" aria-label="Go to slide {{ $index + 1 }}"></button>
         @endforeach
