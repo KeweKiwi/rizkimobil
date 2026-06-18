@@ -118,37 +118,58 @@
         .hero-corner-br { position: absolute; bottom: 0; right: 0; width: clamp(64px, 15vw, 128px); height: clamp(64px, 15vw, 128px); border-right: 2px solid rgba(239,68,68,0.3); border-bottom: 2px solid rgba(239,68,68,0.3); z-index: 20; pointer-events: none; }
         @media (max-width: 639px) {
             #hero-carousel {
-                height: clamp(500px, 60vh, 560px);
-                height: clamp(500px, 60svh, 560px);
+                height: clamp(510px, 62vh, 575px);
+                height: clamp(510px, 62svh, 575px);
             }
-            .hero-content { padding-bottom: clamp(104px, 14vh, 124px); padding-bottom: clamp(104px, 14svh, 124px); }
+            .hero-content {
+                padding-bottom: clamp(92px, 12vh, 112px);
+                padding-bottom: clamp(92px, 12svh, 112px);
+            }
             .hero-grid-overlay { opacity: 0.07; background-size: 54px 54px; }
             .hero-content .container { padding-left: 22px; padding-right: 22px; }
+            .hero-content .max-w-2xl { max-width: min(100%, 34rem); }
             .hero-badge {
-                margin-bottom: 14px;
-                padding: 6px 12px;
-                font-size: 10px;
-                letter-spacing: 0.16em;
+                margin-bottom: 12px;
+                padding: 5px 10px;
+                font-size: 9px;
+                letter-spacing: 0.14em;
             }
-            .hero-content h1 { margin-bottom: 4px; font-size: clamp(2.55rem, 13vw, 3.65rem) !important; line-height: 0.98 !important; letter-spacing: -0.02em; }
-            .hero-content h2 { margin-bottom: 18px; font-size: clamp(2.25rem, 12vw, 3.25rem) !important; line-height: 0.95 !important; letter-spacing: -0.02em; }
-            .hero-spec-list { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px !important; margin-bottom: 20px !important; }
+            .hero-content h1 {
+                margin-bottom: 4px;
+                font-size: clamp(2.05rem, 9.8vw, 2.85rem) !important;
+                line-height: 1.03 !important;
+                letter-spacing: -0.01em;
+                text-wrap: balance;
+            }
+            .hero-content h2 {
+                margin-bottom: 14px;
+                font-size: clamp(1.75rem, 8.4vw, 2.35rem) !important;
+                line-height: 1 !important;
+                letter-spacing: -0.01em;
+            }
+            .hero-spec-list { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px !important; margin-bottom: 16px !important; }
             .hero-spec-pill {
                 justify-content: center;
-                min-height: 50px;
-                padding: 8px 9px;
+                min-height: 44px;
+                padding: 7px 8px;
+                border-radius: 10px;
                 border-color: rgba(239, 68, 68, 0.28);
                 background: rgba(15, 18, 24, 0.58);
-                font-size: 13px;
+                font-size: 12px;
             }
-            .hero-spec-pill svg { width: 15px; height: 15px; flex-shrink: 0; }
-            .hero-price { margin-bottom: 24px !important; font-size: clamp(2.15rem, 11vw, 3rem) !important; line-height: 1.02 !important; overflow-wrap: anywhere; }
+            .hero-spec-pill svg { width: 14px; height: 14px; flex-shrink: 0; }
+            .hero-price {
+                margin-bottom: 18px !important;
+                font-size: clamp(1.85rem, 8.8vw, 2.5rem) !important;
+                line-height: 1.05 !important;
+                overflow-wrap: anywhere;
+            }
             .hero-btn-primary,
             .hero-btn-outline {
-                height: 54px;
-                border-radius: 12px;
-                font-size: 13px;
-                letter-spacing: 0.12em;
+                height: 48px;
+                border-radius: 10px;
+                font-size: 11px;
+                letter-spacing: 0.11em;
             }
             .hero-nav-btn { display: none; }
             .hero-indicators { bottom: 26px !important; }
@@ -157,7 +178,7 @@
         }
         @media (max-width: 379px) {
             .hero-actions { grid-template-columns: 1fr; }
-            .hero-spec-list { grid-template-columns: 1fr; }
+            .hero-spec-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         }
     </style>
 

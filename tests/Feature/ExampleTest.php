@@ -26,4 +26,14 @@ class ExampleTest extends TestCase
         $response->assertOk();
         $response->assertSee('Mini');
     }
+
+    public function test_homepage_header_shows_brand_promise_under_logo(): void
+    {
+        $response = $this->get('/');
+
+        $response->assertOk();
+        $response->assertSee('Jual Beli Mobil Bekas Berkualitas');
+        $response->assertSee('CASH DAN KREDIT');
+        $response->assertSee('Bisa Proses seluruh Wilayah Indonesia');
+    }
 }

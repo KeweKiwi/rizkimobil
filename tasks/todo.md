@@ -1,5 +1,42 @@
 # Task Plan
 
+## Current Task: Add Header Brand Promise And Cap Credit Tenor
+- [x] Add the requested brand promise text under the RMI logo without crowding the header
+- [x] Make credit simulator tenor stop at a configurable maximum of 5 years
+- [x] Update regression coverage, verify rendered header/simulator behavior, build assets, and document results
+
+### Review: Add Header Brand Promise And Cap Credit Tenor
+- Added the requested three-line sales promise directly under the RMI logo in the shared header: quality used cars, cash/credit, and Indonesia-wide processing.
+- Moved the credit simulator tenor cap into `config/rizki.php` and wired the detail-page simulator loop to that value, defaulting to a maximum of 5 years.
+- Added regression coverage for the new header copy and the simulator loop contract.
+- Browser QA confirmed the header promise renders on desktop and mobile without horizontal overflow, and the credit simulator now renders 5 result cards with no `6 Tahun` card.
+- Verification passed: `php artisan view:cache`, `npm run build`, `php artisan test`, `git diff --check`, `php artisan config:cache`, then `php artisan optimize:clear`.
+
+## Current Task: Rebalance Mobile Hero Vehicle Visibility
+- [x] Locate the mobile hero typography, overlay, chip, and CTA rules
+- [x] Reduce mobile text dominance while preserving premium first-viewport hierarchy
+- [x] Verify rendered mobile hero/search rhythm, rebuild assets, and document results
+
+### Review: Rebalance Mobile Hero Vehicle Visibility
+- Reduced only the mobile hero text scale, model scale, price scale, spec chip height, and CTA height so the vehicle photo remains the visual focus.
+- Kept the desktop hero unchanged and preserved the same carousel/CTA structure.
+- Browser DOM QA at 390px and 430px confirmed no horizontal overflow, compact mobile typography, 44px spec chips, 48px CTA buttons, and the search panel still following the hero cleanly.
+- CTA proof passed by reading the active `View Details` link and loading its detail page successfully with no console warnings/errors.
+- Browser screenshot capture timed out in the in-app Browser CDP path, so visual proof relied on the provided reference image plus computed render metrics/DOM checks.
+- Verification passed: `php artisan view:cache`, `npm run build`, `php artisan test`, and `git diff --check`.
+
+## Current Task: Polish Closing CTA Image Accents
+- [x] Identify the line collision source in the closing CTA media panel
+- [x] Replace the full-width scan line with a cleaner image accent that does not collide with surrounding dividers
+- [x] Verify desktop/mobile rendering, rebuild assets, and document results
+
+### Review: Polish Closing CTA Image Accents
+- Removed the hard left border from the closing CTA media panel and replaced it with a soft vertical fade separator.
+- Reworked the long scan line into a shorter angled accent with a small glow point, so it no longer visually collides with the panel divider or cuts across the full image.
+- Added a mobile-specific treatment that keeps the image separator subtle and the scan accent short.
+- Browser DOM QA confirmed no horizontal overflow at desktop/mobile widths, with the scan line starting away from the media edge instead of connecting to surrounding borders.
+- Verification passed: `php artisan view:cache`, `npm run build`, `php artisan test`, and `git diff --check`.
+
 ## Current Task: Improve Mobile Responsiveness Across Storefront
 - [x] Audit homepage hero/search, shared header/footer, inventory, detail, saved, account, and contact responsive patterns
 - [x] Redesign the mobile hero image/text/action rhythm so the first viewport is readable and not crowded

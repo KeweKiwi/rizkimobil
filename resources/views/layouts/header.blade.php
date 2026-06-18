@@ -56,8 +56,9 @@
     }
     .rmi-header-brand {
         display: inline-flex;
-        align-items: center;
-        gap: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
         color: #ffffff;
         text-decoration: none;
     }
@@ -72,31 +73,32 @@
         opacity: 0.94;
     }
     .rmi-header-brand-copy {
-        display: none;
-        padding-left: 16px;
-        border-left: 1px solid rgba(255, 255, 255, 0.14);
+        display: grid;
+        gap: 2px;
+        max-width: 260px;
     }
-    @media (min-width: 1180px) {
-        .rmi-header-brand-copy {
-            display: block;
-        }
-    }
+    .rmi-header-brand-copy strong,
     .rmi-header-brand-copy span {
         display: block;
-        color: rgba(255, 255, 255, 0.46);
-        font-size: 10px;
-        font-weight: 900;
-        letter-spacing: 0.18em;
-        line-height: 1;
-        text-transform: uppercase;
+        line-height: 1.08;
     }
     .rmi-header-brand-copy strong {
-        display: block;
-        margin-top: 6px;
-        color: rgba(255, 255, 255, 0.78);
-        font-size: 12px;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.045em;
+    }
+    .rmi-header-brand-copy span {
+        color: rgba(255, 255, 255, 0.46);
+        font-size: 9px;
         font-weight: 800;
-        line-height: 1;
+        letter-spacing: 0.08em;
+    }
+    .rmi-header-brand-copy .rmi-header-brand-credit {
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 9px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
     }
     .rmi-header-center {
         display: none;
@@ -415,10 +417,20 @@
     @media (max-width: 767px) {
         .rmi-header-nav {
             grid-template-columns: 1fr auto;
-            min-height: 72px;
+            min-height: 92px;
         }
         .rmi-header-logo {
-            width: 142px;
+            width: 132px;
+        }
+        .rmi-header-brand-copy {
+            max-width: 230px;
+        }
+        .rmi-header-brand-copy strong {
+            font-size: 8.5px;
+        }
+        .rmi-header-brand-copy span,
+        .rmi-header-brand-copy .rmi-header-brand-credit {
+            font-size: 8px;
         }
         .header-stock-search-input {
             height: 3rem;
@@ -444,8 +456,9 @@
                     class="rmi-header-logo"
                 />
                 <span class="rmi-header-brand-copy">
-                    <span>Rizki Mobil</span>
-                    <strong>Verified used cars</strong>
+                    <strong>Jual Beli Mobil Bekas Berkualitas</strong>
+                    <span class="rmi-header-brand-credit">CASH DAN KREDIT</span>
+                    <span>Bisa Proses seluruh Wilayah Indonesia</span>
                 </span>
             </a>
 

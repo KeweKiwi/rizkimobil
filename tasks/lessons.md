@@ -64,3 +64,7 @@
 - In credit simulators, never label a value as `TDP` if it includes hidden add-ons beyond the customer's entered down payment; show the same DP amount, enforce minimum DP clearly, and move any extra assumptions into transparent separate fields if needed.
 - In calculators, immutable context values such as selected unit, year, and OTR price should not look editable; prefer readonly/static treatment over disabled when the value remains useful for context, while leaving only true customer inputs active.
 - For mobile homepage heroes, do not carry desktop carousel density into the first viewport; simplify overlapping controls, keep the copy bottom-aligned against the image, and make the primary search form use 56px+ touch targets with 16px text.
+- For premium media sections, avoid full-width decorative scan lines that align with neighboring borders; use shorter, offset, or softly faded accents so visual guides do not read as accidental collisions.
+- When a vehicle photo is the hero focal point on mobile, downshift the text, chips, price, and CTA density so the unit stays visually inspectable instead of becoming a background texture behind oversized copy.
+- For storefront financing simulators, keep tenor limits in config and have the UI loop consume that value instead of hardcoding year ranges in JavaScript.
+- For logo-adjacent brand promise copy, verify desktop and mobile header overflow after adding text because stacked copy under the logo can quickly crowd the first viewport.

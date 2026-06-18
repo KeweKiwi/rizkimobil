@@ -11,6 +11,7 @@ return [
         'tdp_rate' => 0.38196,
         'monthly_payment_rate' => 0.017696,
         'simulator_down_payment_rate' => 0.30,
+        'simulator_max_tenor_years' => (int) env('RIZKI_FINANCING_SIMULATOR_MAX_TENOR_YEARS', 5),
         'simulator_min_down_payment_rate' => (float) env('RIZKI_FINANCING_MIN_DP_RATE', 0.20),
         'simulator_min_down_payment_amount' => (int) env('RIZKI_FINANCING_MIN_DP_AMOUNT', 0),
         'simulator_annual_interest_rate' => 0.0875,

@@ -2247,9 +2247,54 @@
     }
     .closing-cta-media {
         overflow: hidden;
+        isolation: isolate;
         min-height: clamp(360px, 38vw, 560px);
-        border-left: 1px solid rgba(255, 255, 255, 0.12);
+        border-left: 0;
         background: transparent;
+    }
+    .closing-cta-media::after {
+        content: '';
+        position: absolute;
+        z-index: 2;
+        inset: 9% auto 9% 0;
+        width: 1px;
+        background: linear-gradient(
+            180deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.11) 18%,
+            rgba(239, 68, 68, 0.18) 46%,
+            rgba(255, 255, 255, 0.08) 70%,
+            transparent 100%
+        );
+        pointer-events: none;
+    }
+    .closing-cta-scan {
+        left: auto;
+        right: clamp(130px, 14vw, 245px);
+        top: 44%;
+        width: clamp(150px, 20vw, 300px);
+        height: 2px;
+        border-radius: 999px;
+        opacity: 0.86;
+        transform: rotate(-4deg);
+        transform-origin: right center;
+        background:
+            linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.55) 16%, #ef4444 58%, transparent 100%);
+        box-shadow:
+            0 0 22px rgba(239, 68, 68, 0.34),
+            0 0 2px rgba(255, 255, 255, 0.24);
+    }
+    .closing-cta-scan::after {
+        content: '';
+        position: absolute;
+        right: -3px;
+        top: 50%;
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: #ff5a5a;
+        box-shadow: 0 0 18px rgba(239, 68, 68, 0.7);
+        transform: translateY(-50%);
     }
     .closing-cta-media-card {
         left: clamp(28px, 5vw, 72px);
@@ -2288,8 +2333,19 @@
         }
         .closing-cta-media {
             min-height: 390px;
-            border-left: 0;
             border-top: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .closing-cta-media::after {
+            inset: 0 8% auto 8%;
+            width: auto;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+        }
+        .closing-cta-scan {
+            right: 26px;
+            top: 53%;
+            width: min(180px, 48vw);
+            opacity: 0.62;
         }
         .closing-cta-media-card {
             left: 24px;

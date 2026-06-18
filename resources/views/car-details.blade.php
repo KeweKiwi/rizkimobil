@@ -667,6 +667,7 @@
             $creditSimulatorConfig = [
                 'price' => (int) $car->price,
                 'downPaymentRate' => (float) config('rizki.financing.simulator_down_payment_rate', 0.30),
+                'maxTenorYears' => max(1, (int) config('rizki.financing.simulator_max_tenor_years', config('rizki.financing.tenor_years', 5))),
                 'minDownPaymentRate' => (float) config('rizki.financing.simulator_min_down_payment_rate', 0.20),
                 'minDownPaymentAmount' => (int) config('rizki.financing.simulator_min_down_payment_amount', 0),
                 'annualInterestRate' => (float) config('rizki.financing.simulator_annual_interest_rate', 0.0875),
@@ -890,9 +891,10 @@
                 const insuranceCost = price * insuranceRate * regionMultiplier;
                 const financedAmount = Math.max(price - downPayment + protectionCost + insuranceCost, 0);
                 const annualInterestRate = Number(creditSimulatorConfig.annualInterestRate || 0);
+                const maxTenorYears = Math.max(Number(creditSimulatorConfig.maxTenorYears || 5), 1);
                 const results = [];
 
-                for (let tenor = 1; tenor <= 6; tenor += 1) {
+                for (let tenor = 1; tenor <= maxTenorYears; tenor += 1) {
                     const months = tenor * 12;
                     const totalInterest = financedAmount * annualInterestRate * tenor;
                     const monthlyPayment = months > 0 ? (financedAmount + totalInterest) / months : 0;

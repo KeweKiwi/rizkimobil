@@ -86,7 +86,10 @@ class CarDetailTest extends TestCase
         $response->assertSee('credit-down-payment-help');
         $response->assertSee('credit-down-payment-error');
         $response->assertSee('minDownPaymentRate');
+        $response->assertSee('maxTenorYears');
+        $response->assertSee('for (let tenor = 1; tenor <= maxTenorYears; tenor += 1)', false);
         $response->assertSee('tdp: downPayment', false);
+        $response->assertDontSee('tenor <= 6', false);
         $response->assertDontSee('syncCreditPrice');
         $response->assertDontSee('BCA');
         $response->assertDontSee('adminFeeRate');
