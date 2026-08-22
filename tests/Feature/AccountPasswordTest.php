@@ -35,6 +35,7 @@ class AccountPasswordTest extends TestCase
             'name' => 'Old Name',
             'email' => 'old@example.com',
             'phone' => '081111111111',
+            'password' => 'password123',
         ]);
 
         $this->actingAs($user)
@@ -43,6 +44,7 @@ class AccountPasswordTest extends TestCase
                 'name' => 'New Name',
                 'email' => 'new@example.com',
                 'phone' => '082222222222',
+                'current_password' => 'password123',
             ])
             ->assertRedirect(route('account.show'))
             ->assertSessionHasNoErrors();
@@ -52,6 +54,26 @@ class AccountPasswordTest extends TestCase
         $this->assertSame('New Name', $user->name);
         $this->assertSame('new@example.com', $user->email);
         $this->assertSame('082222222222', $user->phone);
+    }
+
+    public function test_email_change_requires_the_current_password(): void
+    {
+        $user = User::factory()->create([
+            'email' => 'old@example.com',
+            'password' => 'password123',
+        ]);
+
+        $this->actingAs($user)
+            ->from(route('account.show'))
+            ->put(route('account.profile.update'), [
+                'name' => $user->name,
+                'email' => 'new@example.com',
+                'phone' => $user->phone,
+            ])
+            ->assertRedirect(route('account.show'))
+            ->assertSessionHasErrors('current_password');
+
+        $this->assertSame('old@example.com', $user->fresh()->email);
     }
 
     public function test_profile_update_requires_valid_unique_contact_information(): void
@@ -80,6 +102,7 @@ class AccountPasswordTest extends TestCase
     {
         $user = User::factory()->create([
             'password' => 'password123',
+            'remember_token' => 'old-remember-token',
         ]);
 
         $this->actingAs($user)
@@ -93,6 +116,24 @@ class AccountPasswordTest extends TestCase
             ->assertSessionHasNoErrors();
 
         $this->assertTrue(Hash::check('newpassword123', $user->fresh()->password));
+        $this->assertNotSame('old-remember-token', $user->fresh()->remember_token);
+    }
+
+    public function test_password_change_invalidates_a_session_with_the_old_password_hash(): void
+    {
+        $user = User::factory()->create([
+            'password' => 'password123',
+        ]);
+        $oldPasswordHash = $user->password;
+
+        $user->update(['password' => 'newpassword123']);
+
+        $this->actingAs($user)
+            ->withSession(['password_hash_web' => $oldPasswordHash])
+            ->get(route('account.show'))
+            ->assertRedirect(route('login'));
+
+        $this->assertGuest();
     }
 
     public function test_password_change_requires_current_password_and_minimum_length(): void

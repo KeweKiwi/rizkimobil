@@ -9,6 +9,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Str;
 
 class EditUser extends EditRecord
 {
@@ -38,9 +39,10 @@ class EditUser extends EditRecord
                         ->dehydrated(false),
                 ])
                 ->action(function (array $data): void {
-                    $this->getRecord()->update([
+                    $this->getRecord()->forceFill([
                         'password' => $data['password'],
-                    ]);
+                        'remember_token' => Str::random(60),
+                    ])->save();
                 })
                 ->successNotificationTitle('Password akun berhasil direset'),
             DeleteAction::make()
@@ -49,7 +51,7 @@ class EditUser extends EditRecord
     }
 
     /**
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
     protected function mutateFormDataBeforeSave(array $data): array

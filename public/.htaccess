@@ -1,3 +1,11 @@
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>
+
+<FilesMatch "(?i)\.(bak|env|log|old|save|sql|sqlite|sqlite3|tar|tgz|zip)$">
+    Require all denied
+</FilesMatch>
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes

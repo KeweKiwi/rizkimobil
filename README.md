@@ -24,12 +24,12 @@ A modern car dealership website built with Laravel 12 and Filament v4 admin pane
 - **Admin Panel**: Filament v4
 - **Frontend**: Tailwind CSS 4.0, Vite
 - **Database**: MySQL
-- **PHP**: 8.2+
+- **PHP**: 8.3+
 
 ## Installation
 
 ### Prerequisites
-- PHP 8.2 or higher
+- PHP 8.3 or higher
 - Composer
 - Node.js & npm
 - MySQL database
@@ -64,8 +64,8 @@ A modern car dealership website built with Laravel 12 and Filament v4 admin pane
      DB_HOST=127.0.0.1
      DB_PORT=3306
      DB_DATABASE=rizkimobildb
-     DB_USERNAME=root
-     DB_PASSWORD=
+     DB_USERNAME=rizkimobil_app
+     DB_PASSWORD=<local-development-password>
      ```
 
 4. **Run migrations**
@@ -73,19 +73,11 @@ A modern car dealership website built with Laravel 12 and Filament v4 admin pane
    php artisan migrate
    ```
 
-5. **Create admin user**
+5. **Create an administrator explicitly**
    ```bash
    php artisan make:filament-user
    ```
-   Follow the prompts to create your admin account with these credentials (or your own):
-   - Name: Admin
-   - Email: admin@rizkimobil.com
-   - Password: admin123
-
-6. **Set admin privileges** (in MySQL or phpMyAdmin)
-   ```sql
-   UPDATE users SET is_admin = 1 WHERE email = 'admin@rizkimobil.com';
-   ```
+   Follow the interactive prompts and use a unique password. The application does not ship with default administrator credentials.
 
 ## Running the Application
 
@@ -111,9 +103,7 @@ php artisan pail               # Log viewer
 
 **URL**: http://localhost:8000/admin
 
-**Default Credentials**:
-- Email: admin@rizkimobil.com
-- Password: admin123
+Create each administrator explicitly with `php artisan make:filament-user`. Never publish or reuse default credentials.
 
 ### Admin Panel Features
 

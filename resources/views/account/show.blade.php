@@ -357,6 +357,14 @@
                                         <p class="account-error">{{ $message }}</p>
                                     @enderror
                                 </div>
+
+                                <div class="account-field account-field-full">
+                                    <label for="profile_current_password">Password saat ini <span>(wajib jika email diubah)</span></label>
+                                    <input id="profile_current_password" type="password" name="current_password" class="account-input" autocomplete="current-password">
+                                    @error('current_password')
+                                        <p class="account-error">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
 
                             <button type="submit" class="account-submit">Simpan profil</button>

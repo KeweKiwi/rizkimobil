@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Cars\Schemas;
 
+use App\Support\CarImageUpload;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -76,16 +77,16 @@ class CarForm
                             ->required()
                             ->options([
                                 'automatic' => 'Otomatis',
-                                'manual'    => 'Manual',
+                                'manual' => 'Manual',
                             ]),
 
                         Select::make('fuel_type')
                             ->label('Bahan Bakar')
                             ->required()
                             ->options([
-                                'bensin'   => 'Bensin (Gasoline)',
-                                'diesel'   => 'Diesel',
-                                'hybrid'   => 'Hybrid',
+                                'bensin' => 'Bensin (Gasoline)',
+                                'diesel' => 'Diesel',
+                                'hybrid' => 'Hybrid',
                                 'electric' => 'Electric',
                             ]),
 
@@ -153,7 +154,7 @@ class CarForm
                             ->label('Ganjil / Genap')
                             ->options([
                                 'ganjil' => 'Ganjil',
-                                'genap'  => 'Genap',
+                                'genap' => 'Genap',
                             ])
                             ->helperText('Sistem pembatasan kendaraan berdasarkan plat nomor'),
 
@@ -225,6 +226,7 @@ class CarForm
                             ->visibility('public')
                             ->maxSize(2048)
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->getUploadedFileNameForStorageUsing(CarImageUpload::storageName(...))
                             ->helperText('Maks. 2 MB per foto. Bisa upload sampai 13 foto sekaligus. Foto pertama akan dijadikan foto utama, lalu urutan dan foto utama bisa diatur lagi setelah listing dibuat.')
                             ->columnSpanFull(),
                     ]),

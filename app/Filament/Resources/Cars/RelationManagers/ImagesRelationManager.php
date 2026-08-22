@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Cars\RelationManagers;
 
 use App\Models\CarImage;
+use App\Support\CarImageUpload;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -43,6 +44,7 @@ class ImagesRelationManager extends RelationManager
                     ->imageEditorAspectRatios(['16:9', '4:3', null])
                     ->maxSize(2048)
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->getUploadedFileNameForStorageUsing(CarImageUpload::storageName(...))
                     ->helperText('Maks. 2 MB · JPEG / PNG / WebP · Disarankan 1200×800 px')
                     ->columnSpanFull(),
 
