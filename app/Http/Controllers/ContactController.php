@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
 {
@@ -35,7 +35,10 @@ class ContactController extends Controller
 
             return redirect()->back()->with('success', 'Pesan berhasil dikirim. Tim Rizki Mobil akan menghubungi Anda secepatnya.');
         } catch (\Exception $e) {
-            Log::error('Contact form submission failed: ' . $e->getMessage());
+            Log::error('Contact form submission failed.', [
+                'exception' => $e::class,
+                'code' => (string) $e->getCode(),
+            ]);
 
             return redirect()->back()
                 ->with('error', 'Maaf, pesan belum bisa dikirim. Silakan coba lagi atau hubungi kami melalui WhatsApp.')

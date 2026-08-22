@@ -660,3 +660,25 @@
 - Changed inventory make options to come from available stock first, with the old static brand list kept only as a fallback when the database has no stock.
 - Added targeted feature tests covering legacy `model` redirect, search filtering, and malformed filter parameters.
 - `php -l`, `php artisan view:cache`, `npm run build`, `php artisan test --filter=InventoryFilterTest`, full `php artisan test`, and `git diff --check` completed successfully after hardening the filter contract.
+
+## Current Task: Comprehensive Security Audit And Hardening
+
+- [x] Inventory framework/runtime versions, routes, auth, authorization, admin, uploads, storage, jobs, email, and third-party integrations
+- [x] Audit Composer/npm dependencies and classify advisories by actual application exposure
+- [x] Audit repository and Git history for secrets, sensitive archives, dumps, and deployment artifacts without disclosing secret values
+- [x] Review production configuration assumptions, session/cookie settings, logging, CORS, trusted proxy/host behavior, and cPanel web-root rules
+- [x] Review authentication, authorization, IDOR, CSRF, privileged actions, favorites ownership, and admin CRUD controls
+- [x] Review validation, mass assignment, SQL query construction, XSS/output escaping, redirects, SSRF, command execution, and business logic
+- [x] Review vehicle image uploads, file paths, storage exposure, randomized naming, MIME/size rules, and executable-content prevention
+- [x] Perform low-impact production checks for HTTPS/canonical redirects, TLS, security headers, cookies, error disclosure, and sensitive public paths
+- [x] Confirm findings, implement minimal safe hardening, and add focused regression tests
+- [x] Re-run tests, dependency checks, source scans, build/view compilation, and post-fix production checks
+- [x] Write `docs/security-audit.md` with executive verdict, score, evidence, changes, remaining risks, and cPanel action plan
+
+### Review
+
+- Completed an OWASP ASVS 5.0/Top 10-oriented review of first-party Laravel/Filament code, authentication, authorization, uploads, dependencies, Git history, deployment assumptions, and the low-impact production attack surface.
+- Removed the deterministic administrator seeder, updated vulnerable Composer/npm lockfiles to zero known advisories, hardened upload naming/execution boundaries, added abuse rate limits and security headers, protected sensitive account changes, and removed contact PII from exception logs.
+- Added focused security regression coverage and exact cPanel/OpenResty owner actions in `docs/cpanel-security-hardening.md`; documented evidence, severity, status, remaining risks, and P0-P3 priorities in `docs/security-audit.md`.
+- Final verification passed: Pint, 46 Laravel tests with 208 assertions, Vite production build, Composer/npm audits with zero advisories, strict Composer validation, production platform requirements, route/view/config compilation, and diff/source scans.
+- Production remains rated HIGH RISK until the formerly committed administrator credential is rotated, existing sessions are invalidated, this branch is deployed, and the P1 OpenResty/cPanel controls are verified.

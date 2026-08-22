@@ -19,6 +19,16 @@
 /storage/*.key
 /storage/pail
 /vendor
+*.bak
+*.old
+*.save
+*.sql
+*.sqlite
+*.sqlite3
+*.tar
+*.tar.gz
+*.tgz
+*.zip
 Homestead.json
 Homestead.yaml
 Thumbs.db
