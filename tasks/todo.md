@@ -682,3 +682,19 @@
 - Added focused security regression coverage and exact cPanel/OpenResty owner actions in `docs/cpanel-security-hardening.md`; documented evidence, severity, status, remaining risks, and P0-P3 priorities in `docs/security-audit.md`.
 - Final verification passed: Pint, 46 Laravel tests with 208 assertions, Vite production build, Composer/npm audits with zero advisories, strict Composer validation, production platform requirements, route/view/config compilation, and diff/source scans.
 - Production remains rated HIGH RISK until the formerly committed administrator credential is rotated, existing sessions are invalidated, this branch is deployed, and the P1 OpenResty/cPanel controls are verified.
+
+## Current Task: Deploy And Verify Security Hardening
+
+- [x] Re-run the complete pre-deployment security gate on the hardening branch
+- [x] Remove legacy `vendor.zip` from the deployable repository and prove Composer-based installation remains reproducible
+- [ ] Commit and push the verified hardening branch without exposing secrets
+- [ ] Determine the available production deployment boundary and deploy only through an evidenced safe path
+- [ ] Re-test production canonical redirects, sensitive paths, headers, TLS, uploads, cookies, and normal public functionality without destructive requests
+- [x] Reclassify SEC-001 through SEC-012 as CLOSED, MITIGATED, OPEN, or ACCEPTED using production evidence only
+- [x] Add the Production Security Verification section and final P0/P1 status to `docs/security-audit.md`
+
+### Review: Deploy And Verify Security Hardening
+
+- Local deployment gate and a fresh no-dev Composer installation passed; `vendor.zip` was removed from the deployable repository.
+- Public checks still show non-canonical OpenResty soft/challenge `200` responses and missing edge security headers, so they cannot prove the production document root or sensitive-path protection.
+- Production deployment, administrator rotation/session revocation, cPanel/OpenResty controls, and authenticated smoke tests remain pending because no authenticated production access or deploy workflow is available from this workspace.

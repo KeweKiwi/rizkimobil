@@ -372,3 +372,66 @@ No sensitive file contents were observed. A challenge page returning `200` is no
 6. **Should Laravel be upgraded now?** Not as an emergency major upgrade. The app is already on Laravel 12.67.0, which receives security fixes until 24 February 2027. Plan and test Laravel 13 in staging before that date.
 7. **Final risk rating:** **HIGH RISK** until P0 and P1 actions are complete and retested.
 8. **Final security score:** **62 / 100** for observed production before deployment; target approximately **81 / 100** after branch deployment and verified cPanel hardening.
+
+# Production Security Verification
+
+**Verification date:** 22 August 2026
+
+**Branch:** `codex/security-rizki-mobil-hardening`
+
+**Verification boundary:** Local source and low-impact public HTTP checks only. No authenticated cPanel, database, OpenResty, or production-shell access was available, so server-side controls remain `OPEN` unless independently evidenced below.
+
+## Deployment Gate
+
+The complete local pre-deployment gate passed: 46 Laravel tests with 208 assertions, zero Composer advisories, all production Composer platform requirements satisfied, zero npm advisories, successful Vite production build, and a clean `git diff --check`. A fresh temporary checkout also completed `composer install --no-dev --prefer-dist --optimize-autoloader --classmap-authoritative`; its Composer audit and platform check passed. This proves the lockfile-based deployment is reproducible without `vendor.zip`.
+
+| Finding / Control | Status | Evidence |
+| --- | --- | --- |
+| Admin credential rotated | **OPEN** | No authenticated production access or operator evidence was available. The old value is not reproduced. |
+| Old sessions revoked | **OPEN** | Production sessions, remember tokens, and old-session access to `/admin` could not be inspected. |
+| Hardening branch deployed | **OPEN** | No repository deployment workflow, `.cpanel.yml`, or authenticated cPanel deployment path was available. Local/remote branch state is not production-deployment evidence. |
+| Dependencies clean | **MITIGATED** | Local and fresh-install checks report zero Composer/npm advisories and all production platform requirements pass; production package installation is unverified. |
+| `vendor.zip` removed | **MITIGATED** | Removed from the deployable repository and ignored; Composer-only installation was reproduced. Production/public copies remain unverified. |
+| Document root correct | **OPEN** | Sensitive and normal URLs are intercepted by the same OpenResty soft/challenge `200`; origin layout cannot be inferred. |
+| Sensitive files inaccessible | **OPEN** | No file contents were observed, but each tested sensitive path returned generic HTML `200`, not the required real `403/404`. |
+| HTTP -> HTTPS | **OPEN** | `http://rizkimobil.com/` returned `200`, not a permanent redirect. |
+| `www` -> apex | **OPEN** | HTTP and HTTPS `www` variants returned `200`, not a permanent redirect to the apex host. |
+| Security headers | **OPEN** | HSTS, CSP/frame protection, `X-Content-Type-Options`, `Referrer-Policy`, and `Permissions-Policy` were absent from the observed edge response. Application middleware is covered locally only. |
+| Trusted proxy restricted | **OPEN** | `trustProxies('*')` remains because the real provider CIDR is unknown and must not be guessed. |
+| Forwarded headers sanitized | **OPEN** | Requires OpenResty/provider configuration evidence and a benign forged-header verification. |
+| Direct origin protected | **OPEN** | Origin address/access policy is unavailable from the public edge and repository. |
+| Upload execution blocked | **MITIGATED** | Laravel canonical MIME/ULID storage and Apache no-execute rules are tested locally; equivalent OpenResty behavior is unverified. |
+| Secure cookies | **OPEN** | The edge challenge did not issue a verifiable customer/admin Laravel session cookie. |
+| PHP production config | **OPEN** | PHP version, `display_errors`, `log_errors`, and `expose_php` require cPanel/server inspection. |
+| DB least privilege | **OPEN** | Production database user and grants were not accessed; no credentials were printed. |
+
+## Finding Reclassification
+
+| Finding | Status | Verification conclusion |
+| --- | --- | --- |
+| SEC-001 | **OPEN** | Seeder removal is verified, but production credential rotation, account inspection, and session invalidation are not. |
+| SEC-002 | **MITIGATED** | Clean audited lockfiles and reproducible no-dev install are verified locally; production deployment is not. |
+| SEC-003 | **MITIGATED** | Application upload controls and Apache rule are tested; OpenResty no-execute enforcement remains open. |
+| SEC-004 | **OPEN** | Provider proxy CIDR, forwarded-header replacement, and origin blocking remain unknown. |
+| SEC-005 | **MITIGATED** | Named throttles and regression tests pass locally; production depends on deployment and SEC-004. |
+| SEC-006 | **MITIGATED** | Sensitive-change/session protections pass local tests; production deployment is unverified. |
+| SEC-007 | **OPEN** | Laravel middleware is implemented, but the observed production edge still lacks canonical redirects and headers. |
+| SEC-008 | **MITIGATED** | The archive is removed from the deployable repository and Composer-only deployment is reproducible; production removal remains open. |
+| SEC-009 | **MITIGATED** | PII-minimized exception logging passes regression coverage; production deployment is unverified. |
+| SEC-010 | **OPEN** | Production still discloses `openresty/1.31.1.1`. |
+| SEC-011 | **OPEN** | Legacy media normalization remains a maintenance task. |
+| SEC-012 | **OPEN** | Administrator MFA and the stronger administrator password baseline are not implemented. |
+
+No finding is marked `CLOSED`: production evidence does not yet satisfy closure criteria. No finding has been owner-accepted as residual risk.
+
+## Verification Answers
+
+1. **Is Rizki Mobil safe enough to remain online?** Not yet at an acceptable hardened-production threshold. Because SEC-001 remains open, production should be treated as an urgent incident-containment case until all affected administrator credentials are rotated, sessions are invalidated, and accounts are inspected. If the site must remain online, restrict and monitor admin access while completing those actions immediately.
+2. **Is the old admin credential fully neutralized?** No. The source bootstrap path is removed, but there is no production evidence for credential rotation or old-session revocation.
+3. **Which findings remain OPEN?** SEC-001, SEC-004, SEC-007, SEC-010, SEC-011, and SEC-012. SEC-002, SEC-003, SEC-005, SEC-006, SEC-008, and SEC-009 are mitigated in the branch but not production-closed.
+4. **Which items still require manual cPanel/provider action?** Deploy the branch and audited dependencies; rotate admins/revoke sessions; remove every production `vendor.zip`; verify the `/public` document root and real sensitive-path `403/404`; configure canonical redirects, edge headers, trusted proxy CIDR, forwarded-header replacement, direct-origin blocking, and upload no-execute; verify environment/PHP/cookies/permissions/database grants; then run authenticated smoke tests.
+5. **Did any security change break existing functionality?** No regression was found locally: all 46 tests, asset build, dependency checks, and fresh production-style Composer install passed. Production functionality after deployment is still unverified.
+6. **Updated risk rating:** **HIGH**. The CRITICAL finding remains operationally open, although its source bootstrap mechanism is removed.
+7. **Updated security score:** **62 / 100** for the currently observed production state. The score is intentionally unchanged until P0 and security-critical P1 controls are verified in production.
+
+Completion criteria are **not yet met**. All P0 findings and security-critical P1 controls must be verified in production before this verification can be considered complete. The site is not claimed to be 100% secure.
