@@ -13,7 +13,7 @@ class DatabaseSeederSecurityTest extends TestCase
     public function test_database_seeder_does_not_create_or_promote_a_default_administrator(): void
     {
         $user = User::factory()->create([
-            'email' => 'admin@rizkimobil.com',
+            'email' => 'legacy-admin-sentinel@example.test',
             'is_admin' => false,
         ]);
 

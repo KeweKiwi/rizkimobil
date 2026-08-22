@@ -29,6 +29,11 @@
 *.tar.gz
 *.tgz
 *.zip
+/docs/security-audit.md
+/docs/cpanel-security-hardening.md
+/docs/filament-guide.md
+/tasks/todo.md
+/tasks/lessons.md
 Homestead.json
 Homestead.yaml
 Thumbs.db
